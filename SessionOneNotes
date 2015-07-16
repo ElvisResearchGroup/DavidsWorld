@@ -18,3 +18,16 @@ THINGS TO THINK ABOUT LATER ON:
 
 1) Add 3D?
 2) What features to add to make it better than tarskis World?
+
+------------------------------------------------------------------
+--- Using Python on ECS machines
+
+Setup a virtual environment for python to allow for libraries to be installed
+> virtualenv venv
+
+To use the environment:
+> source venv/bin/activate.csh
+
+To install libraries, the ecs proxy must be given
+> pip --proxy http://www-cache.ecs.vuw.ac.nz:8080 install <name>
+

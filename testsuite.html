@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="evaluation.js"></script>
+    <style></style>
+  </head>
+  <body>
+
+
+  </body>
+<script type="text/javascript">
+function performTest(message, expr, expected, scope, succ) {
+	var eval = evaluate(expr, scope);
+	$('body').append($('<div/>', {'class':'result'}).text(message + ': ' + (((eval === expected) === succ) ? 'passed' : 'failed') ) );
+}
+
+var expression = {
+	type:"SOME",
+	first: 'p',
+	second: {
+		type: 'EQUAL',
+		first: {type: 'CONST', val: 7},
+		second: {type: 'VAR_ACCESS', vari: 'p', field: 'x'}
+	}
+};
+
+var world = [{x: 3, y: 2},
+			 {x: 5, y: 2},
+			 {x: 8, y: 4},
+			 {x: 1, y: 3}
+			];
+
+performTest('Test 1', expression, false, {}, true);
+
+//Test field access
+performTest('Test 2', {type: 'VAR_ACCESS', vari: 'p', field: 'x'}, 1, { p: {x: 1, y: 2}}, true);
+performTest('Test 3', {type: 'VAR_ACCESS', vari: 'q', field: 'x'}, 3, { p: {x: 1, y: 2}, q: {x: 3, y: 2}}, true);
+
+//Const
+performTest('Test 4', {type: 'CONST', val: 4}, 4, {}, true);
+performTest('Test 5', {type: 'CONST', val: 4}, '4', {}, false);
+
+
+
+  </script>
+</html>

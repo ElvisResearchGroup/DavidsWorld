@@ -12,21 +12,12 @@ var expressionTypes = {
 	GTE: 'GTE',
 	IMPLIES: 'IMPLIES',
 	INDEPENDENT: 'INDEPENDENT',
-	VAR_ACCESS : 'VAR_ACCESS'
-
+	VAR_ACCESS : 'VAR_ACCESS',
+	CONST: 'CONST'
 }
 
-
-var expression = {
-	type:"And",
-	first: null,
-	second: null;
-};
-
-var world = [];
-
 function evaluate(expr, scope){
-
+	if (expr.type === expressionTypes.SOME) { 
 		return evaluateSome(expr, scope);
 	} else if (expr.type === expressionTypes.ALL) {
 		return evaluateAll(expr, scope);
@@ -52,7 +43,9 @@ function evaluate(expr, scope){
 		return evaulateImplies(expr.first, expr.second, scope);
 	} else if(expr.type == expressionTypes.VAR_ACCESS){
 		return evaulateVarAccess(expr.vari, expr.field, scope);
-	}  
+	} else if(expr.type == expressionTypes.CONST){
+		return expr.val;
+	} 
 
 }
 
@@ -123,7 +116,6 @@ function evaulateImplies(expr1, expr2, scope){
 function evaulateVarAccess(vari, field, scope){
 	return scope[vari][field]
 }
-
 
 //TODO Fix
 function toString(expr){

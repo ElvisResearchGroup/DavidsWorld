@@ -12,6 +12,7 @@ var expressionTypes = {
 	GTE: 'GTE',
 	IMPLIES: 'IMPLIES',
 	INDEPENDENT: 'INDEPENDENT',
+	VAR_ACCESS : 'VAR_ACCESS'
 
 }
 
@@ -21,6 +22,7 @@ var expression = {
 	first: null,
 	second: null;
 };
+
 var world = [];
 
 function evaluate(expr, scope){
@@ -48,7 +50,10 @@ function evaluate(expr, scope){
 		return evaulateGreaterThanEqual(expr.first, expr.second, scope);
 	} else if(expr.type == expressionTypes.IMPLIES){
 		return evaulateImplies(expr.first, expr.second, scope);
-	} 
+	} else if(expr.type == expressionTypes.VAR_ACCESS){
+		return evaulateVarAccess(expr.vari, expr.field, scope);
+	}  
+
 }
 
 function evaluateSome(some, scope){
@@ -113,6 +118,10 @@ function evaulateImplies(expr1, expr2, scope){
 	var x = evaluate(expr1, scope);
 	var y = evaluate(expr2, scope);
 	return  !x ||(x && y);
+}
+
+function evaulateVarAccess(vari, field, scope){
+	return scope[vari][field]
 }
 
 

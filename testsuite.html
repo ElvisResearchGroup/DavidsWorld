@@ -69,19 +69,27 @@ performTest('Test 12', {type: 'SOME', first: 'p', second: {type: 'EQUAL', first:
 //Some p, q . p.x == q.y (should be true)
 performTest('Test 13', {type: 'SOME', first: 'p', second: {type: 'SOME', first: 'q', second: {type: 'EQUAL', first: {type: 'VAR_ACCESS', vari: 'p', field: 'x'}, second: {type: 'VAR_ACCESS', vari: 'q', field: 'y'}}}}, true, {}, true);
 
-console.log('about to test')
-debug = true;
-
 //All p, q . p != q -> p.y != q.y (should be false)
 performTest('Test 14', {type: 'ALL', first: 'p', second: {type: 'ALL', first: 'q', second:
 {type: 'IMPLIES', first: {type: 'NOT_EQUAL', first: {type: 'VAR_ACCESS', vari: 'p', field: null}, second: {type: 'VAR_ACCESS', vari: 'q', field: null}}, 
 second: {type: 'NOT_EQUAL', first: {type: 'VAR_ACCESS', vari: 'p', field: 'y'}, second: {type: 'VAR_ACCESS', vari: 'q', field: 'y'}}}}}, true, {}, false);
 
-console.log('finished test')
-debug = false;
-
 //Some p, q . p = q (should be true)
 performTest('Test 15', {type: 'SOME', first: 'p', second: {type: 'SOME', first: 'q', second: {type: 'NOT_EQUAL', first: {type: 'VAR_ACCESS', vari: 'p', field: null}, second: {type: 'VAR_ACCESS', vari: 'q', field: null}}}}, true, {}, true);
+
+
+//All p . p.x > 6 iff p.y > 2 (should be false)
+performTest('Test 16', {type: 'ALL', first: 'p', second: {type: 'IFF', first: {type: 'GREATER_THAN', first: {type: 'VAR_ACCESS', vari: 'p', field: 'x'}, second: {type: 'CONST', val: 6}},
+ second: {type: 'GREATER_THAN', first: {type: 'VAR_ACCESS', vari: 'p', field: 'y'}, second: {type: 'CONST', val: 2}}}}, true, {}, false);
+
+//Some p . p.x > 6 iff p.y > 2 (should be true)
+performTest('Test 17', {type: 'SOME', first: 'p', second: {type: 'IFF', first: {type: 'GREATER_THAN', first: {type: 'VAR_ACCESS', vari: 'p', field: 'x'}, second: {type: 'CONST', val: 6}},
+ second: {type: 'GREATER_THAN', first: {type: 'VAR_ACCESS', vari: 'p', field: 'y'}, second: {type: 'CONST', val: 2}}}}, true, {}, true);
+
+//Some p . p.x == 8 and (All q . p.y >= q.y) (should be true)
+performTest('Test 18', {type: 'SOME', first: 'p', second: {type: 'AND', first: {type: 'EQUAL', first: {type: 'VAR_ACCESS', vari: 'p', field: 'x'}, second: {type: 'CONST', val: 8}},
+ second: {type: 'ALL', first: 'q', second: {type: 'GTE', first: {type: 'VAR_ACCESS', vari: 'p', field: 'y'}, second: {type: 'VAR_ACCESS', vari: 'q', field: 'y'} } }}}, true, {}, true);
+
 
 </script>
 </html>

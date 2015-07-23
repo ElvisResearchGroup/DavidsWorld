@@ -15,8 +15,9 @@ var expressionTypes = {
 	IMPLIES: 'IMPLIES',
 	INDEPENDENT: 'INDEPENDENT',
 	VAR_ACCESS : 'VAR_ACCESS',
-	CONST: 'CONST'
-} //FUTURE: Consider adding IFF, arthimetric expressions
+	CONST: 'CONST',
+	IFF: 'IFF'
+} //FUTURE: arthimetric expressions
 
 function evaluate(expr, scope){
 	if (expr.type === expressionTypes.SOME) { 
@@ -47,6 +48,8 @@ function evaluate(expr, scope){
 		return evaulateVarAccess(expr.vari, expr.field, scope);
 	} else if(expr.type == expressionTypes.CONST){
 		return expr.val;
+	} else if(expr.type == expressionTypes.IFF){
+		return evaulateEqual(expr.first, expr.second, scope);
 	} 
 
 }
@@ -96,11 +99,6 @@ function evaulateEqual(expr1, expr2, scope){
 }
 
 function evaulateInequal(expr1, expr2, scope){
-	if (debug){
-		console.log(evaluate(expr1, scope));
-		console.log(evaluate(expr2, scope));
-		console.log(evaluate(expr1, scope) !== evaluate(expr2, scope));
-	} 
 	return evaluate(expr1, scope) !== evaluate(expr2, scope);
 }
 

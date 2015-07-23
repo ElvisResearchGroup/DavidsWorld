@@ -1,26 +1,9 @@
 
 
-var expressionTypes = {
-	AND: 'AND',
-	OR: 'OR',
-	NOT: 'NOT',
-	SOME: 'SOME',
-	ALL: 'ALL',
-	EQUAL: 'EQUAL',
-	NOT_EQUAL: 'NOT_EQUAL',
-	LESS_THAN: 'LESS_THAN',
-	GREATER_THAN: 'GREATER_THAN',
-	LTE: 'LTE',
-	GTE: 'GTE',
-	IMPLIES: 'IMPLIES',
-	INDEPENDENT: 'INDEPENDENT',
-
-};
-
-var testInputA = "ab?b!=c.d";
-var testInputB = "?x?x=1";
-var testInputC = "¬a?b";
-var testInputD = "(avb)?c";
+var testInputA = "ab\u2227b!=c.d";
+var testInputB = "\u2203x?x=1";
+var testInputC = "¬a\u2227b";
+var testInputD = "(avb)\u2227c";
 
 function parse(expr){
   
@@ -29,15 +12,21 @@ function parse(expr){
     
     var first_char = expr[0];
     expr = expr.substring(1, expr.length);
-  
-    if(first_char == "?" || first_char == "?"){
+   console.log("\u2200")
+    if(first_char == "\u2200" || first_char == "\u2203"){
       return parseAllSome(expr, first_char);
-    } else if(first_char == "¬"){
+    } else if(first_char == "\u00AC"){
       return parseNot(expr);
+    } else if(first_char == "("){
+      return parseBrackets(expr);
     } else {
       return parseExpr(first_char+expr);
     }
       
+}
+
+function parseBrackets(){
+  
 }
 
 function parseAllSome(expr, first_char){
@@ -108,10 +97,10 @@ function parseExpr(expr){
 function getTypeName(char){
   var name = "";
   switch(char){
-    case '?':
+    case '\u2227':
       name = "AND";
       break;
-    case '?':
+    case '\u2228':
       name = "OR";
       break;
     case '=':
@@ -132,10 +121,10 @@ function getTypeName(char){
     case '>=':
       name = "LTE";
       break;
-    case '?':
+    case '\u2192':
       name = "IMPLIES";
       break;
-    case '?':
+    case '\u2295':
       name = "XOR";
       break;
     
@@ -145,14 +134,14 @@ function getTypeName(char){
 
 function indexOfEquation(expr){
   for(var i = 0; i<expr.length;i++){
-   if(expr[i] == '?' ||
-      expr[i] == '?' ||
+   if(expr[i] == '\u2227' ||
+      expr[i] == '\u2228' ||
       expr[i] == '=' ||
       expr[i] == '!' ||
       expr[i] == '>' ||
       expr[i] == '<' ||
-      expr[i] == '?' ||
-      expr[i] == '?'){
+      expr[i] == '\u2192' ||
+      expr[i] == '\u2295'){
       return i;
    }
   }
@@ -205,7 +194,7 @@ function parseVar(expr){
 }
 
 function printTree(){
-var tree = parse(testInputB);
+var tree = parse(testInputA);
 
 console.log(
   tree

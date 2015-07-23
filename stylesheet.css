@@ -124,15 +124,39 @@ img {
 
 .title
 {
-/*text-shadow:1px 0px 0 rgba(178,102,33,0.5);*/
-font-weight:bold;
-color:#FF9F48;
-letter-spacing:2pt;
-word-spacing:0pt;
-font-size:139%;
-text-align:left;
-font-family:arial, helvetica, sans-serif;
-line-height:1;
+	/*text-shadow:1px 0px 0 rgba(178,102,33,0.5);*/
+	font-weight:bold;
+	color:#FF9F48;
+	letter-spacing:2pt;
+	word-spacing:0pt;
+	font-size:139%;
+	text-align:left;
+	font-family:arial, helvetica, sans-serif;
+	line-height:1;
 }
+
+.dropdownBox{
+	float: left;
+	width: 75%;
+	background-color: #FFFFFF;
+}
+
+.symbolsBox{
+	width: 25%;
+	background-color: #FFAD61;
+	float: left;
+}
+
+table{
+  width:100%;
+}
+
+td{
+  height: 60%;
+}
+
+
+
+
 
 

@@ -4,133 +4,140 @@
   <title>
 Davids World
 </title>
+
 <link rel="stylesheet" href="Buttons/css/buttons.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="Buttons/js/buttons.js"></script>
+<script type="text/javascript" src="bonsai-0.4.1.min.js"></script>
+
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="iespecific.css" />
+<![endif]-->
 
 
-<style type="text/css">
-body{
-margin: 0px;
-overflow:
-}
 
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
 
-.main{
-overflow:hidden;
-margin:0;
-}
-
-
-.leftColumn{
-float:left;
-
-width:50%;
-
-display: block;
-background:#FFDFBB;
-height:100%;
-}
-
-.rightColumn{
-float: right;
-
-width:50%;
-
-display: block;
-background:#FFDFBB;
-height:100%;
-
-
-}
-.top{
-float:left;
-border: none;
-width:100%;
-
-}
-.bottom{
-float:left;
-border: 1px solid;
-width:100%;
-
-}
-
-img {
-    max-width: 100%;
-    max-height: 100%;
-}
-</style>
 </head>
 
 <body bgcolor="#9EE4F5">
+
 <!---->
 
 <div class = "main"> <!-- Main window-->
 
-<div class="leftColumn" id = "test"> <!--Left Column-->
+	<div class="leftColumn" id = "test"> <!--Left Column-->
 
+		<div class="top">
+			<div class="programHeading"><!--program heading= 'David's World'-->
+				<img src="davidsworld2.png" align="center">
+			</div>
+			<div class="loadingBar" ><!--Loading bar dialog-->
+				<div class="sk-cube-grid">
+					<div class="sk-cube sk-cube1"></div>
+					<div class="sk-cube sk-cube2"></div>
+					<div class="sk-cube sk-cube3"></div>
+					<div class="sk-cube sk-cube4"></div>
+					<div class="sk-cube sk-cube5"></div>
+					<div class="sk-cube sk-cube6"></div>
+					<div class="sk-cube sk-cube7"></div>
+					<div class="sk-cube sk-cube8"></div>
+					<div class="sk-cube sk-cube9"></div>
+				</div>
 
-<div class="top">
-<div class="programHeading"><!--program heading= 'David's World'-->
-<img src="davidsworldtitle.png" align="center">
+				<div class="loadingDialog title" >
+					<p id="loading"></p> 
+				</div>
+			</div>
+
+		</div><!--Top box-->
+		<div class = "bottom">
+			<svg id = "world"> 
+
+			</svg>
+		</div><!--Bottom box-->
+	</div>
+
+	<div class="rightColumn"><!--Right Column-->
+			<div class="top">
+				<div class = "dropdownBox"> 
+					<div class="row">
+						<div class="table">
+						<div class= "cell2" id = "cell1">
+							cell1
+						</div>
+						<div class= "cell2" id = "cell2">
+							cell2
+						</div>
+						<div class= "cell2" id = "cell3">
+							cell3 
+						</div>
+					</div>
+					</div>
+					<div class="row">
+						<div class="table">
+						<div class= "cell2" id = "cell4">
+							cell4
+						</div>
+						<div class= "cell2" id = "cell5">
+							cell5
+						</div>
+						<div  class= "cell2" id = "cell6">
+							cell6
+						</div>
+						<div  class= "cell2" id = "cell7">
+							cell7
+						</div>
+					</div>
+					</div>
+					<div class="row">
+						<div class="table">
+						<div class= "cell2" id = "cell8">
+							cell8
+						</div>
+						<div class= "cell2" id = "cell9">
+							cell9
+						</div>
+					</div>
+					</div>
+				</div>
+				<div class = "symbolsBox">
+					<div class="row">
+						<div class ="cell">
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/and.png" align="middle"></a>
+						</div>
+						<div class ="cell">
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/or.png" align="center"></a>
+						</div>
+					</div>
+					<div class="row">
+						<div class ="cell">
+							<a href="#" class="button button-rounded button-flat-primary" align="center" ><img class="autoResizeImage" src="Buttons/notsymbol.png" align="center"></a>
+						</div>
+						<div class ="cell">
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/dot.png" align="center"></a>
+						</div>
+					</div>
+					<div class="row">
+						<div class ="cell">
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/all.png" align="center"></a>
+						</div>
+						<div class ="cell">
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/thereexists.png" align="center"></a>
+						</div>
+					</div>
+			<!--Top box-->
+
+			<div class = "bottom">
+				Expressions
+			</div><!--Bottom box-->
+
+	</div>
+
 </div>
-<div class="loadingBar"><!--Loading bar dialog-->
-</div>
-Titles and program Messages
-</div><!--Top box-->
 
-
-
-<div class = "bottom">
-The canvas will go here
-</div><!--Bottom box-->
-</div>
-
-
-
-
-<div class="rightColumn"><!--Right Column-->
-<div class="top">
-Buttons and text box
-<div class = "leftBox"> </div>
-<div class = "symbols">
-<a href="#" class="button button-rounded button-flat-primary">press me</a>
-
-</div>
-</div><!--Top box-->
-
-
-
-<div class = "bottom">
-Expressions
-</div><!--Bottom box-->
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
+<script type ="text/javascript" src="javascript.js" ></script>
+<script type ="text/javascript" src="world.js" ></script>
 
 </body>
 

@@ -22,8 +22,9 @@ height:100%;
 
 .rightColumn{
 float: right;
-
-width:50%;
+padding-top: 4%;
+padding-right: 5.5%;
+width:44.5%;
 
 display: block;
 /*background:#FFDFBB;*/
@@ -138,13 +139,18 @@ img {
 .dropdownBox{
 	float: left;
 	width: 75%;
-	background-color: #FFFFFF;
+	background-color: #FF9F48;
 }
 
 .symbolsBox{
 	width: 25%;
 	background-color: #FFAD61;
 	float: left;
+}
+
+.table{
+  display: table;
+  width: 410%;
 }
 .row{
   width: 100%;
@@ -153,13 +159,46 @@ img {
   border-color: #000000;
   display: table-row;
 }
+
 .cell{
   width: 49%;
   height: 100%;
   display: table-cell;
   border: 1px solid;
   border-color: #000000;
+  padding: 1%;
+
 }
+
+.cell2{
+  display: table-cell;
+  border: 1px solid;
+  border-color: #000000;
+}
+
+#cell1, #cell2{
+  width: 40%;
+}
+
+#cell3{
+  width: 20%;
+}
+
+#cell4, #cell5{
+  width: 15%;
+}
+
+#cell6, #cell7{
+  width: 35%;
+}
+
+#cell8{
+  width:80%;
+}
+#cell9{
+  width:20%;
+}
+
 
 table{
   width:100%;

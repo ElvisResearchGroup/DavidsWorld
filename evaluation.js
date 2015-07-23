@@ -77,8 +77,8 @@ function evaluateAll(all, scope){
 			return world.reduce(function(prev, curr) {
 				var newScope = Object.create(s);
 				newScope[v] = curr; 
-				return evaluate(all.second, newScope);
-			});
+				return prev && evaluate(all.second, newScope);
+			}, true);
 		}(scope);
 	}
 }
@@ -122,8 +122,9 @@ function evaulateGreaterThanEqual(expr1, expr2, scope){
 
 function evaulateImplies(expr1, expr2, scope){
 	var x = evaluate(expr1, scope);
+	if (!x) return true;
 	var y = evaluate(expr2, scope);
-	
+
 	return  ((!x) || (x && y));
 }
 

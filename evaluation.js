@@ -1,3 +1,5 @@
+var debug = false;
+
 var expressionTypes = {
 	AND: 'AND',
 	OR: 'OR',
@@ -12,19 +14,13 @@ var expressionTypes = {
 	GTE: 'GTE',
 	IMPLIES: 'IMPLIES',
 	INDEPENDENT: 'INDEPENDENT',
-
-}
-
-
-var expression = {
-	type:"And",
-	first: null,
-	second: null;
-};
-var world = [];
+	VAR_ACCESS : 'VAR_ACCESS',
+	CONST: 'CONST',
+	IFF: 'IFF'
+} //FUTURE: arthimetric expressions
 
 function evaluate(expr, scope){
-
+	if (expr.type === expressionTypes.SOME) { 
 		return evaluateSome(expr, scope);
 	} else if (expr.type === expressionTypes.ALL) {
 		return evaluateAll(expr, scope);
@@ -48,7 +44,14 @@ function evaluate(expr, scope){
 		return evaulateGreaterThanEqual(expr.first, expr.second, scope);
 	} else if(expr.type == expressionTypes.IMPLIES){
 		return evaulateImplies(expr.first, expr.second, scope);
+	} else if(expr.type == expressionTypes.VAR_ACCESS){
+		return evaulateVarAccess(expr.vari, expr.field, scope);
+	} else if(expr.type == expressionTypes.CONST){
+		return expr.val;
+	} else if(expr.type == expressionTypes.IFF){
+		return evaulateEqual(expr.first, expr.second, scope);
 	} 
+
 }
 
 function evaluateSome(some, scope){
@@ -56,11 +59,14 @@ function evaluateSome(some, scope){
 	if (scope[v]) {
 		//TODO: Overwriting variable
 	} else {
-		return world.some(function(obj) {
-			var newScope = Object.create(scope);
-			newScope[v] = obj; 
-			return evaluate(some.second, newScope);
-		});
+		return function (sc) {
+			var s = sc;
+			return world.some(function(obj) {
+				var newScope = Object.create(s);
+				newScope[v] = obj; 
+				return evaluate(some.second, newScope);
+			});
+		}(scope);
 	}
 }
 
@@ -69,11 +75,14 @@ function evaluateAll(all, scope){
 	if (scope[v]) {
 		//TODO: Overwriting variable
 	} else {
-		return world.reduce(function(prev, curr) {
-			var newScope = Object.create(scope);
-			newScope[v] = curr; 
-			return evaluate(all.second, newScope);
-		});
+		return function (sc) {
+			var s = sc;
+			return world.reduce(function(prev, curr) {
+				var newScope = Object.create(s);
+				newScope[v] = curr; 
+				return prev && evaluate(all.second, newScope);
+			}, true);
+		}(scope);
 	}
 }
 
@@ -111,10 +120,18 @@ function evaulateGreaterThanEqual(expr1, expr2, scope){
 
 function evaulateImplies(expr1, expr2, scope){
 	var x = evaluate(expr1, scope);
+	if (!x) return true;
 	var y = evaluate(expr2, scope);
-	return  !x ||(x && y);
+
+	return  ((!x) || (x && y));
 }
 
+function evaulateVarAccess(vari, field, scope){
+	if (field === null) {
+		return scope[vari];
+	}
+	return scope[vari][field]
+}
 
 //TODO Fix
 function toString(expr){

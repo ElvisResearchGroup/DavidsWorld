@@ -1,3 +1,5 @@
+var debug = false;
+
 var expressionTypes = {
 	AND: 'AND',
 	OR: 'OR',
@@ -14,7 +16,7 @@ var expressionTypes = {
 	INDEPENDENT: 'INDEPENDENT',
 	VAR_ACCESS : 'VAR_ACCESS',
 	CONST: 'CONST'
-}
+} //FUTURE: Consider adding IFF, arthimetric expressions
 
 function evaluate(expr, scope){
 	if (expr.type === expressionTypes.SOME) { 
@@ -54,11 +56,14 @@ function evaluateSome(some, scope){
 	if (scope[v]) {
 		//TODO: Overwriting variable
 	} else {
-		return world.some(function(obj) {
-			var newScope = Object.create(scope);
-			newScope[v] = obj; 
-			return evaluate(some.second, newScope);
-		});
+		return function (sc) {
+			var s = sc;
+			return world.some(function(obj) {
+				var newScope = Object.create(s);
+				newScope[v] = obj; 
+				return evaluate(some.second, newScope);
+			});
+		}(scope);
 	}
 }
 
@@ -67,11 +72,14 @@ function evaluateAll(all, scope){
 	if (scope[v]) {
 		//TODO: Overwriting variable
 	} else {
-		return world.reduce(function(prev, curr) {
-			var newScope = Object.create(scope);
-			newScope[v] = curr; 
-			return evaluate(all.second, newScope);
-		});
+		return function (sc) {
+			var s = sc;
+			return world.reduce(function(prev, curr) {
+				var newScope = Object.create(s);
+				newScope[v] = curr; 
+				return evaluate(all.second, newScope);
+			});
+		}(scope);
 	}
 }
 
@@ -88,6 +96,11 @@ function evaulateEqual(expr1, expr2, scope){
 }
 
 function evaulateInequal(expr1, expr2, scope){
+	if (debug){
+		console.log(evaluate(expr1, scope));
+		console.log(evaluate(expr2, scope));
+		console.log(evaluate(expr1, scope) !== evaluate(expr2, scope));
+	} 
 	return evaluate(expr1, scope) !== evaluate(expr2, scope);
 }
 
@@ -110,10 +123,14 @@ function evaulateGreaterThanEqual(expr1, expr2, scope){
 function evaulateImplies(expr1, expr2, scope){
 	var x = evaluate(expr1, scope);
 	var y = evaluate(expr2, scope);
-	return  !x ||(x && y);
+	
+	return  ((!x) || (x && y));
 }
 
 function evaulateVarAccess(vari, field, scope){
+	if (field === null) {
+		return scope[vari];
+	}
 	return scope[vari][field]
 }
 

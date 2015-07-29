@@ -2,8 +2,9 @@
 
 document.getElementById("loading").innerHTML = "loading bar should go here";
 
-function add(){
+function add(ex){
 	//create a new element
+	var word = document.getElementById('textbox1').value;
 	var element = document.createElement("input");
 
 	//Create Labels
@@ -12,7 +13,7 @@ function add(){
 
 	//Assign different attributes to the element.
 	element.setAttribute("type", "text");
-	element.setAttribute("value", "");
+	element.setAttribute("value", word);
 	element.setAttribute("name", "Test Name");
 	element.setAttribute("style", "width:200px");
 

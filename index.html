@@ -120,11 +120,11 @@ Davids World
 						<div class="row">
 						<div class= "cell2" id = "cell8">
 							<form>
-							<input type="text" name="expression" value="Input expression">
+							<input type="text" name="expression" id ="textbox1" value="Input expression">
 							</form>
 						</div>
 						<div class= "cell2" id = "cell9">
-							<button type="button" onclick="add();">Process</button>
+							<button onclick="add(document.getElementById('textbox1').value)"  type="button">Process</button>
 						</div>
 					</div>
 					</div>
@@ -162,15 +162,7 @@ Davids World
 
 		</div>
 		<div class = "bottom" id="foobar">
-				<span class="button-dropdown" data-buttons="dropdown">
-							  <a href="#" class="button button-rounded button-flat-primary"> press me <i class="fa fa-caret-down"></i></a>
-							  
-							  <ul class="button-dropdown-menu-below">
-							    <li><a href="#">Option 1</a></li>
-							    <li><a href="#">Option 2</a></li>
-							    <li class="button-dropdown-divider"><a href="#">Option 3</a></li>
-							  </ul>
-							</span>
+
 		</div><!--Bottom box-->
 	</div>
 </div>

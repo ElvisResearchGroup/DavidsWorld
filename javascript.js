@@ -9,7 +9,7 @@ function add(ex){
 
 	//Create Labels
 	var label = document.createElement("Label");
-	label.innerHTML = "New Label";     
+	label.innerHTML = word;     
 
 	//Assign different attributes to the element.
 	element.setAttribute("type", "text");
@@ -26,7 +26,7 @@ function add(ex){
 
 	//Append the element in page (in span).
 	foo.appendChild(label);
-	foo.appendChild(element);
+	//foo.appendChild(element);
 	foo.appendChild(lineBreak);
 }
 

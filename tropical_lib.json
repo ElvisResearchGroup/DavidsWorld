@@ -1,0 +1,42 @@
+{"library_name":"Example library",
+  "library":[
+    {"obj_name":"Palmtree",
+      "colour":"Green",
+      "x":0,
+      "y":0,
+      "image":null,
+      "field_key":[
+	"height",
+	"width",
+	"bananas"
+      ],
+      "field_vals":[
+	{
+	  "val1":4,
+	  "val2":2,
+	  "val3":1
+	}
+      ]
+    },
+    
+    {"obj_name":"boat",
+      "colour":"#00FF00",
+      "x":0,
+      "y":0,
+      "image":null,
+      "field_key":[
+	"boat_name",
+	"no_sails",
+	"secondary_colour"
+      ],
+      "field_vals":[
+	{
+	  "val1":"Faith",
+	  "val2":0,
+	  "val3":"White"
+	}
+      ]
+    }
+
+  ]
+}

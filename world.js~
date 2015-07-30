@@ -44,7 +44,7 @@ if(ignoreCaseObject == "CIRCLE"){
 }
 
 if(ignoreCaseObject == "TRIANGLE"){
-	var triangle = new Polygon(inputX,inputY,150,3);
+	var triangle = new Polygon(inputX,inputY,150,4);
    try{
    //triangle.fill(colour);   
    }	

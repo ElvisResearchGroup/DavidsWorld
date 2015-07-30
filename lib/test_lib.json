@@ -2,6 +2,10 @@
   "library":[
     {"obj_name":"lib_obj_1",
       "colour":"green",
+      "x":0,
+      "y":0,
+      "width":0,
+      "height":0,
       "image":null,
       "field_key":[
 	"title1",
@@ -18,6 +22,10 @@
     {"obj_name":"lib_obj_2",
       "colour":"#000000",
       "image":null,
+      "x":0,
+      "y":0,
+      "width":0,
+      "height":0,
       "field_key":[
 	"title1",
 	"title2",

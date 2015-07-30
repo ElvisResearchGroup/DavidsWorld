@@ -2,8 +2,6 @@
   "library":[
     {"obj_name":"lib_obj_1",
       "colour":"green",
-      "x":0,
-      "y":0,
       "image":null,
       "field_key":[
 	"title1",
@@ -11,18 +9,14 @@
 	"title3"
       ],
       "field_vals":[
-	{
-	  "val1":"test_a",
-	  "val2":"test_b",
-	  "val3":"test_c"
-	}
+	"test_a",
+	"test_b",
+	"test_c"
       ]
     },
     
     {"obj_name":"lib_obj_2",
       "colour":"#000000",
-      "x":0,
-      "y":0,
       "image":null,
       "field_key":[
 	"title1",
@@ -30,11 +24,9 @@
 	"title3"
       ],
       "field_vals":[
-	{
-	  "val1":"test_d",
-	  "val2":"test_e",
-	  "val3":"test_f"
-	}
+	"test_d",
+	"test_e",
+	"test_f"
       ]
     }
 

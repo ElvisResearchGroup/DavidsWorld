@@ -1,11 +1,12 @@
 {"library_name":"Geometry",
+  "bg_colour":"White",
   "library":[
-    {"obj_name":"Square",
+    {"obj_name":"Rectangle",
       "colour":"Black",
       "x":0,
       "y":0,
-      "width":0,
-      "height":0,
+      "width":-1,
+      "height":-1,
       "image":"\\poly",
       "field_key":[
 	  "Sides",
@@ -21,8 +22,8 @@
       "image":"\\poly",
       "x":0,
       "y":0,
-      "width":0,
-      "height":0,
+      "width":-1,
+      "height":-1,
       "field_key":[
 	"Sides"
 	"Radius"
@@ -37,8 +38,8 @@
       "image":"\\poly",
       "x":0,
       "y":0,
-      "width":0,
-      "height":0,
+      "width":-1,
+      "height":-1,
       "field_key":[
 	"Sides"
 	"Radius"

@@ -96,7 +96,7 @@ function getTypeName(char){
       name = "OR";
       break;
     case '=':
-      name = "EQUAL";
+      name = "EQUALS";
       break;
     case '!=':
       name = "NOT_EQUAL";

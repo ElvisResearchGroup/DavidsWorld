@@ -131,7 +131,7 @@ function evaulateVarAccess(vari, field, scope){
 	if (field === null) {
 		return scope[vari];
 	}
-	console.log(scope[vari]);
+	console.log(scope[vari]));
 	return scope[vari][field]
 }
 

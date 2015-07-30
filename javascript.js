@@ -1,18 +1,3 @@
-/*$.getScript("parser.js", function(){
-
-   alert("Script loaded but not necessarily executed.");
-
-});
-
-$.getScript("evaluation.js", function(){
-
-   alert("Script loaded but not necessarily executed.");
-
-});
-*/
-
-
-
 
 document.getElementById("loading").innerHTML = "loading bar should go here";
 
@@ -27,25 +12,13 @@ function add(ex){
 	//Create Labels
 	var label = document.createElement("Label");
 	var div = document.createElement("div");
+	var div2 = document.createElement("div");
 	label.innerHTML = word;     
 	div.innerHTML = word;
+	div2.innerHTML = ' - ';
 	div.id = count++;
+	div2.id = div.id.toString() + 'b';
 	expArray.push(div.id);
-
-	//Assign different attributes to the element.
-	element.setAttribute("type", "text");
-	element.setAttribute("value", word);
-	element.setAttribute("name", "Test Name");
-	element.setAttribute("style", "width:200px");
-
-	/*div.setAttribute("style", "font-weight:normal");
-	div.setAttribute("style", "font-family:Arial, Helvetica, sans-serif");
-	div.setAttribute("style", "padding:2%");
-	div.setAttribute("style", "margin: 5%");
-	div.setAttribute("style", "background-color: #0390B2");
-	div.setAttribute("style", "color: #0390B2");
-	div.setAttribute("style", "border-style: solid");*/
-
 
 	div.style.fontWeight = "normal";
 	div.style.fontFamily = "Arial, Helvetica, sans-serif";
@@ -53,18 +26,28 @@ function add(ex){
 	div.style.margin =  "0.5%";
 	div.style.background = "#0390B2";
 	div.style.color= "#FFFFFF";
+	div.style.width = "100%";
+	//div.setAttribute("style", "align:float-left");
 
+	//div2.style.align = "right";
+	div2.style.width = "18%";
+	div2.style.background = "#0390B2";
+	div2.style.color= "#FFFFFF";
+	//div2.setAttribute("style", "align:float-right");
 
 	var lineBreak = document.createElement("br");
 
 	// 'foobar' is the div id, where new fields are to be added
 	var foo = document.getElementById("foobar");
+	//foo.style.display = "table-row";
+	div.style.display = "table-cell";
+	div2.style.display = "table-cell";
 
 	//Append the element in page
 	foo.appendChild(div);
-	//expArray.push(div);
-	//foo.appendChild(element);
-	//foo.appendChild(lineBreak);
+	foo.appendChild(div2);
+	foo.appendChild(lineBreak);
+
 }
 
 function go(){
@@ -72,19 +55,27 @@ function go(){
 		console.log(id);
 		var div = document.getElementById(id);
 
-		console.log(div.innerHTML.toString());
 
-		var parsedTree = parse(div.innerHTML);
+		var expr = div.innerHTML.toString();
 
-		var eval = evaluate(parsedTree, [{
-				p:{x: 1, y: 2}}
-			]);
+		console.log(expr.toString());
+
+		var parsedTree = parse(expr.toString());
+
+		console.log(parsedTree);
+
+		var eval = evaluate(parsedTree, 
+				{p:{x: 1, y: 2}}
+			);
+
 		console.log(eval, parsedTree);
 		if(eval){
-			div.innerHTML = div.innerHTML + " true";
+			var div2 = document.getElementById(div.id.toString()+'b');
+			div2.innerHTML = "true";
 		}
 		else {
-			div.innerHTML = div.innerHTML + " false";
+			var div2 = document.getElementById(div.id.toString()+'b');
+			div2.innerHTML = " false";
 		}	
 		
 	}

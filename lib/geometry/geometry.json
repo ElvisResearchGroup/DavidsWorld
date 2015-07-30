@@ -6,9 +6,9 @@
       "y":0,
       "width":0,
       "height":0,
-      "image":null,
+      "image":"\\poly",
       "field_key":[
-	  "Sides"
+	  "Sides",
 	  "Radius"
       ],
       "field_vals":[
@@ -16,10 +16,9 @@
 	  0
       ]
     },
-    
     {"obj_name":"Triangle",
       "colour":"Black",
-      "image":null,
+      "image":"\\poly",
       "x":0,
       "y":0,
       "width":0,
@@ -32,11 +31,10 @@
 	3,
 	0
       ]
-    }
-    
+    },    
     {"obj_name":"Circle",
       "colour":"Black",
-      "image":null,
+      "image":"\\poly",
       "x":0,
       "y":0,
       "width":0,

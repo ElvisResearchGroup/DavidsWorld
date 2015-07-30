@@ -1,8 +1,9 @@
-{"library_name":"Example library",
+{"library_name":"Tropical",
+  "bg_colour":"White",
   "library":[
     {"obj_name":"Palmtree",
       "colour":"Green",
-      "image":"tropical/palm.jpg",
+      "image":"palm.jpg",
       "x":0,
       "y":0,
       "width":0,
@@ -10,20 +11,19 @@
       "field_key":[
       ],
       "field_vals":[
-
       ]
     },
     
-    {"obj_name":"Pirate Shipboat",
+    {"obj_name":"Pirate Ship",
       "colour":"Brown",
-      "image":"tropical/pboat.png",
+      "image":"pboat.png",
       "x":0,
       "y":0,
       "width":0,
       "height":0,
       "field_key":[
-	"boatName",
-	"secondary_colour"
+	"BoatName",
+	"SecondaryColour"
       ],
       "field_vals":[
 	"Faith",

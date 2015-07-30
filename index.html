@@ -6,9 +6,11 @@ Davids World
 </title>
 
 <link rel="stylesheet" href="Buttons/css/buttons.css">
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="Buttons/js/buttons.js"></script>
 <script type="text/javascript" src="bonsai-0.4.1.min.js"></script>
+<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+<script type ="text/javascript" src="javascript.js" ></script>
 
 <!--[if IE 6]>
 <link rel="stylesheet" type="text/css" href="iespecific.css" />
@@ -61,42 +63,68 @@ Davids World
 	<div class="rightColumn"><!--Right Column-->
 			<div class="top">
 				<div class = "dropdownBox"> 
-					<div class="row">
-						<div class="table">
+					<div class="table">
+						<div class="row">
 						<div class= "cell2" id = "cell1">
-							cell1
+							<select>
+								  <option selected disabled>Library</option>
+								  <option value="option1">Library 1</option>
+								  <option value="option 2">Library 2</option>
+								  <option value="option 3">Library 3</option>
+								  <option value="option 4">Library 4</option>
+							</select> 
 						</div>
 						<div class= "cell2" id = "cell2">
-							cell2
+							<select>
+								  <option selected disabled>Object</option>
+								  <option value="option1">Object 1</option>
+								  <option value="option 2">Object 2</option>
+								  <option value="option 3">Object 3</option>
+								  <option value="option 4">Object 4</option>
+							</select> 
 						</div>
 						<div class= "cell2" id = "cell3">
-							cell3 
+							<button type="button" onclick="alert('Hello world!')">Add Object</button>
 						</div>
 					</div>
 					</div>
-					<div class="row">
-						<div class="table">
+					<div class="table">
+						<div class="row">
 						<div class= "cell2" id = "cell4">
-							cell4
+							<button type="button" onclick="alert('Hello world!')">Bigger</button>
 						</div>
 						<div class= "cell2" id = "cell5">
-							cell5
+							<button type="button" onclick="alert('Hello world!')">Smaller</button>
 						</div>
 						<div  class= "cell2" id = "cell6">
-							cell6
+							<select>
+								  <option selected disabled>Colour</option>
+								  <option value="option1">Red</option>
+								  <option value="option 2">Green</option>
+								  <option value="option 3">Blue</option>
+								  <option value="option 4">Yellow</option>
+							</select> 
 						</div>
 						<div  class= "cell2" id = "cell7">
-							cell7
+							<select>
+								  <option selected disabled>Name</option>
+								  <option value="option1">A</option>
+								  <option value="option 2">B</option>
+								  <option value="option 3">C</option>
+								  <option value="option 4">D</option>
+							</select> 
 						</div>
 					</div>
 					</div>
-					<div class="row">
-						<div class="table">
+					<div class="table">
+						<div class="row">
 						<div class= "cell2" id = "cell8">
-							cell8
+							<form>
+							<input type="text" name="expression" id ="textbox1" value="Input expression">
+							</form>
 						</div>
 						<div class= "cell2" id = "cell9">
-							cell9
+							<button onclick="add(document.getElementById('textbox1').value)"  type="button">Add Expr</button>
 						</div>
 					</div>
 					</div>
@@ -128,12 +156,19 @@ Davids World
 					</div>
 			<!--Top box-->
 
-			<div class = "bottom">
-				Expressions
-			</div><!--Bottom box-->
 
+
+				</div>
+
+		</div>
+		<div class = "bottom">
+			<div class = "expressionsDiv" id="foobar">
+			</div>
+			<div class = "goButtonDiv">
+				<a href="#" class="goButton" onclick= "go()">Go!</a>
+			</div>
+		</div><!--Bottom box-->
 	</div>
-
 </div>
 
 <script type ="text/javascript" src="javascript.js" ></script>

@@ -1,3 +1,17 @@
+/*$.getScript("parser.js", function(){
+
+   alert("Script loaded but not necessarily executed.");
+
+});
+
+$.getScript("evaluation.js", function(){
+
+   alert("Script loaded but not necessarily executed.");
+
+});
+*/
+
+
 
 
 document.getElementById("loading").innerHTML = "loading bar should go here";
@@ -58,8 +72,20 @@ function go(){
 		console.log(id);
 		var div = document.getElementById(id);
 
+		console.log(div.innerHTML.toString());
+
+		var parsedTree = parse(div.innerHTML);
+
+		var eval = evaluate(parsedTree, [{
+				p:{x: 1, y: 2}}
+			]);
+		console.log(eval, parsedTree);
+		if(eval){
+			div.innerHTML = div.innerHTML + " true";
+		}
+		else {
+			div.innerHTML = div.innerHTML + " false";
+		}	
 		
-		
-		div.innerHTML = div.innerHTML + " true";
 	}
 }

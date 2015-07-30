@@ -1,0 +1,35 @@
+{"library_name":"Tropical",
+  "bg_colour":"White",
+  "library":[
+    {"obj_name":"Palmtree",
+      "colour":"Green",
+      "image":"palm.jpg",
+      "x":0,
+      "y":0,
+      "width":0,
+      "height":0,
+      "field_key":[
+      ],
+      "field_vals":[
+      ]
+    },
+    
+    {"obj_name":"Pirate Ship",
+      "colour":"Brown",
+      "image":"pboat.png",
+      "x":0,
+      "y":0,
+      "width":0,
+      "height":0,
+      "field_key":[
+	"BoatName",
+	"SecondaryColour"
+      ],
+      "field_vals":[
+	"Faith",
+	null
+      ]
+    }
+
+  ]
+}

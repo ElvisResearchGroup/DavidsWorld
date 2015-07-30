@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script language="JavaScript" type="text/javascript" src="js/jquery-1.11.3.js"></script>
+  
+</head>
+
+<body>
+
+
+    <script>
+	  var library_data = null;
+	  var json = $.getJSON("lib/geometry/geometry2.json", function(data){
+	    console.log(data);
+	    
+	    console.log(data.library[0].image);
+	  });
+	 
+    </script>
+</body>
+</html>

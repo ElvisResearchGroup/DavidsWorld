@@ -1,0 +1,43 @@
+{"library_name":"Example library",
+  "bg_colour":"White",
+  "library":[
+    {"obj_name":"lib_obj_1",
+      "colour":"green",
+      "x":0,
+      "y":0,
+      "width":0,
+      "height":0,
+      "image":null,
+      "field_key":[
+	"title1",
+	"title2",
+	"title3"
+      ],
+      "field_vals":[
+	"test_a",
+	"test_b",
+	"test_c"
+      ]
+    },
+    
+    {"obj_name":"lib_obj_2",
+      "colour":"#000000",
+      "image":null,
+      "x":0,
+      "y":0,
+      "width":0,
+      "height":0,
+      "field_key":[
+	"title1",
+	"title2",
+	"title3"
+      ],
+      "field_vals":[
+	"test_d",
+	"test_e",
+	"test_f"
+      ]
+    }
+
+  ]
+}

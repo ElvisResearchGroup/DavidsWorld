@@ -18,13 +18,17 @@ function add(ex){
 	element.setAttribute("style", "width:200px");
 
 	label.setAttribute("style", "font-weight:normal");
+	label.setAttribute("style", "font-family:Arial, Helvetica, sans-serif");
+	label.setAttribute("style", "padding:2%");
+	label.setAttribute("style", "margin: 5%");
+
 
 	var lineBreak = document.createElement("br");
 
 	// 'foobar' is the div id, where new fields are to be added
 	var foo = document.getElementById("foobar");
 
-	//Append the element in page (in span).
+	//Append the element in page
 	foo.appendChild(label);
 	//foo.appendChild(element);
 	foo.appendChild(lineBreak);

@@ -1,11 +1,11 @@
 {"library_name":"Geometry",
   "library":[
     {"obj_name":"Square",
-      "colour":"Black",
-      "x":0,
-      "y":0,
-      "width":0,
-      "height":0,
+      "colour":"purple",
+      "x":200,
+      "y":200,
+      "width":50,
+      "height":50,
       "image":"\\poly",
       "field_key":[
 	  "Sides",
@@ -17,14 +17,14 @@
       ]
     },
     {"obj_name":"Triangle",
-      "colour":"Black",
+      "colour":"blue",
       "image":"\\poly",
-      "x":0,
-      "y":0,
+      "x":50,
+      "y":150,
       "width":0,
       "height":0,
       "field_key":[
-	"Sides"
+	"Sides",
 	"Radius"
       ],
       "field_vals":[
@@ -33,19 +33,19 @@
       ]
     },    
     {"obj_name":"Circle",
-      "colour":"Black",
+      "colour":"yellow",
       "image":"\\poly",
-      "x":0,
-      "y":0,
+      "x":50,
+      "y":10,
       "width":0,
       "height":0,
       "field_key":[
-	"Sides"
+	"Sides",
 	"Radius"
       ],
       "field_vals":[
-	null,
-	0
+	0,
+	30
       ]
     }
 

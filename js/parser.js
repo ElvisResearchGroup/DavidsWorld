@@ -25,12 +25,12 @@ function parseAllSome(expr, first_char){
 
   var first = "";
   var i;
-  //We assume the escape character is '?'.
-  for(i = 0; expr[i] != "?"; i++){
+  //We assume the escape character is '\u22C5' (dot operator).
+  for(i = 0; expr[i] != "\u22C5"; i++){
     first += expr[i];
   }
   var type = "ALL";
-  if(first_char == "?")
+  if(first_char == "\u2203")
     type = "SOME";
   
   var second = expr.substring(i+1, expr.length);

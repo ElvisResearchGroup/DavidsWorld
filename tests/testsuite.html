@@ -2,9 +2,9 @@
   <head>
     <title></title>
     <meta content="">
-    <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
-    <script type="text/javascript" src="evaluation.js"></script>
-    <script type="text/javascript" src="parser.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="../js/evaluation.js"></script>
+    <script type="text/javascript" src="../js/parser.js"></script>
     <style>
     .result {
     	margin-left: auto;
@@ -31,10 +31,22 @@
     .fail {
     	background-color: #B25E57;
     }
+
+    .test-group {
+        float: left;
+        margin-left: 5px;
+    }
+
+    .title {
+        font-weight: bold;
+    }
     </style>
   </head>
   <body>
-
+    <div id="eval" class="test-group">
+    </div>
+    <div id="parse" class="test-group">
+    </div>
 
   </body>
 <script type="text/javascript">
@@ -46,7 +58,7 @@ function performLogicTest(message, expr, expected, scope, succ) {
 	var eval = evaluate(expr, scope);
 	var pass = (eval === expected) === succ;
 	if (pass) passed++;
-	$('body').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
+	$('#eval').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
 		.html('Test ' + total + ': <span class="expr">'+message+'</span>')); //TODO show when a negative result expected
 }
 
@@ -57,8 +69,8 @@ function performParserTest(message, input, expected, succ){
 	if(pass){
 		passed++;
    }
- $('body').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
-		.html('Test ' + total + ': <span class="expr">'+message+'</span>'));
+ $('#parse').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
+		.html('Test ' + total + ': <span class="expr">'+input+'</span>'));
 }
  var first = true;
 
@@ -78,9 +90,14 @@ function compareTree(x,y){
 	return compareTree(x.first, y.first) && compareTree(x.second, y.second) && x.type == y.type;
 }
 
-function concludeTests(){
-	$('body').prepend($('<div/>', {'class':'summary ' + ((total === passed) ? 'pass' : 'fail') })
-		.text(passed + ' out of ' + total + ' tests passed.')); 
+function concludeTests(selector, title){
+    var t = $('<span/>', {'class':'title'});
+    t.text(title + ': ');
+	$(selector).prepend($('<div/>', {'class':'summary ' + ((total === passed) ? 'pass' : 'fail') })
+		 .text(passed + ' out of ' + total + ' tests passed.').prepend(t));
+    total = 0;
+    passed = 0;
+
 }
 
 var expression = {
@@ -161,7 +178,7 @@ performLogicTest('some p | p.x == 8 and (All q . p.y >= q.y)', {type: 'SOME', fi
  second: {type: 'ALL', first: 'q', second: {type: 'GTE', first: {type: 'VAR_ACCESS', vari: 'p', field: 'y'}, second: {type: 'VAR_ACCESS', vari: 'q', field: 'y'} } }}}, true, {}, true);
 
 
-
+concludeTests('#eval', 'Evaluator');
 
 
 
@@ -172,15 +189,12 @@ performLogicTest('some p | p.x == 8 and (All q . p.y >= q.y)', {type: 'SOME', fi
 //Tests line ab\u2227b!=c.d
 performParserTest('Parser: Input line ab\u2227b!=c.d', "ab\u2227b!=c.d", {type: "AND", first: {type: "VAR_ACCESS", val: "ab", field: null}, second: {type: "NOT_EQUAL", first:{type: "VAR_ACCESS", val: "b", field: null}, second:{type:"VAR_ACCESS", val: "c", field: "d"}}}, true);
 
+concludeTests('#parse', 'Parser');
+
 //tests line \u2203x.x=1
 //performParsertest('Parser: Input line \u2203x.x=1', "\u2203x.x=1", {type:"ALL", first:"x", second:{type: "EQUALS", first:{type:"VAR_ACCESS, val: "x", field: null}, second:{type:"CONST", val:"x"}}}, true);
 
 //Tests for compatibility between parser and evaluator
 
-
-
-
-
-concludeTests();
 </script>
 </html>

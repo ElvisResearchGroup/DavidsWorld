@@ -4,7 +4,7 @@
   <title>
 Davids World
 </title>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="Buttons/css/buttons.css">
 <script src="js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="Buttons/js/buttons.js"></script>
@@ -35,7 +35,8 @@ Davids World
 			<div class="programHeading"><!--program heading= 'David's World'-->
 				<img src="davidsworld2.png" align="center">
 			</div>
-			<div class="loadingBar" ><!--Loading bar dialog-->
+			<!--
+			<div class="loadingBar" >
 				<div class="sk-cube-grid">
 					<div class="sk-cube sk-cube1"></div>
 					<div class="sk-cube sk-cube2"></div>
@@ -46,12 +47,12 @@ Davids World
 					<div class="sk-cube sk-cube7"></div>
 					<div class="sk-cube sk-cube8"></div>
 					<div class="sk-cube sk-cube9"></div>
-				</div>
+				</div> 
 
 				<div class="loadingDialog title" >
 					<p id="loading"></p> 
-				</div>
-			</div>
+				</div> 
+			</div> -->
 
 		</div><!--Top box-->
 		<div class = "bottom">
@@ -133,26 +134,26 @@ Davids World
 				<div class = "symbolsBox">
 					<div class="row">
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/and.png" align="middle"></a>
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/and.png" align="middle" onclick="button('and')"></a>
 						</div>
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/or.png" align="center"></a>
-						</div>
-					</div>
-					<div class="row">
-						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary" align="center" ><img class="autoResizeImage" src="Buttons/notsymbol.png" align="center"></a>
-						</div>
-						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/dot.png" align="center"></a>
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/or.png" align="center" onclick="button('or')"></a>
 						</div>
 					</div>
 					<div class="row">
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/all.png" align="center"></a>
+							<a href="#" class="button button-rounded button-flat-primary" align="center" ><img class="autoResizeImage" src="Buttons/notsymbol.png" align="center" onclick="button('not')"></a>
 						</div>
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/thereexists.png" align="center"></a>
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/dot.png" align="center" onclick="button('dot')"></a>
+						</div>
+					</div>
+					<div class="row">
+						<div class ="cell">
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/all.png" align="center" onclick="button('for all')"></a>
+						</div>
+						<div class ="cell">
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/thereexists.png" align="center" onclick="button('there exists')"></a>
 						</div>
 					</div>
 			<!--Top box-->

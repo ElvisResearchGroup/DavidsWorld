@@ -1,5 +1,5 @@
 
-document.getElementById("loading").innerHTML = "loading bar should go here";
+//document.getElementById('loading').innerHTML = "loading bar should go here";
 
 var expArray = [];
 var count = 0;
@@ -79,4 +79,33 @@ function go(){
 		}	
 		
 	}
+}
+
+function button(operator){
+	//insert operator into expression box
+	var currentExp = document.getElementById('textbox1').value;
+	console.log(currentExp);
+	if(operator=='and'){
+		document.getElementById('textbox1').value = currentExp + "\u2227";
+	}
+	else if (operator=='or'){
+		document.getElementById('textbox1').value = currentExp + "\u2228";
+	}
+	else if (operator =='not'){
+		document.getElementById('textbox1').value = currentExp + '¬';
+	}
+	else if (operator == 'dot'){
+		document.getElementById('textbox1').value = currentExp + '.';
+	}
+	else if (operator == 'for all'){
+		document.getElementById('textbox1').value = currentExp + "\u2200";
+	}
+	else if (operator == 'there exists'){
+		document.getElementById('textbox1').value = currentExp + "\u2203";
+	}
+	else {
+		document.getElementById('textbox1').value = currentExp;
+	}
+
+
 }

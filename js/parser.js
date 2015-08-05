@@ -1,7 +1,8 @@
-var testIputA = "ab?b!=c.d";
-var testInputB = "?x?x=1";
-var testInputC = "¬a?b";
-var testInputD = "(avb)?c";
+var testInputA = "ab\u2227b!=c.d";
+var testInputB = "\u2203x?x=1";
+var testInputC = "¬a\u2227b";
+var testInputD = "(avb)\u2227c";
+var testInputE = "(a=b)=(c=d)";
 
 function parse(expr){
   
@@ -10,15 +11,44 @@ function parse(expr){
     
     var first_char = expr[0];
     expr = expr.substring(1, expr.length);
-  
+    
     if(first_char == "\u2200" || first_char == "\u2203"){
       return parseAllSome(expr, first_char);
-    } else if(first_char == "¬"){
+    } else if(first_char == "\u00AC"){
       return parseNot(expr);
+    } else if(first_char == "("){
+      return parseBrackets(expr);
     } else {
       return parseExpr(first_char+expr);
     }
       
+}
+
+function parseBrackets(expr){
+  var close_index = expr.indexOf(')');
+  
+  var brackets = expr.substring(0, close_index);
+  var post_expr = expr.substring(close_index+1, expr.length);
+  console.log(close_index, brackets, post_expr);
+  var first = parse(brackets);
+  
+  if(post_expr.length > 0){
+    var type = getTypeName(post_expr[0]);
+    var second = parse(post_expr.substring(1, post_expr.length));
+    
+    var obj = {
+      type:type,
+      first:first,
+      second:second
+    };
+    return obj;
+  } else{
+  
+    return first;
+    
+  } 
+  
+  
 }
 
 function parseAllSome(expr, first_char){
@@ -186,7 +216,7 @@ function parseVar(expr){
 }
 
 function printTree(){
-var tree = parse(testInputB);
+var tree = parse(testInputE);
 
 console.log(
   tree

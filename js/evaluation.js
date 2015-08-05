@@ -6,8 +6,8 @@ var expressionTypes = {
 	NOT: 'NOT',
 	SOME: 'SOME',
 	ALL: 'ALL',
-	EQUAL: 'EQUAL',
-	NOT_EQUAL: 'NOT_EQUAL',
+	EQUALS: 'EQUALS',
+	NOT_EQUALS: 'NOT_EQUALS',
 	LESS_THAN: 'LESS_THAN',
 	GREATER_THAN: 'GREATER_THAN',
 	LTE: 'LTE',
@@ -30,9 +30,9 @@ function evaluate(expr, scope){
 		return evaulateAnd(expr.first, expr.second, scope);
 	} else if(expr.type == expressionTypes.OR){
 		return evaulateOr(expr.first, expr.second, scope);
-	} else if(expr.type == expressionTypes.EQUAL){
+	} else if(expr.type == expressionTypes.EQUALS){
 		return evaulateEqual(expr.first, expr.second, scope);
-	} else if(expr.type == expressionTypes.NOT_EQUAL){
+	} else if(expr.type == expressionTypes.NOT_EQUALS){
 		return evaulateInequal(expr.first, expr.second, scope);
 	} else if(expr.type == expressionTypes.LESS_THAN){
 		return evaulateLessThan(expr.first, expr.second, scope);

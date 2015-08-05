@@ -90,34 +90,34 @@ function getTypeName(char){
   var name = "";
   switch(char){
     case '\u2227':
-      name = "AND";
+      name = expressionTypes.AND;
       break;
     case '\u2228':
-      name = "OR";
+      name = expressionTypes.OR;
       break;
     case '=':
-      name = "EQUALS";
+      name = expressionTypes.EQUALS;
       break;
     case '!=':
-      name = "NOT_EQUAL";
+      name = expressionTypes.NOT_EQUALS;
       break;
     case '>':
-      name = "GREATER_THAN";
+      name = expressionTypes.GREATER_THAN;
       break;
     case '>':
-      name = "LESS_THAN";
+      name = expressionTypes.LESS_THAN;
       break;
     case '<=':
-      name = "GTE";
+      name = expressionTypes.GTE;
       break;
     case '>=':
-      name = "LTE";
+      name = expressionTypes.LTE;
       break;
     case '\u2192':
-      name = "IMPLIES";
+      name = expressionTypes.IMPLIES;
       break;
-    case '\u2295':
-      name = "XOR";
+    case '\u2295': //FIXME not supported by evaluator
+      name = expressionTypes.XOR;
       break;
     
   }
@@ -147,7 +147,7 @@ function parseCon(expr){
     if(regex.test(expr)){
       var val = parseFloat(expr);
       var obj = {
-	type:'CONST',
+	type: expressionTypes.CONST,
 	val: val
       }
       return obj;
@@ -155,7 +155,7 @@ function parseCon(expr){
     else {
       var val  = parseInt(expr);
       var obj = {
-	type:'CONST',
+	type: expressionTypes.CONST,
 	val: val
       }
       return obj;
@@ -170,13 +170,13 @@ function parseVar(expr){
   var obj = null;
   if(split.length>1)
     obj = {
-	type:'VAR_ACCESS',
+	type: expressionTypes.VAR_ACCESS,
 	val:split[0],
 	field:split[1]
     }
   else{
     obj = {
-	type:'VAR_ACCESS',
+	type: expressionTypes.VAR_ACCESS,
 	val:split[0],
 	field:null
     }
@@ -186,13 +186,10 @@ function parseVar(expr){
 }
 
 function printTree(){
-var tree = parse(testInputB);
+    var tree = parse(testInputB);
 
-console.log(
-  tree
-);
-  
-  
-  
+    console.log(
+      tree
+    );
 }
 

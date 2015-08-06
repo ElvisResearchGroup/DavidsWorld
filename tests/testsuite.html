@@ -230,7 +230,7 @@ performParserTest("a!=b", {type: 'NOT_EQUALS', first: {type: 'VAR_ACCESS', vari:
 performParserTest("a\u2227b\u2228c\u2227d", {type: 'OR', first: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}}, second: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'c', field: null}, second: {type: 'VAR_ACCESS', vari: 'd', field: null}}});
 
 // some p,q | p.x = q.x
-//performParserTest("\u2203p,q\u22C5p.x=q.x", )
+performParserTest("\u2203p,q\u22C5p.x=q.x", {type: 'SOME', first: 'p', second: {type: 'SOME', first: 'q', second: {type: 'EQUALS', first: {type: 'VAR_ACCESS', vari: 'p', field: 'x'}, second: {type: 'VAR_ACCESS', vari: 'q', field: 'x'}}}}, true);
 
 // not(a) AND b
 performParserTest("¬a\u2227b", {type: 'AND', first: {type: 'NOT', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}});

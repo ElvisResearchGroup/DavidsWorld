@@ -15,9 +15,114 @@ function parse(expr){
     } else if(first_char == "\u00AC"){
       return parseNot(expr);
     } else {
-      return parseExpr(first_char+expr);
+      return parseExpr1(first_char+expr);
     }
       
+}
+
+function parseExpr(input){
+    var groups = /\s*(\u2200|\u2203)\s*([a-zA-Z0-9,\s]+)\u22C5\s*((?:\s*\S+)+)\s*/.exec(input);
+    var type;
+    if (groups === null){ //not all or some
+        return parseExpr2(input);
+    } else if (groups[1] === '\u2200'){ //all
+        type = expressionTypes.ALL;
+    } else { //some
+        type = expressionTypes.SOME;
+    }
+    return parseVarList(groups[2]).reduceRight(function(prev, curr){
+        return {type: type, first: curr, second: prev};
+    }, parseExpr(groups[3]));
+}
+
+function parseVarList(input){
+    var regex = /^([a-zA-Z][0-9a-zA-Z]*)\s*(?:,\s*(.+))*/;
+    var groups = regex.exec(input);
+    var list = [];
+    while (groups != null && groups[2]){
+        list.push(groups[1]);
+        groups = regex.exec(groups[2]);
+    }
+    if (groups) {
+        list.push(groups[1]);
+        return list;
+    } else {
+        //TODO improve error handling
+        console.log('Parse fail: ' + input);
+    }
+}
+
+function parseExpr2(input) { //<->
+    var groups = /^(.+?)\s*\u2194\s*(.+)$/.exec(input);
+    if (groups){
+        return {type: expressionTypes.IFF, 
+            first: parseExpr3(groups[1]),
+            second: parseExpr2(groups[2])
+        };
+    } else {
+        return parseExpr3(input);
+    }
+}
+
+function parseExpr3(input) { //->
+    var groups = /^(.+?)\s*\u2192\s*(.+)$/.exec(input);
+    if (groups){
+        return {type: expressionTypes.IMPLIES, 
+            first: parseExpr4(groups[1]),
+            second: parseExpr3(groups[2])
+        };
+    } else {
+        return parseExpr4(input);
+    }
+}
+
+function parseExpr4(input) { //or, xor
+    var groups = /^(.+?)\s*(\u2228|\u22BB)\s*(.+)$/.exec(input);
+    if (groups){
+        return {type: (groups[2] === '\u2228') ? expressionTypes.OR : expressionTypes.XOR, 
+            first: parseExpr5(groups[1]),
+            second: parseExpr4(groups[3])
+        };
+    } else {
+        return parseExpr5(input);
+    }
+}
+
+function parseExpr5(input) { //and
+    var groups = /^(.+?)\s*\u2227\s*(.+)$/.exec(input);
+    if (groups){
+        return {type: expressionTypes.AND, 
+            first: parseExpr6(groups[1]),
+            second: parseExpr5(groups[2])
+        };
+    } else {
+        return parseExpr6(input);
+    }
+}
+
+function parseExpr6(input) { //not
+    var groups = /^\u00AC\s*(.+)$/.exec(input);
+    if (groups){
+        return {type: expressionTypes.NOT, 
+            first: parseExpr6(groups[1]),
+            second: null
+        };
+    } else {
+        return parseExpr7(input);
+    }
+}
+
+function parseExpr7(input){
+    return input;
+}
+
+
+function parseComparisons(input) {
+
+}
+
+function parseValue(input){
+
 }
 
 function parseAllSome(expr, first_char){
@@ -52,7 +157,7 @@ function parseNot(expr){
 
 
 //expression parsing
-function parseExpr(expr){
+function parseExpr1(expr){
   //'»' represents implies and '©' represents exclusive OR.
   var index = indexOfEquation(expr)
   //If no equation symbol is found...

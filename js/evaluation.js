@@ -16,7 +16,8 @@ var expressionTypes = {
 	INDEPENDENT: 'INDEPENDENT',
 	VAR_ACCESS : 'VAR_ACCESS',
 	CONST: 'CONST',
-	IFF: 'IFF'
+	IFF: 'IFF',
+	XOR: 'XOR'
 } //FUTURE: arthimetric expressions
 
 function evaluate(expr, scope){
@@ -50,7 +51,9 @@ function evaluate(expr, scope){
 		return expr.val;
 	} else if(expr.type == expressionTypes.IFF){
 		return evaulateEqual(expr.first, expr.second, scope);
-	} 
+	} else if (expr.type == expressionTypes.XOR){
+		return evaulateInequal(expr.first, expr.second, scope);
+	}
 
 }
 

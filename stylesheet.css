@@ -42,6 +42,7 @@ width:100%;
 float:left;
 border: 1px solid;
 width:100%;
+font-family: Arial, Helvetica, sans-serif;
 
 }
 
@@ -150,7 +151,7 @@ img {
 
 .table{
   display: table;
-  width: 410%;
+  width: 100%;
 }
 .row{
   width: 100%;
@@ -174,6 +175,7 @@ img {
   display: table-cell;
   border: 1px solid;
   border-color: #000000;
+  width: 100%;
 }
 
 #cell1, #cell2{
@@ -212,6 +214,29 @@ td{
   height: auto;
   width: 100%;
 }
+.goButtonDiv{
+  vertical-align: bottom;
+  float: right;
+}
+.goButton {
+  background-color:#ffa048;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:20px;
+  font-weight:bold;
+  padding:18px 12px;
+  text-decoration:none;
+}
+.goButton:hover {
+  background-color:#f5770a;
+}
+.goButton:active {
+  position:relative;
+  top:1px;
+}
+
 
 
 

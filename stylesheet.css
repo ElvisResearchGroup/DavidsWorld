@@ -147,7 +147,7 @@ img {
 
 .symbolsBox{
 	width: 25%;
-	background-color: #FFAD61;
+	background-color: #ffa048;
 	float: left;
   height:100%;
 }
@@ -179,7 +179,7 @@ border-color: #000000;
   display: table-cell;
   width: 100%;
    /*border: 1px solid;
-border-color: #000000;&*/
+border-color: #000000;*/
 }
 
 #cell1, #cell2{
@@ -219,7 +219,7 @@ td{
 .autoResizeImage{
   max-width: 100%;
   height: auto;
-  width: 100%;
+  width: 50%;
 }
 .goButtonDiv{
   vertical-align: bottom;
@@ -248,6 +248,7 @@ td{
   width:96%;
   padding: 1% 1% 1% 1%;
   height:96%;
+  font-size: x-large;
 }
 
 .btn{

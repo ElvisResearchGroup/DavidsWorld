@@ -4,13 +4,12 @@
   <title>
 Davids World
 </title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-16">
-<link rel="stylesheet" href="Buttons/css/buttons.css">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="Buttons/js/buttons.js"></script>
 <script type="text/javascript" src="bonsai-0.4.1.min.js"></script>
 <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
-<script type ="text/javascript" src="javascript.js" ></script>
+<script type ="text/javascript" src="js/userInterface.js" ></script>
 <script type ="text/javascript" src="js/parser.js" ></script>
 <script type ="text/javascript" src="js/evaluation.js" ></script>
 <!--[if IE 6]>
@@ -129,40 +128,37 @@ Davids World
 							<button onclick="add(document.getElementById('textbox1').value)"  type="button" class="btn">Add Expr</button>
 						</div>
 						<div class= "cell2" id = "cell10">
-							<button onclick="add(document.getElementById('textbox1').value)"  type="button"class="btn">Clear Expr</button>
+							<button type="button"class="btn" onclick="button('clear')">Clear Expr</button>
 						</div>
 					</div>
 					</div>
 				</div>
 				<div class = "symbolsBox">
-					<div class="table">
 					<div class="row">
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/and.png" align="middle" onclick="button('and')" ></a>
+							<button type="button" class="btn" onclick="button('and')"><img class="autoResizeImage" src="Buttons/and.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/or.png" align="center" onclick="button('or')"></a>
+							<button type="button" class="btn" onclick="button('or')"><img class="autoResizeImage" src="Buttons/or.png" align="middle"></button>
 						</div>
 					</div>
 					<div class="row">
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary" align="center" ><img class="autoResizeImage" src="Buttons/notsymbol.png" align="center" onclick="button('not')"></a>
+							<button type="button" class="btn" onclick="button('not')"><img class="autoResizeImage" src="Buttons/notsymbol.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/dot.png" align="center" onclick="button('dot')"></a>
+							<button type="button" class="btn" onclick="button('dot')"><img class="autoResizeImage" src="Buttons/dot.png" align="middle"></button>
 						</div>
 					</div>
 					<div class="row">
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/all.png" align="center" onclick="button('for all')"></a>
+							<button type="button" class="btn" onclick="button('for all')"><img class="autoResizeImage" src="Buttons/all.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/thereexists.png" align="center" onclick="button('there exists')"></a>
+							<button type="button" class="btn" onclick="button('there exists')"><img class="autoResizeImage" src="Buttons/thereexists.png" align="middle"></button>
 						</div>
 					</div>
 			<!--Top box-->
-
-					</div>
 
 				</div>
 
@@ -177,7 +173,7 @@ Davids World
 	</div>
 </div>
 
-<script type ="text/javascript" src="javascript.js" ></script>
+<script type ="text/javascript" src="js/userInterface.js" ></script>
 <script type ="text/javascript" src="world.js" ></script>
 
 </body>

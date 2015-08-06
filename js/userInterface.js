@@ -9,12 +9,12 @@ function add(ex){
 
 	//Create Labels
 	var expressionDiv = document.createElement("div");
-	var div2 = document.createElement("div");  
+	var resultDiv = document.createElement("div");  
 	expressionDiv.innerHTML = word;
-	div2.innerHTML = ' - ';
+	resultDiv.innerHTML = ' - ';
 	expressionDiv.id = count++;
-	div2.id = div.id.toString() + 'b';
-	expArray.push(div.id);
+	resultDiv.id = expressionDiv.id.toString() + 'b';
+	expArray.push(expressionDiv.id);
 
 	//add styling to expression div
 	expressionDiv.style.fontWeight = "normal";
@@ -26,9 +26,9 @@ function add(ex){
 	expressionDiv.style.width = "100%";
 	expressionDiv.style.fontSize = "large";
 
-	div2.style.width = "18%";
-	div2.style.background = "#0390B2";
-	div2.style.color= "#FFFFFF";
+	resultDiv.style.width = "18%";
+	resultDiv.style.background = "#0390B2";
+	resultDiv.style.color= "#FFFFFF";
 
 	var lineBreak = document.createElement("br");
 
@@ -36,11 +36,11 @@ function add(ex){
 	var foo = document.getElementById("foobar");
 	//foo.style.display = "table-row";
 	expressionDiv.style.display = "table-cell";
-	div2.style.display = "table-cell";
+	resultDiv.style.display = "table-cell";
 
 	//Append the element in page
 	foo.appendChild(expressionDiv);
-	foo.appendChild(div2);
+	foo.appendChild(resultDiv);
 	foo.appendChild(lineBreak);
 
 }
@@ -64,21 +64,21 @@ function go(){
 			);
 
 		console.log(eval, parsedTree);
-		var div2 = document.getElementById(expressionDiv.id.toString()+'b');
-		div2.style.fontSize = "large";
+		var resultDiv = document.getElementById(expressionDiv.id.toString()+'b');
+		resultDiv.style.fontSize = "large";
 
 		if(eval){
-		div2.innerHTML = "true";
-		div2.style.background = "#009933";
-		div2.style.paddingLeft = "10px";
-		div2.style.paddingRight = "10px";
+		resultDiv.innerHTML = "true";
+		resultDiv.style.background = "#009933";
+		resultDiv.style.paddingLeft = "10px";
+		resultDiv.style.paddingRight = "10px";
 
 		}
 		else {
-			div2.innerHTML = " false";
-			div2.style.background = "#FF5C5C";
-			div2.style.paddingLeft = "7px";
-			div2.style.paddingRight = "7px";
+			resultDiv.innerHTML = " false";
+			resultDiv.style.background = "#FF5C5C";
+			resultDiv.style.paddingLeft = "7px";
+			resultDiv.style.paddingRight = "7px";
 		}	
 		
 	}

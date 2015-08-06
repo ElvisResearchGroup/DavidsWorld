@@ -1,4 +1,3 @@
-var testIputA = "ab?b!=c.d";
 var testInputB = "?x?x=1";
 var testInputC = "¬a?b";
 var testInputD = "(avb)?c";
@@ -13,7 +12,7 @@ function parse(expr){
   
     if(first_char == "\u2200" || first_char == "\u2203"){
       return parseAllSome(expr, first_char);
-    } else if(first_char == "¬"){
+    } else if(first_char == "\u00AC"){
       return parseNot(expr);
     } else {
       return parseExpr(first_char+expr);
@@ -29,9 +28,9 @@ function parseAllSome(expr, first_char){
   for(i = 0; expr[i] != "\u22C5"; i++){
     first += expr[i];
   }
-  var type = "ALL";
+  var type = expressionTypes.ALL;
   if(first_char == "\u2203")
-    type = "SOME";
+    type = expressionTypes.SOME;
   
   var second = expr.substring(i+1, expr.length);
   
@@ -44,7 +43,7 @@ function parseAllSome(expr, first_char){
 
 //Parse not expression from start of string
 function parseNot(expr){
-  var obj = {type:'NOT',
+  var obj = {type:expressionTypes.NOT,
 	  first:parse(expr),
 	  second:null
 	  };

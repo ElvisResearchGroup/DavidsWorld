@@ -21,39 +21,26 @@ function parse(expr){
 }
 
 function parseExpr(input){
-    var groups = /\s*(\u2200|\u2203)\s*([a-zA-Z0-9,\s]+)\u22C5\s*((?:\s*\S+)+)\s*/.exec(input);
     var type;
-    if (groups === null){ //not all or some
-        return parseExpr2(input);
-    } else if (groups[1] === '\u2200'){ //all
+    input = input.replace('s+', '');
+    if (input.charAt(0) == '\u2200') {
         type = expressionTypes.ALL;
-    } else { //some
+    } else if (input.charAt(0) == '\u2203') {
         type = expressionTypes.SOME;
-    }
-    return parseVarList(groups[2]).reduceRight(function(prev, curr){
-        return {type: type, first: curr, second: prev};
-    }, parseExpr(groups[3]));
-}
-
-function parseVarList(input){
-    var regex = /^([a-zA-Z][0-9a-zA-Z]*)\s*(?:,\s*(.+))*/;
-    var groups = regex.exec(input);
-    var list = [];
-    while (groups != null && groups[2]){
-        list.push(groups[1]);
-        groups = regex.exec(groups[2]);
-    }
-    if (groups) {
-        list.push(groups[1]);
-        return list;
     } else {
-        //TODO improve error handling
-        console.log('Parse fail: ' + input);
+        return parseExpr2(input);
     }
+    var split = input.indexOf('\u22C5');
+    return ['', input.substring(1, split).split(',').reduceRight(function(prev, curr){
+        return {type: type, first: curr, second: prev};
+    }, parseExpr(input.substring(split+1)))];
 }
 
 function parseExpr2(input) { //<->
-    var groups = /^(.+?)\s*\u2194\s*(.+)$/.exec(input);
+    //TODO change to recursive descent parser
+
+
+    var groups = /^(\(.+\)|[^\(\)]+?)\s*\u2194\s*(\(.+\)|[^\(\)]+?)$/.exec(input);
     if (groups){
         return {type: expressionTypes.IFF, 
             first: parseExpr3(groups[1]),
@@ -113,12 +100,17 @@ function parseExpr6(input) { //not
 }
 
 function parseExpr7(input){
-    return input;
+    var groups = /^\((.+)\)$/.exec(input);
+    if (groups){
+        return parseExpr(groups[1])
+    } else {
+        return parseComparisons(input);
+    }
 }
 
 
 function parseComparisons(input) {
-
+    return input;
 }
 
 function parseValue(input){

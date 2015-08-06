@@ -7,11 +7,11 @@ Davids World
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="Buttons/js/buttons.js"></script>
-<script type="text/javascript" src="bonsai-0.4.1.min.js"></script>
-<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/bonsai-0.4.1.min.js"></script>
 <script type ="text/javascript" src="js/userInterface.js" ></script>
 <script type ="text/javascript" src="js/parser.js" ></script>
 <script type ="text/javascript" src="js/evaluation.js" ></script>
+<script type = "text/javascript" src="js/world.js"></script>
 <!--[if IE 6]>
 <link rel="stylesheet" type="text/css" href="iespecific.css" />
 <![endif]-->
@@ -54,10 +54,50 @@ Davids World
 			</div> -->
 
 		</div><!--Top box-->
-		<div class = "bottom">
-			<svg id = "world"> 
+		<div class = "bottomLeft">
+			<div id = "world"> </div>
+a
 
-			</svg>
+			<script>
+      //loadLibrary("geometry");
+$(document).ready(function () {
+  console.log('ready');
+  var library_name = "geometry";
+  $.getJSON("lib/" + library_name + "/" + library_name + ".json", function(data){
+	      console.log(data);
+		bonsai.run(document.getElementById('world'),{
+		  url: 'world.js',
+		  world: data,
+		  code: function(err, data) {
+		    library = stage.options.world.library;
+		    library_name = stage.options.world.library_name;
+		    bg_colour = stage.options.world.bg_colour;
+		    buildWorld();
+		  },
+		  width: 10000,
+		  height: 4000
+		  
+		});
+	 });
+  
+});
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		</div><!--Bottom box-->
 	</div>
 
@@ -163,8 +203,9 @@ Davids World
 				</div>
 
 		</div>
-		<div class = "bottom">
-			<div class = "expressionsDiv" id="foobar">
+		<div class = "bottomRight, bottom">
+			<div id="outputDiv">
+				<br>
 			</div>
 			<div class = "goButtonDiv">
 				<a href="#" class="goButton" onclick= "go()">Go!</a>
@@ -173,9 +214,9 @@ Davids World
 	</div>
 </div>
 
-<script type ="text/javascript" src="js/userInterface.js" ></script>
+<!--<script type ="text/javascript" src="js/userInterface.js" ></script>
 <script type ="text/javascript" src="world.js" ></script>
-
+-->
 </body>
 
 </html> 

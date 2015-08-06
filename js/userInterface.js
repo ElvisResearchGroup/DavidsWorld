@@ -33,15 +33,15 @@ function add(ex){
 	var lineBreak = document.createElement("br");
 
 	// 'foobar' is the div id, where new fields are to be added
-	var foo = document.getElementById("foobar");
+	var output = document.getElementById("outputDiv");
 	//foo.style.display = "table-row";
 	expressionDiv.style.display = "table-cell";
 	resultDiv.style.display = "table-cell";
 
 	//Append the element in page
-	foo.appendChild(expressionDiv);
-	foo.appendChild(resultDiv);
-	foo.appendChild(lineBreak);
+	output.appendChild(expressionDiv);
+	output.appendChild(resultDiv);
+	output.appendChild(lineBreak);
 
 }
 
@@ -53,7 +53,7 @@ function go(){
 
 		var expr = expressionDiv.innerHTML.toString();
 
-		console.log(expr.toString());
+		console.log('expression= ' + expr.toString());
 
 		var parsedTree = parse(expr.toString());
 

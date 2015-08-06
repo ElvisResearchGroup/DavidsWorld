@@ -6,9 +6,10 @@ var testInputE = "(a=b)=(c=d)";
 
 function parse(expr){
   
-    if(expr.length == 0)
+    if(expr.length == 0){
+      console.log("reaches here");     
       return null;
-    
+    }
     var first_char = expr[0];
     expr = expr.substring(1, expr.length);
     
@@ -79,7 +80,7 @@ return obj;
 //expression parsing
 function parseExpr(expr){
 //'»' represents implies and '©' represents exclusive OR.
-var index = indexOfEquation(expr)
+var index = indexOfEquation(expr);
 //If no equation symbol is found...
 if(index == -1){
 var num_regex = new RegExp("[0-9]+([.][0-9]+)*")
@@ -201,4 +202,5 @@ var tree = parse(testInputE);
 console.log(
 tree
 );
+}
 }

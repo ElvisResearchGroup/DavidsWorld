@@ -4,7 +4,7 @@
   <title>
 Davids World
 </title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-16">
 <link rel="stylesheet" href="Buttons/css/buttons.css">
 <script src="js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="Buttons/js/buttons.js"></script>
@@ -86,17 +86,17 @@ Davids World
 							</select> 
 						</div>
 						<div class= "cell2" id = "cell3">
-							<button type="button" onclick="alert('Hello world!')">Add Object</button>
+							<button type="button" class="btn">Add Object</button>
 						</div>
 					</div>
 					</div>
 					<div class="table">
 						<div class="row">
 						<div class= "cell2" id = "cell4">
-							<button type="button" onclick="alert('Hello world!')">Bigger</button>
+							<button type="button" class="btn">Bigger</button>
 						</div>
 						<div class= "cell2" id = "cell5">
-							<button type="button" onclick="alert('Hello world!')">Smaller</button>
+							<button type="button" class="btn">Smaller</button>
 						</div>
 						<div  class= "cell2" id = "cell6">
 							<select>
@@ -122,19 +122,23 @@ Davids World
 						<div class="row">
 						<div class= "cell2" id = "cell8">
 							<form>
-							<input type="text" name="expression" id ="textbox1" value="Input expression">
+							<input type="text" name="expression" id ="textbox1" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="textbox1">
 							</form>
 						</div>
 						<div class= "cell2" id = "cell9">
-							<button onclick="add(document.getElementById('textbox1').value)"  type="button">Add Expr</button>
+							<button onclick="add(document.getElementById('textbox1').value)"  type="button" class="btn">Add Expr</button>
+						</div>
+						<div class= "cell2" id = "cell10">
+							<button onclick="add(document.getElementById('textbox1').value)"  type="button"class="btn">Clear Expr</button>
 						</div>
 					</div>
 					</div>
 				</div>
 				<div class = "symbolsBox">
+					<div class="table">
 					<div class="row">
 						<div class ="cell">
-							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/and.png" align="middle" onclick="button('and')"></a>
+							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/and.png" align="middle" onclick="button('and')" ></a>
 						</div>
 						<div class ="cell">
 							<a href="#" class="button button-rounded button-flat-primary"><img class="autoResizeImage" src="Buttons/or.png" align="center" onclick="button('or')"></a>
@@ -158,7 +162,7 @@ Davids World
 					</div>
 			<!--Top box-->
 
-
+					</div>
 
 				</div>
 

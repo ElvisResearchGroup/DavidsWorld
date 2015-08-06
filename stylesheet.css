@@ -36,11 +36,12 @@ height:100%;
 float:left;
 border: none;
 width:100%;
+background: #FF9F48;
 
 }
 .bottom{
 float:left;
-border: 1px solid;
+/*border: 1px solid;*/
 width:100%;
 font-family: Arial, Helvetica, sans-serif;
 
@@ -141,23 +142,27 @@ img {
 	float: left;
 	width: 75%;
 	background-color: #FF9F48;
+  height:100%;
 }
 
 .symbolsBox{
 	width: 25%;
 	background-color: #FFAD61;
 	float: left;
+  height:100%;
 }
 
 .table{
   display: table;
   width: 100%;
+
 }
 .row{
   width: 100%;
   height: 33%;
   border: 1px solid;
-  border-color: #000000;
+ border: 1px solid;
+border-color: #000000;
   display: table-row;
 }
 
@@ -165,17 +170,16 @@ img {
   width: 49%;
   height: 100%;
   display: table-cell;
-  border: 1px solid;
-  border-color: #000000;
   padding: 1%;
+   border:"black";
 
 }
 
 .cell2{
   display: table-cell;
-  border: 1px solid;
-  border-color: #000000;
   width: 100%;
+   /*border: 1px solid;
+border-color: #000000;&*/
 }
 
 #cell1, #cell2{
@@ -198,9 +202,12 @@ img {
   width:80%;
 }
 #cell9{
-  width:20%;
+  width:10%;
 }
 
+#cell10{
+  width:10%;
+}
 
 table{
   width:100%;
@@ -237,7 +244,45 @@ td{
   top:1px;
 }
 
+.textbox1{
+  width:96%;
+  padding: 1% 1% 1% 1%;
+  height:96%;
+}
 
+.btn{
+  /*-webkit-border-radius: 4;*/
+ /* -moz-border-radius: 4;*/
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  background: #1495b7;
+  padding: 1% 1% 1% 1%;
+  width:100%;
+  text-decoration: none;
+  border:solid;
+  border-color: #FF9F48;
+
+}
+
+.btn:hover {
+  background: #00b5e5;
+  text-decoration: none;
+
+  }
+select{
+    font-family: Arial;
+  color: #ffffff;
+  font-size: 13.3px;
+  font-weight: bold;
+  background: #1495b7;
+  padding: 1px 1px 1px 1px;
+  text-decoration: none;
+  border:solid;
+  border-color: #FF9F48;
+  width:100%;
+}
 
 
 

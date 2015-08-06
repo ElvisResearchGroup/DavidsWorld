@@ -1,5 +1,5 @@
 {"library_name":"Tropical",
-  "bg_colour":"White",
+  "background":"White",
   "library":[
     {"obj_name":"Palmtree",
       "colour":"Green",

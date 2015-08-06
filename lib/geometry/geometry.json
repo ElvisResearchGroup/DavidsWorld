@@ -1,50 +1,45 @@
 {"library_name":"Geometry",
+  "bg_colour":"White",
   "library":[
-    {"obj_name":"Square",
+    {"type":"Rectangle",
       "colour":"Black",
       "x":0,
       "y":0,
-      "width":0,
-      "height":0,
+      "width":-1,
+      "height":-1,
       "image":"\\poly",
       "field_key":[
-	  "Sides",
-	  "Radius"
+	  "Sides"
       ],
       "field_vals":[
-	  4,
-	  0
+	  4
       ]
     },
-    {"obj_name":"Triangle",
-      "colour":"Black",
+    {"type":"Triangle",
+      "colour":"blue",
       "image":"\\poly",
       "x":0,
       "y":0,
-      "width":0,
-      "height":0,
+      "width":-1,
+      "height":-1,
       "field_key":[
 	"Sides"
-	"Radius"
       ],
       "field_vals":[
-	3,
-	0
+	3
       ]
     },    
-    {"obj_name":"Circle",
-      "colour":"Black",
+    {"type":"Circle",
+      "colour":"yellow",
       "image":"\\poly",
       "x":0,
       "y":0,
-      "width":0,
-      "height":0,
+      "width":-1,
+      "height":-1,
       "field_key":[
 	"Sides"
-	"Radius"
       ],
       "field_vals":[
-	null,
 	0
       ]
     }

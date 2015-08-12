@@ -4,10 +4,15 @@ var bg_colour;
 var library;
 var world = [];
 var stage_obj_map = [];
+var selected_object;
 
 //block dealing with loading from JSON
 function buildWorld(){
 	generateRandomWorld(20);
+}
+
+function getSelectedObject(){
+  return selected_object;
 }
 
 function getEvalWorld(){
@@ -88,7 +93,15 @@ function bonsaiPoly(obj){
 	x: x + e.diffX,
 	y: y+ e.diffY
       });
-   }); 
+   })
+  .on("click", function(e){
+    console.log(selected_object);
+    if(!(selected_object === undefined))
+      selected_object.stroke("#000", 2);
+    this.stroke("#FFF", 2);
+    selected_object = this;
+    
+  }); 
   
   return myPoly;
 }

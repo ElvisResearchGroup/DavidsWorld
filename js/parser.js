@@ -3,7 +3,7 @@ var testInputC = "¬a?b";
 var testInputD = "(avb)?c";
 
 function parse(expr){
-  
+    return parseExpr(expr);
     if(expr.length == 0)
       return null;
     
@@ -54,15 +54,21 @@ function parseVarList(input){
 
 //Checks that all brackets are balanced in the input string. 
 function balancedBrackets(input){
-    return input.split('').reduce(function (prev, curr){
-        if (curr === '('){
-            return prev + 1;
-        } else if (curr === ')'){
-            return prev - 1;
-        } else {
-            return prev;
+    var stack = [];
+     
+    var str = input.split('');
+    for (i = 0; i < str.length; i++) {
+        var c = str[i];
+        if (c === '(') {
+            stack.push(c);
+        } else if (c === ')') {
+          if (stack.length <= 0) return false;
+          else if (stack[stack.length-1] === '(') stack.pop();
+          else return false;
         }
-    }, 0) === 0;
+      }
+     
+      return stack.length <= 0;
 }
 
 function parseExpr2(input) { //<->
@@ -79,7 +85,7 @@ function parseExpr2(input) { //<->
 
 function parseExpr3(input) { //->
     var groups = /^(.+?)\s*\u2192\s*(.+)$/.exec(input);
-    if (groups){
+    if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
         return {type: expressionTypes.IMPLIES, 
             first: parseExpr4(groups[1]),
             second: parseExpr3(groups[2])
@@ -91,7 +97,7 @@ function parseExpr3(input) { //->
 
 function parseExpr4(input) { //or, xor
     var groups = /^(.+?)\s*(\u2228|\u22BB)\s*(.+)$/.exec(input);
-    if (groups){
+    if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
         return {type: (groups[2] === '\u2228') ? expressionTypes.OR : expressionTypes.XOR, 
             first: parseExpr5(groups[1]),
             second: parseExpr4(groups[3])
@@ -103,7 +109,7 @@ function parseExpr4(input) { //or, xor
 
 function parseExpr5(input) { //and
     var groups = /^(.+?)\s*\u2227\s*(.+)$/.exec(input);
-    if (groups){
+    if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
         return {type: expressionTypes.AND, 
             first: parseExpr6(groups[1]),
             second: parseExpr5(groups[2])
@@ -125,17 +131,56 @@ function parseExpr6(input) { //not
     }
 }
 
-function parseExpr7(input){
-    return input;
+function parseExpr7(input){ // ()
+    var groups = /^\((.*)\)$/.exec(input);
+    if (groups){
+        return parseExpr(groups[1]);
+    } else {
+        return parseComparisons(input);
+    }
 }
 
 
 function parseComparisons(input) {
-
+    var groups = /^(.+?)\s*(=|!=|>|<|>=|<=)\s*(.+)$/.exec(input);
+    if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
+        return {type: (groups[2] === '=') ? expressionTypes.EQUALS : 
+                      (groups[2] === '!=') ? expressionTypes.NOT_EQUALS : //Possibly \u2260
+                      (groups[2] === '>') ? expressionTypes.GREATER_THAN : 
+                      (groups[2] === '<') ? expressionTypes.LESS_THAN : 
+                      (groups[2] === '>=') ? expressionTypes.GTE : //>= \u2265, <= \u2264
+                      expressionTypes.LTE, 
+            first: parseValue(groups[1]),
+            second: parseValue(groups[3])
+        };
+    } else {
+        //TODO check whether this is wanted behaviour
+        return parseValue(input);
+    }
 }
 
 function parseValue(input){
+    var groups = /^([a-zA-Z][0-9a-zA-Z]*).([a-zA-Z][0-9a-zA-Z]*)$/.exec(input);
+    var cons;
+    if (groups) { //Field access
+        return {type: expressionTypes.VAR_ACCESS, 
+            vari: groups[1],
+            field: groups[2]
+        };
+    } else { //Constant
+        groups = /^([0-9]+)|('[^']*)'|("[^"]*)"$/.exec(input);
+        if (groups) {
 
+            if (groups[1].charAt(0) === "'" || groups[1].charAt(0) === '"') {
+                cons =  groups[1].substring(1);
+            } else {
+                cons = +groups[1];
+            }
+            return {type: expressionTypes.CONST, val: cons}
+        } else {
+            //FUTURE ERROR
+        }
+    }
 }
 
 function parseAllSome(expr, first_char){

@@ -66,23 +66,21 @@ function performLogicTest(message, expr, expected, scope, succ) {
 }
 
 function performParserTest(input, expected, succ){
-        total++;
+    total++;
 	var tree = parse(input);
-        var pass = compareTree(tree, expected) === succ;
+    var pass = compareTree(tree, expected) === succ;
 	if(pass){
 		passed++;
-   }
- $('#parse').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
+    } else if (total === 8) {
+        console.log(tree, expected);
+    }
+    $('#parse').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
         .text('Test ' + total + ': ').append($('<span/>', {'class':'expr'}).text(input)));
 }
  var first = true;
 
 //Compares two tree like structures as seen in the parser - Compares two nodes
 function compareTree(x,y){
- if (first) {
- console.log(x,y);
- first = false;
-}
 	if(x === y) return true; //If both x and y are null or undefined and exactly the same - return true
 
 	if ( ! ( x instanceof Object ) || ! ( y instanceof Object ) ) return false; //If one or both are not strictly objects - they need to be - return false
@@ -188,25 +186,25 @@ concludeTests('#eval', 'Evaluator');
 //Tests for the Parser
 
 //behaviour of '"string"'' or 'string' as string constants
-performParserTest("a.b", {type: 'VAR_ACCESS', val:'a', field:'b'}, true);
-performParserTest("a. b", {type: 'VAR_ACCESS', val:'a', field:'b'}, false);
+performParserTest("a.b", {type: 'VAR_ACCESS', vari:'a', field:'b'}, true);
+performParserTest("a. b", {type: 'VAR_ACCESS', vari:'a', field:'b'}, false);
 
-performParserTest("¬a.b", {type: 'NOT', first: {type: 'VAR_ACCESS', val:'a', field:'b'}, second: null}, true);
+performParserTest("¬a.b", {type: 'NOT', first: {type: 'VAR_ACCESS', vari:'a', field:'b'}, second: null}, true);
 
-performParserTest("a.b=b.a", {type: 'EQUALS', first: {type: 'VAR_ACCESS', val:'a', field:'b'}, second: {type: 'VAR_ACCESS', val:'b', field:'a'}}, true);
+performParserTest("a.b=b.a", {type: 'EQUALS', first: {type: 'VAR_ACCESS', vari:'a', field:'b'}, second: {type: 'VAR_ACCESS', vari:'b', field:'a'}}, true);
 
-performParserTest("a.b = b.a", {type: 'EQUALS', first: {type: 'VAR_ACCESS', val:'a', field:'b'}, second: {type: 'VAR_ACCESS', val:'b', field:'a'}}, true);
+performParserTest("a.b = b.a", {type: 'EQUALS', first: {type: 'VAR_ACCESS', vari:'a', field:'b'}, second: {type: 'VAR_ACCESS', vari:'b', field:'a'}}, true);
 
-performParserTest("a.b\u2227b.a", {type: 'AND', first: {type: 'VAR_ACCESS', val:'a', field:'b'}, second: {type: 'VAR_ACCESS', val:'b', field:'a'}}, true);
+performParserTest("a.b\u2227b.a", {type: 'AND', first: {type: 'VAR_ACCESS', vari:'a', field:'b'}, second: {type: 'VAR_ACCESS', vari:'b', field:'a'}}, true);
 
-performParserTest("a.b\u2228b.a", {type: 'OR', first: {type: 'VAR_ACCESS', val:'a', field:'b'}, second: {type: 'VAR_ACCESS', val:'b', field:'a'}}, true);
+performParserTest("a.b\u2228b.a", {type: 'OR', first: {type: 'VAR_ACCESS', vari:'a', field:'b'}, second: {type: 'VAR_ACCESS', vari:'b', field:'a'}}, true);
 
-performParserTest("a.b!=b.a", {type: 'NOT_EQUALS', first: {type: 'VAR_ACCESS', val:'a', field:'b'}, second: {type: 'VAR_ACCESS', val:'b', field:'a'}}, true);
+performParserTest("a.b!=b.a", {type: 'NOT_EQUALS', first: {type: 'VAR_ACCESS', vari:'a', field:'b'}, second: {type: 'VAR_ACCESS', vari:'b', field:'a'}}, true);
 
 // not(a AND not(b))
-performParserTest("(a\u2227b)\u2228(c\u2227d)", {type: 'OR', first: {type: 'AND', first: {type: 'VAR_ACCESS', val: 'a', field: null}, second: {type: 'VAR_ACCESS', val: 'b', field: null}}, second: {type: 'AND', first: {type: 'VAR_ACCESS', val: 'c', field: null}, second: {type: 'VAR_ACCESS', val: 'd', field: null}}}, true);
+performParserTest("(a\u2227b)\u2228(c\u2227d)", {type: 'OR', first: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}}, second: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'c', field: null}, second: {type: 'VAR_ACCESS', vari: 'd', field: null}}}, true);
 
-performParserTest("¬(a\u2227¬b)", {type: 'NOT', first: {type: 'AND', first: {type: 'VAR_ACCESS', val:'a', field:null}, second: {type: 'NOT', first: {type: 'VAR_ACCESS', val: 'b', field: null}, second: null}
+performParserTest("¬(a\u2227¬b)", {type: 'NOT', first: {type: 'AND', first: {type: 'VAR_ACCESS', vari:'a', field:null}, second: {type: 'NOT', first: {type: 'VAR_ACCESS', vari: 'b', field: null}, second: null}
     }, second: null}, true);
 
 // for all a | a.x = 3

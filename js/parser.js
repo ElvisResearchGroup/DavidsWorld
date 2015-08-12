@@ -52,9 +52,22 @@ function parseVarList(input){
     }
 }
 
+//Checks that all brackets are balanced in the input string. 
+function balancedBrackets(input){
+    return input.split('').reduce(function (prev, curr){
+        if (curr === '('){
+            return prev + 1;
+        } else if (curr === ')'){
+            return prev - 1;
+        } else {
+            return prev;
+        }
+    }, 0) === 0;
+}
+
 function parseExpr2(input) { //<->
     var groups = /^(.+?)\s*\u2194\s*(.+)$/.exec(input);
-    if (groups){
+    if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
         return {type: expressionTypes.IFF, 
             first: parseExpr3(groups[1]),
             second: parseExpr2(groups[2])

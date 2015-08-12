@@ -62,6 +62,7 @@ a
       //loadLibrary("geometry");
 $(document).ready(function () {
   console.log('ready');
+  //$('[data-toggle="tooltip"]').tooltip();
   var library_name = "geometry";
   $.getJSON("lib/" + library_name + "/" + library_name + ".json", function(data){
 	      console.log(data);
@@ -107,7 +108,7 @@ $(document).ready(function () {
 					<div class="table">
 						<div class="row">
 						<div class= "cell2" id = "cell1">
-							<select>
+							<select data-toggle="tooltip" title="Library Selection">
 								  <option selected disabled>Library</option>
 								  <option value="option1">Library 1</option>
 								  <option value="option 2">Library 2</option>
@@ -116,7 +117,7 @@ $(document).ready(function () {
 							</select> 
 						</div>
 						<div class= "cell2" id = "cell2">
-							<select>
+							<select data-toggle="tooltip" title="Object Selection">
 								  <option selected disabled>Object</option>
 								  <option value="option1">Object 1</option>
 								  <option value="option 2">Object 2</option>
@@ -132,13 +133,13 @@ $(document).ready(function () {
 					<div class="table">
 						<div class="row">
 						<div class= "cell2" id = "cell4">
-							<button type="button" class="btn">Bigger</button>
+							<button type="button" class="btn" data-toggle="tooltip" title="What Do???">Bigger</button>
 						</div>
 						<div class= "cell2" id = "cell5">
-							<button type="button" class="btn">Smaller</button>
+							<button type="button" class="btn" data-toggle="tooltip" title="What Do???">Smaller</button>
 						</div>
 						<div  class= "cell2" id = "cell6">
-							<select>
+							<select data-toggle="tooltip" title="Select By Colour">
 								  <option selected disabled>Colour</option>
 								  <option value="option1">Red</option>
 								  <option value="option 2">Green</option>
@@ -147,7 +148,7 @@ $(document).ready(function () {
 							</select> 
 						</div>
 						<div  class= "cell2" id = "cell7">
-							<select>
+							<select data-toggle="tooltip" title="What does???">
 								  <option selected disabled>Name</option>
 								  <option value="option1">A</option>
 								  <option value="option 2">B</option>
@@ -161,14 +162,14 @@ $(document).ready(function () {
 						<div class="row">
 						<div class= "cell2" id = "cell8">
 							<form>
-							<input type="text" name="expression" id ="textbox1" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="textbox1">
+							<input type="text" name="expression" id ="textbox1" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="textbox1" data-toggle="tooltip" title="Expression Entry">
 							</form>
 						</div>
 						<div class= "cell2" id = "cell9">
-							<button onclick="add(document.getElementById('textbox1').value)"  type="button" class="btn">Add Expr</button>
+							<button onclick="add(document.getElementById('textbox1').value)"  type="button" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
 						</div>
 						<div class= "cell2" id = "cell10">
-							<button type="button"class="btn" onclick="button('clear')">Clear Expr</button>
+							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
 						</div>
 						
 					</div>
@@ -181,26 +182,26 @@ $(document).ready(function () {
 				<div class = "symbolsBox">
 					<div class="row">
 						<div class ="cell">
-							<button type="button" class="btn" onclick="button('and')"><img class="autoResizeImage" src="Buttons/and.png" align="middle"></button>
+							<button type="button" class="btn" onclick="button('and')" data-toggle="tooltip" title="Logical And"><img class="autoResizeImage" src="Buttons/and.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<button type="button" class="btn" onclick="button('or')"><img class="autoResizeImage" src="Buttons/or.png" align="middle"></button>
-						</div>
-					</div>
-					<div class="row">
-						<div class ="cell">
-							<button type="button" class="btn" onclick="button('not')"><img class="autoResizeImage" src="Buttons/notsymbol.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn" onclick="button('dot')"><img class="autoResizeImage" src="Buttons/dot.png" align="middle"></button>
+							<button type="button" class="btn" onclick="button('or')" data-toggle="tooltip" title="Logical Or"><img class="autoResizeImage" src="Buttons/or.png" align="middle"></button>
 						</div>
 					</div>
 					<div class="row">
 						<div class ="cell">
-							<button type="button" class="btn" onclick="button('for all')"><img class="autoResizeImage" src="Buttons/all.png" align="middle"></button>
+							<button type="button" class="btn" onclick="button('not')" data-toggle="tooltip" title="Not"><img class="autoResizeImage" src="Buttons/notsymbol.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<button type="button" class="btn" onclick="button('there exists')"><img class="autoResizeImage" src="Buttons/thereexists.png" align="middle"></button>
+							<button type="button" class="btn" onclick="button('dot')" data-toggle="tooltip" title="Seperator"><img class="autoResizeImage" src="Buttons/dot.png" align="middle"></button>
+						</div>
+					</div>
+					<div class="row">
+						<div class ="cell">
+							<button type="button" class="btn" onclick="button('for all')" data-toggle="tooltip" title="For All"><img class="autoResizeImage" src="Buttons/all.png" align="middle"></button>
+						</div>
+						<div class ="cell">
+							<button type="button" class="btn" onclick="button('there exists')" data-toggle="tooltip" title="There Exists"><img class="autoResizeImage" src="Buttons/thereexists.png" align="middle"></button>
 						</div>
 					</div>
 			<!--Top box-->

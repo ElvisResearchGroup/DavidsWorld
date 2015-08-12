@@ -168,11 +168,16 @@ function parseValue(input){
             field: groups[2]
         };
     } else { //Constant
-        groups = /^([0-9]+)|('[^']*)'|("[^"]*)"$/.exec(input);
+        groups = /^([0-9]+|'[^']*'|"[^"]*"|[a-zA-Z][0-9a-zA-Z]*)$/.exec(input);
         if (groups) {
-
+            if (!groups[1]) console.log(groups);
             if (groups[1].charAt(0) === "'" || groups[1].charAt(0) === '"') {
-                cons =  groups[1].substring(1);
+                cons =  groups[1].substring(1, groups[1].length-1);
+            } else if (/^[^0-9]/.exec(groups[1])){
+                return {type: expressionTypes.VAR_ACCESS, 
+                    vari: groups[1],
+                    field: null
+                };
             } else {
                 cons = +groups[1];
             }

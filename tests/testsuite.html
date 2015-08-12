@@ -71,7 +71,7 @@ function performParserTest(input, expected, succ){
     var pass = compareTree(tree, expected) === succ;
 	if(pass){
 		passed++;
-    } else if (total === 8) {
+    } else if (total === 14) {
         console.log(tree, expected);
     }
     $('#parse').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
@@ -214,10 +214,11 @@ performParserTest("\u2200a\u22C5a.x=3", {type: 'ALL', first: 'a', second: {type:
 performParserTest("\u2203p\u22C5p.x<p.y", {type: 'SOME', first: 'p', second: {type: 'LESS_THAN', first: {type: 'VAR_ACCESS', vari: 'p', field: 'x'}, second: {type: 'VAR_ACCESS', vari: 'p', field: 'y'}}}, true);
 
 // ¬(¬b) = b
-performParserTest("¬(¬b)=b", {type: 'EQUALS', first: {type: 'NOT', first: {type: 'NOT', first: {type: 'VAR_ACCESS', vari: 'b', field: null}, second: null}, second: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}}, true);
+performParserTest("¬(¬b)\u2194b", {type: 'IFF', first: {type: 'NOT', first: {type: 'NOT', first: {type: 'VAR_ACCESS', vari: 'b', field: null}, second: null}, second: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}}, true);
 
 // ((a AND not(b)) AND b) OR (c AND d) AND not(a AND c)
-performParserTest("((a\u2227(¬b))\u2227b)\u2228(c\u2227d)\u2227¬(a\u2227c)", {type: 'OR', first: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'AND', first: {type: 'NOT', first: {type: 'VAR_ACCESS', vari: 'b', field: null}, second: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}}}, second: {}}, true);
+//TODO: Rewrite due to it currently being broken
+//performParserTest("((a\u2227(¬b))\u2227b)\u2228(c\u2227d)\u2227¬(a\u2227c)", {type: 'OR', first: {type: 'AND', first: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'NOT', first: {type: 'VAR_ACCESS', vari: 'b', field: null}, second: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}}}, second: {}}, true);
 
 // a != b
 performParserTest("a!=b", {type: 'NOT_EQUALS', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}});

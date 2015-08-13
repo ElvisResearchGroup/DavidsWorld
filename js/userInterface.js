@@ -39,9 +39,12 @@ function add(ex){
 	resultDiv.style.display = "table-cell";
 
 	//Append the element in page
+	console.log(document.getElementById('textbox1').value);
+	if(document.getElementById('textbox1').value!="Input expression" && document.getElementById('textbox1').value.length>0){
 	output.appendChild(expressionDiv);
 	output.appendChild(resultDiv);
 	output.appendChild(lineBreak);
+	}
 
 }
 
@@ -145,3 +148,25 @@ function button(operator){
 
 
 }
+
+function populateObjectSelect(data){
+  var list = document.getElementById('objList');
+  console.log("Populate", data);
+  data.library.forEach(function(e){
+    console.log(e);
+    var temp = document.createElement('option');
+    temp.innerHTML = e.type;
+    list.appendChild(temp); 
+  }
+  );
+    
+}
+
+function addObjectFromUI(){
+	  console.log('test2');
+	  var obj_index = document.getElementById('objList').selectedIndex;
+	  var default_x = 5, default_y = 5;
+	  var width = 50, height = 50;
+	  addObject(obj_index, default_x, default_y, width, height);  
+}
+

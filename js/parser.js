@@ -91,7 +91,7 @@ function parseExpr2(input) {
  */
 function parseExpr3(input) {
     //Try to match implies
-    var groups = /^(.+?)\s*\u2192\s*(.+)$/.exec(input);
+    var groups = /^(.+?)\s*\u2192\s*(.+)$/.exec(input); 
 
     //If implies, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){

@@ -62,9 +62,7 @@ function go(){
 
 		console.log(parsedTree);
 
-		var eval = evaluate(parsedTree, 
-				{p:{x: 1, y: 2}}
-			);
+		var eval = getEvalWorld();
 
 		console.log(eval, parsedTree);
 		var resultDiv = document.getElementById(expressionDiv.id.toString()+'b');
@@ -168,5 +166,16 @@ function addObjectFromUI(){
 	  var default_x = 5, default_y = 5;
 	  var width = 50, height = 50;
 	  addObject(obj_index, default_x, default_y, width, height);  
+}
+
+function fileLoader(){
+ var fileSelect = document.getElementById('fileSelect'),
+  fileElem = document.getElementById('files');
+ fileSelect.addEventListener("click", function(e){
+   if(fileElem){
+     fileElem.click();
+   }
+   e.preventDefault();
+ }, false);
 }
 

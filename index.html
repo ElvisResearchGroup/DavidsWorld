@@ -167,22 +167,26 @@ $(document).ready(function () {
 							<input type="text" name="expression" id ="textbox1" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="textbox1" data-toggle="tooltip" title="Expression Entry">
 							</form>
 						</div>
-						<div class= "cell2" id = "cell9">
+						
+						
+					</div>
+					</div>
+					<div class= "cell2" id = "cell9">
 							<button onclick="add(document.getElementById('textbox1').value)"  type="button" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
 						</div>
 						<div class= "cell2" id = "cell10">
 							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
 						</div>
-						
-					</div>
-					</div>
 					<div class="table">
-					<input type="file" id="files" name="files[]" multiple />
+					
+					<input type="file" id="files" name="files[]" multiple style="display:none;"/>
                                                 <output id="list"></output>
                                                 <script>
-                                                document.getElementById('files').addEventListener('change', handleFileLoad, false);
+						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
                                                 </script>
+					  <button type="button" id="fileSelect" class="btn" onclick="fileLoader()" data-toggle="tooltip" title="Select a file to load." >Load File</button>
 					</div>
+					
 				</div>
 				<div class = "symbolsBox">
 					<div class="row">

@@ -65,21 +65,26 @@ $(document).ready(function () {
   //$('[data-toggle="tooltip"]').tooltip();
   var library_name = "geometry";
   $.getJSON("lib/" + library_name + "/" + library_name + ".json", function(data){
-	      console.log(data);
+		console.log(data);
+		setLibrary(data.library);
 		bonsai.run(document.getElementById('world'),{
 		  url: 'js/world.js',
 		  world: data,
 		  code: function(err, data) {
 		    library = stage.options.world.library;
+		    console.log("test", library);
 		    library_name = stage.options.world.library_name;
 		    bg_colour = stage.options.world.bg_colour;
-		    buildWorld();
+		    buildWorld();		    
 		  },
-		  width: 10000,
-		  height: 700
+		  //width: 10000,
+		  //height: 4000
 		  
 		});
-	 });
+		populateObjectSelect(data);
+		
+	 }); 
+    
   
 });
 
@@ -117,16 +122,12 @@ $(document).ready(function () {
 							</select> 
 						</div>
 						<div class= "cell2" id = "cell2">
-							<select data-toggle="tooltip" title="Object Selection">
-								  <option selected disabled>Object</option>
-								  <option value="option1">Object 1</option>
-								  <option value="option 2">Object 2</option>
-								  <option value="option 3">Object 3</option>
-								  <option value="option 4">Object 4</option>
+							<select data-toggle="tooltip" title="Object Selection" id="objList">ss
+								  
 							</select> 
 						</div>
 						<div class= "cell2" id = "cell3">
-							<button type="button" class="btn">Add Object</button>
+							<button type="button" class="btn" id="addObj">Add Object</button>
 						</div>
 					</div>
 					</div>

@@ -1,37 +1,55 @@
-
+/*
+ * Parses an expression string to an expression tree. 
+ */
 function parseExpr(input){
+    //Tries to match it as 'all' or 'some'
     var groups = /\s*(\u2200|\u2203)\s*([a-zA-Z0-9,\s]+)\u22C5\s*((?:\s*\S+)+)\s*/.exec(input);
     var type;
-    if (groups === null){ //not all or some
+    
+    //If not 'all' or 'some' then continue parsing
+    if (groups === null){
         return parseExpr2(input);
-    } else if (groups[1] === '\u2200'){ //all
+    //If 'all' or 'some' record the type as such
+    } else if (groups[1] === '\u2200'){
         type = expressionTypes.ALL;
-    } else { //some
+    } else {
         type = expressionTypes.SOME;
     }
+    //Parse the variable list, and transform it into a tree structure
     return parseVarList(groups[2]).reduceRight(function(prev, curr){
         return {type: type, first: curr, second: prev};
+    //Parse the remaining input and place it in the inner most tree
     }, parseExpr(groups[3]));
+
 }
 
+/**
+ * Parses a list of variables, returning a list.
+ */
 function parseVarList(input){
+    //Find variables
     var regex = /^([a-zA-Z][0-9a-zA-Z]*)\s*(?:,\s*(.+))*/;
     var groups = regex.exec(input);
     var list = [];
+    //While more than one variables are found, keep adding them to the list
     while (groups != null && groups[2]){
         list.push(groups[1]);
         groups = regex.exec(groups[2]);
     }
+    //Add last variable to the list and return it
     if (groups) {
         list.push(groups[1]);
         return list;
+    //No last variable
     } else {
         //TODO improve error handling
         console.log('Parse fail: ' + input);
     }
 }
 
-//Checks that all brackets are balanced in the input string. 
+/*
+ * Checks that all brackets are balanced in the input string. 
+ */
 function balancedBrackets(input){
     var stack = [];
      
@@ -50,78 +68,125 @@ function balancedBrackets(input){
       return stack.length <= 0;
 }
 
-function parseExpr2(input) { //<->
+/**
+ * Parse iff expresssions
+ */ 
+function parseExpr2(input) {
+    //Try to match iff
     var groups = /^(.+?)\s*\u2194\s*(.+)$/.exec(input);
+
+    //If iff, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
         return {type: expressionTypes.IFF, 
             first: parseExpr3(groups[1]),
             second: parseExpr2(groups[2])
         };
+    //Otherwise continue parsing the input
     } else {
         return parseExpr3(input);
     }
 }
 
-function parseExpr3(input) { //->
+/**
+ * Parse implies expresssions
+ */
+function parseExpr3(input) {
+    //Try to match implies
     var groups = /^(.+?)\s*\u2192\s*(.+)$/.exec(input);
+
+    //If implies, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
         return {type: expressionTypes.IMPLIES, 
             first: parseExpr4(groups[1]),
             second: parseExpr3(groups[2])
         };
+    //Otherwise continue parsing the input
     } else {
         return parseExpr4(input);
     }
 }
 
-function parseExpr4(input) { //or, xor
+/**
+ * Parse or and xor expresssions
+ */
+function parseExpr4(input) {
+    //Try to match 'or' or 'xor'
     var groups = /^(.+?)\s*(\u2228|\u22BB)\s*(.+)$/.exec(input);
+    
+    //If it was, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
         return {type: (groups[2] === '\u2228') ? expressionTypes.OR : expressionTypes.XOR, 
             first: parseExpr5(groups[1]),
             second: parseExpr4(groups[3])
         };
+    //Otherwise continue parsing the input
     } else {
         return parseExpr5(input);
     }
 }
 
-function parseExpr5(input) { //and
+/**
+ * Parse and expresssions
+ */
+function parseExpr5(input) {
+    //Try to match and
     var groups = /^(.+?)\s*\u2227\s*(.+)$/.exec(input);
+    
+    //If and, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
         return {type: expressionTypes.AND, 
             first: parseExpr6(groups[1]),
             second: parseExpr5(groups[2])
         };
+    //Otherwise continue parsing
     } else {
         return parseExpr6(input);
     }
 }
 
-function parseExpr6(input) { //not
+/**
+ * Parse not expresssions
+ */
+function parseExpr6(input) {
+    //Try to match not
     var groups = /^\u00AC\s*(.+)$/.exec(input);
+    
+    //If it is 'not', parse the notted expression
     if (groups){
         return {type: expressionTypes.NOT, 
             first: parseExpr6(groups[1]),
             second: null
         };
+    //Otherwise continue parsing
     } else {
         return parseExpr7(input);
     }
 }
 
-function parseExpr7(input){ // ()
+/**
+ * Parse bracketed expressions
+ */
+function parseExpr7(input){
+    //Try to match wrapping brackets
     var groups = /^\((.*)\)$/.exec(input);
+
+    //If it is wrapped, parse the contents from the top
     if (groups){
         return parseExpr(groups[1]);
+    //Otherwise continue parsing
     } else {
         return parseComparisons(input);
     }
 }
 
-
+/**
+ * Parse comparison expressions
+ */
 function parseComparisons(input) {
+    //Try to match any comparisons
     var groups = /^(.+?)\s*(=|!=|>|<|>=|<=)\s*(.+)$/.exec(input);
+
+    //If it was a comparison, parse the values on either side
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
         return {type: (groups[2] === '=') ? expressionTypes.EQUALS : 
                       (groups[2] === '!=') ? expressionTypes.NOT_EQUALS : //Possibly \u2260
@@ -132,34 +197,46 @@ function parseComparisons(input) {
             first: parseValue(groups[1]),
             second: parseValue(groups[3])
         };
+    //Otherwise treat the input as a value
     } else {
         //TODO check whether this is wanted behaviour
         return parseValue(input);
     }
 }
 
+/**
+ * Parse variables, field accesses, and constants
+ */
 function parseValue(input){
+    //Try to match field accesses
     var groups = /^([a-zA-Z][0-9a-zA-Z]*).([a-zA-Z][0-9a-zA-Z]*)$/.exec(input);
     var cons;
-    if (groups) { //Field access
+
+    //If it was a field access, return it
+    if (groups) {
         return {type: expressionTypes.VAR_ACCESS, 
             vari: groups[1],
             field: groups[2]
         };
-    } else { //Constant
+    //Otherwise
+    } else {
+        //Check it is a variable or a constant
         groups = /^([0-9]+|'[^']*'|"[^"]*"|[a-zA-Z][0-9a-zA-Z]*)$/.exec(input);
         if (groups) {
-            if (!groups[1]) console.log(groups);
+            //If a string constant, keep it as one
             if (groups[1].charAt(0) === "'" || groups[1].charAt(0) === '"') {
                 cons =  groups[1].substring(1, groups[1].length-1);
+            //If it's a variable, then return a null field access (so just access the variable)
             } else if (/^[^0-9]/.exec(groups[1])){
                 return {type: expressionTypes.VAR_ACCESS, 
                     vari: groups[1],
                     field: null
                 };
+            //Otherwise it must be a number
             } else {
                 cons = +groups[1];
             }
+            //Return the constant
             return {type: expressionTypes.CONST, val: cons}
         } else {
             //FUTURE ERROR

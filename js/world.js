@@ -15,6 +15,9 @@ function getSelectedObject(){
   return selected_object;
 }
 
+function setLibrary(lib){
+    library = lib;
+}
 function getEvalWorld(){
   var scope = [];
     for(var i = 0; i < stage_obj_map.length; i++){

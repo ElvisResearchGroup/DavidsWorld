@@ -46,7 +46,7 @@ function evaluate(expr, scope){
 	} else if(expr.type == expressionTypes.IMPLIES){
 		return evaulateImplies(expr.first, expr.second, scope);
 	} else if(expr.type == expressionTypes.VAR_ACCESS){
-		return evaulateVarAccess(expr.val, expr.field, scope);
+		return evaulateVarAccess(expr.vari, expr.field, scope);
 	} else if(expr.type == expressionTypes.CONST){
 		return expr.val;
 	} else if(expr.type == expressionTypes.IFF){

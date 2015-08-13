@@ -8,29 +8,29 @@
     <script type="text/javascript" src="../js/parser.js"></script>
     <style>
     .result {
-    	margin-left: auto;
-    	margin-right: auto;
-    	margin-bottom: 2px;
-    	width: 350px;
-    	height: 18px;
-    	padding: 5px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2px;
+        width: 350px;
+        height: 18px;
+        padding: 5px;
     }
     .summary {
-    	margin-left: auto;
-    	margin-right: auto;
-    	margin-bottom: 2px;
-    	width: 360px;
-    	height: 23px;
-    	padding: 8px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2px;
+        width: 360px;
+        height: 23px;
+        padding: 8px;
     }
     .expr {
-    	font-style: italic;
+        font-style: italic;
     }
     .pass {
-    	background-color: #69B288;
+        background-color: #69B288;
     }
     .fail {
-    	background-color: #B25E57;
+        background-color: #B25E57;
     }
 
     .test-group {
@@ -56,12 +56,12 @@ var total = 0;
 var passed = 0;
 
 function performLogicTest(message, expr, expected, scope, succ) {
-	total++;
-	var eval = evaluate(expr, scope);
-	var pass = (eval === expected) === succ;
-	if (pass) passed++;
+    total++;
+    var eval = evaluate(expr, scope);
+    var pass = (eval === expected) === succ;
+    if (pass) passed++;
 
-	$('#eval').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
+    $('#eval').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
         .text('Test ' + total + ': ').append($('<span/>', {'class':'expr'}).text(message)));
  //TODO show when a negative result expected
 }
@@ -79,10 +79,10 @@ function performLogicAndParserTest(input, expected, scope, succ) {
 
 function performParserTest(input, expected, succ){
     total++;
-	var tree = parseExpr(input);
+    var tree = parseExpr(input);
     var pass = compareTree(tree, expected) === succ;
-	if(pass){
-		passed++;
+    if(pass){
+        passed++;
     }
     $('#parse').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
         .text('Test ' + total + ': ').append($('<span/>', {'class':'expr'}).text(input)));
@@ -92,39 +92,39 @@ function performParserTest(input, expected, succ){
 //Compares two tree like structures as seen in the parser - Compares two nodes
 function compareTree(x,y){
 
-	if(x === y) return true; //If both x and y are null or undefined and exactly the same - return true
-	
+    if(x === y) return true; //If both x and y are null or undefined and exactly the same - return true
+    
     if ( ! ( x instanceof Object ) || ! ( y instanceof Object ) ) return false; //If one or both are not strictly objects - they need to be - return false
     
     if(x.type == "CONST") return (x.type == y.type && x.val == y.val);
-	else if(x.type == "VAR_ACCESS") return x.type == y.type && x.vari == y.vari && x.field == y.field;
+    else if(x.type == "VAR_ACCESS") return x.type == y.type && x.vari == y.vari && x.field == y.field;
 
-	return compareTree(x.first, y.first) && compareTree(x.second, y.second) && x.type == y.type;
+    return compareTree(x.first, y.first) && compareTree(x.second, y.second) && x.type == y.type;
 }
 
 function concludeTests(selector, title){
-	$(selector).prepend($('<div/>', {'class':'summary ' + ((total === passed) ? 'pass' : 'fail') })
-		 .text(passed + ' out of ' + total + ' tests passed.').prepend($('<span/>', {'class':'title'}).text(title + ': ')));
+    $(selector).prepend($('<div/>', {'class':'summary ' + ((total === passed) ? 'pass' : 'fail') })
+         .text(passed + ' out of ' + total + ' tests passed.').prepend($('<span/>', {'class':'title'}).text(title + ': ')));
     total = 0;
     passed = 0;
 
 }
 
 var expression = {
-	type:"SOME",
-	first: 'p',
-	second: {
-		type: 'EQUALS',
-		first: {type: 'CONST', val: 7},
-		second: {type: 'VAR_ACCESS', vari: 'p', field: 'x'}
-	}
+    type:"SOME",
+    first: 'p',
+    second: {
+        type: 'EQUALS',
+        first: {type: 'CONST', val: 7},
+        second: {type: 'VAR_ACCESS', vari: 'p', field: 'x'}
+    }
 };
 
 var world = [{x: 3, y: 2},
-			 {x: 5, y: 2},
-			 {x: 8, y: 4},
-			 {x: 1, y: 3}
-			];
+             {x: 5, y: 2},
+             {x: 8, y: 4},
+             {x: 1, y: 3}
+            ];
 
 performLogicTest('some p | 7 = p.x', expression, false, {}, true);
 

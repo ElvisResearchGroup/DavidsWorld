@@ -8,6 +8,7 @@ Davids World
 <script src="js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="Buttons/js/buttons.js"></script>
 <script type="text/javascript" src="js/bonsai-0.4.1.min.js"></script>
+<script type = "text/javascript" src="js/saveload.js"></script>
 <script type ="text/javascript" src="js/userInterface.js" ></script>
 <script type ="text/javascript" src="js/parser.js" ></script>
 <script type ="text/javascript" src="js/evaluation.js" ></script>
@@ -178,6 +179,9 @@ $(document).ready(function () {
 					<div class="table">
 					<input type="file" id="files" name="files[]" multiple />
                                                 <output id="list"></output>
+                                                <script>
+                                                document.getElementById('files').addEventListener('change', handleFileLoad, false);
+                                                </script>
 					</div>
 				</div>
 				<div class = "symbolsBox">

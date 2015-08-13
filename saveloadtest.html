@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+save/load test
+</title>
+<script type ="text/javascript" src="js/saveload.js" ></script>
+<script src="js/jquery-1.11.3.js"></script>
+
+</head>
+<body>
+
+<div class="table">
+	<input type="file" id="files" name="files[]" multiple />
+        <output id="list"></output>
+</div>
+<script>
+document.getElementById('files').addEventListener('change', handleFileLoad, false);
+</script>
+
+</body>
+</html>

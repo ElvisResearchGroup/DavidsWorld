@@ -294,8 +294,8 @@ select{
 }
 
 #world{
-  border-style: solid;
-  border-width: 3px;
+  border-style: outset;
+  border-width: 5px;
   height:655px;
   width: 96%;
   border-color: #FF9F48;

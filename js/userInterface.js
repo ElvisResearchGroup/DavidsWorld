@@ -58,7 +58,7 @@ function go(){
 
 		console.log('expression= ' + expr.toString());
 
-		var parsedTree = parse(expr.toString());
+		var parsedTree = parseExpr(expr.toString());
 
 		console.log(parsedTree);
 
@@ -117,10 +117,10 @@ function button(operator){
 	}
 	else if (operator == 'dot'){
 		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = '.';
+			document.getElementById('textbox1').value = '\u22C5';
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + '.';
+			document.getElementById('textbox1').value = currentExp + '\u22C5';
 		}
 	}
 	else if (operator == 'for all'){

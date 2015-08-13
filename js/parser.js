@@ -43,7 +43,6 @@ function parseVarList(input){
     //No last variable
     } else {
         //TODO improve error handling
-        console.log('Parse fail: ' + input);
     }
 }
 
@@ -114,7 +113,8 @@ function parseExpr4(input) {
     var groups = /^(.+?)\s*(\u2228|\u22BB)\s*(.+)$/.exec(input);
     
     //If it was, parse children
-    if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
+    if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[3])){
+
         return {type: (groups[2] === '\u2228') ? expressionTypes.OR : expressionTypes.XOR, 
             first: parseExpr5(groups[1]),
             second: parseExpr4(groups[3])
@@ -130,10 +130,12 @@ function parseExpr4(input) {
  */
 function parseExpr5(input) {
     //Try to match and
-    var groups = /^(.+?)\s*\u2227\s*(.+)$/.exec(input);
+    var regex = /^(.+?)\s*\u2227\s*(.+)$/;
+    var groups = regex.exec(input);
     
     //If and, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
+
         return {type: expressionTypes.AND, 
             first: parseExpr6(groups[1]),
             second: parseExpr5(groups[2])
@@ -187,7 +189,7 @@ function parseComparisons(input) {
     var groups = /^(.+?)\s*(=|!=|>|<|>=|<=)\s*(.+)$/.exec(input);
 
     //If it was a comparison, parse the values on either side
-    if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
+    if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[3])){
         return {type: (groups[2] === '=') ? expressionTypes.EQUALS : 
                       (groups[2] === '!=') ? expressionTypes.NOT_EQUALS : //Possibly \u2260
                       (groups[2] === '>') ? expressionTypes.GREATER_THAN : 

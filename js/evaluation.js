@@ -130,11 +130,10 @@ function evaulateImplies(expr1, expr2, scope){
 }
 
 function evaulateVarAccess(vari, field, scope){
-	console.log(vari, field, scope);
 	if (field === null) {
 		return scope[vari];
 	}
-	console.log(scope[vari]);
+
 	return scope[vari][field]
 }
 

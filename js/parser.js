@@ -3,7 +3,7 @@
  */
 function parseExpr(input){
     //Tries to match it as 'all' or 'some'
-    var groups = /\s*(\u2200|\u2203)\s*([a-zA-Z0-9,\s]+)\u22C5\s*((?:\s*\S+)+)\s*/.exec(input);
+    var groups = /^\s*(\u2200|\u2203)\s*([a-zA-Z0-9,\s]+)\u22C5\s*((?:\s*\S+)+)\s*$/.exec(input);
     var type;
     
     //If not 'all' or 'some' then continue parsing
@@ -15,6 +15,7 @@ function parseExpr(input){
     } else {
         type = expressionTypes.SOME;
     }
+    console.log(groups[3]);
     //Parse the variable list, and transform it into a tree structure
     return parseVarList(groups[2]).reduceRight(function(prev, curr){
         return {type: type, first: curr, second: prev};
@@ -28,7 +29,7 @@ function parseExpr(input){
  */
 function parseVarList(input){
     //Find variables
-    var regex = /^([a-zA-Z][0-9a-zA-Z]*)\s*(?:,\s*(.+))*/;
+    var regex = /^([a-zA-Z][0-9a-zA-Z]*)\s*(?:,\s*(.+))*$/;
     var groups = regex.exec(input);
     var list = [];
     //While more than one variables are found, keep adding them to the list
@@ -186,10 +187,11 @@ function parseExpr7(input){
  */
 function parseComparisons(input) {
     //Try to match any comparisons
-    var groups = /^(.+?)\s*(=|!=|>|<|>=|<=)\s*(.+)$/.exec(input);
+    var groups = /^(.+?)\s*(=|!=|>=|<=|>|<)\s*(.+)$/.exec(input);
 
     //If it was a comparison, parse the values on either side
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[3])){
+        console.log(groups[3]);
         return {type: (groups[2] === '=') ? expressionTypes.EQUALS : 
                       (groups[2] === '!=') ? expressionTypes.NOT_EQUALS : //Possibly \u2260
                       (groups[2] === '>') ? expressionTypes.GREATER_THAN : 

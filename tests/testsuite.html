@@ -68,7 +68,9 @@ function performLogicTest(message, expr, expected, scope, succ) {
 
 function performLogicAndParserTest(input, expected, scope, succ) {
     total++;
-    var eval = evaluate(parseExpr(input), scope);
+    var expr = parseExpr(input);
+    console.log(expr);
+    var eval = evaluate(expr, scope);
     var pass = (eval === expected) === succ;
     if (pass) passed++;
 
@@ -274,38 +276,38 @@ performLogicAndParserTest('"string"', "string", {}, true);
 
 
 //Some p . p.x = 3 and p.y = 2 (should be true)
-performLogicAndParserTest('\u2203 p \u22C5 p.x = 3 \u2227 p.y = 2', true, {p: {x: 3, y: 2}}, true);
+performLogicAndParserTest('\u2203 p \u22C5 p.x = 3 \u2227 p.y = 2', true, {}, true);
 
 //All p . p.x < 10 or p.y > 3 (should be true)
-performLogicAndParserTest('\u2200 p \u22C5 p.x < 10 \u2228 p.y > 2', true, {p: {x: 5, y: 2}}, true);
+performLogicAndParserTest('\u2200 p \u22C5 p.x < 10 \u2228 p.y > 2', true, {}, true);
 
 //All p . p.x < 10 and p.y > 3 (should be false)
-performLogicAndParserTest('\u2200 p \u22C5 p.x < 10 \u2227 p.y > 3', false, {p: {x: 5, y: 2}, p: {x: 4, y: 7}}, true);
+performLogicAndParserTest('\u2200 p \u22C5 p.x < 10 \u2227 p.y > 3', false, {}, true);
 
 //All p . p.x != p.y (should be true)
-performLogicAndParserTest('\u2200 p \u22C5 p.x != p.y', true, {p: {x: 5, y: 2}, p: {x: 4, y: 7}, p: {x: 11, y: 2}}, true);
+performLogicAndParserTest('\u2200 p \u22C5 p.x != p.y', true, {}, true);
 
 //Some p . p.x == p.y (should be false)
-performLogicAndParserTest('\u2203 p \u22C5 p.x == p.y', false, {p: {x: 3, y: 2}, p: {x: 10, y: 3}, p: {x: 11, y: 2}}, true);
+performLogicAndParserTest('\u2203 p \u22C5 p.x = p.y', false, {}, true);
 
 //Some p, q . p.x == q.y (should be true)
-performLogicAndParserTest('\u2203 p, q \u22C5 p.x == p.y', true, {p: {x: 3, y: 2}, q: {x: 3, y: 3}, p: {x: 11, y: 22}}, true);
+performLogicAndParserTest('\u2203 p, q \u22C5 p.x = q.y', true, {}, true);
 
 //All p, q . p != q -> p.y != q.y (should be false)
-performLogicAndParserTest('\u2200 p, q \u22C5 p != q \u2192 p.y != q.y', false, {p: {x: 5, y: 2}, p: {x: 4, y: 7}, p: {x: 11, y: 2}, q: {x: 2, y: 7}}, true);
+performLogicAndParserTest('\u2200 p, q \u22C5 p != q \u2192 p.y != q.y', false, {}, true);
 
 //Some p, q . p = q (should be true)
-performLogicAndParserTest('\u2203 p, q \u22C5 p == q', true, {p: {x: 3, y: 2}, q: {x: 3, y: 3}, p: {x: 11, y: 22}, q: {x: 11, y: 22}}, true);
+performLogicAndParserTest('\u2203 p, q \u22C5 p = q', true, {}, true);
 
 
 //All p . p.x > 6 iff p.y > 2 (should be false)
-performLogicAndParserTest('\u2200 p \u22C5 p.x > 6 \u2194 p.y > 2', false, {p: {x: 5, y: 2}, p: {x: 7, y: 1}, p: {x: 11, y: 2}}, true);
+performLogicAndParserTest('\u2200 p \u22C5 p.x > 6 \u2194 p.y > 2', false, {}, true);
 
 //Some p . p.x > 6 iff p.y > 2 (should be true)
-performLogicAndParserTest('\u2203 p \u22C5 p.x > 6 \u2194 p.y > 2', true, {p: {x: 5, y: 2}, p: {x: 7, y: 1}, p: {x: 11, y: 2}, p: {x: 11, y: 8}}, true);
+performLogicAndParserTest('\u2203 p \u22C5 p.x > 6 \u2194 p.y > 2', true, {}, true);
 
 //Some p . p.x == 8 and (All q . p.y >= q.y) (should be true)
-performLogicAndParserTest('\u2203 p \u22C5 p.x == 8 \u2227 (\u2200 q \u22C5 p.y >= q.y)', true, {p: {x: 5, y: 2}, p: {x: 7, y: 1}, p: {x: 11, y: 2}}, true);
+performLogicAndParserTest('\u2203 p \u22C5 p.x = 8 \u2227 (\u2200 q \u22C5 p.y >= q.y)', true, {}, true);
 
 
 

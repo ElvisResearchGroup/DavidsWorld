@@ -3,7 +3,7 @@
  */
 function parseExpr(input){
     //Tries to match it as 'all' or 'some'
-    var groups = /\s*(\u2200|\u2203)\s*([a-zA-Z0-9,\s]+)\u22C5\s*((?:\s*\S+)+)\s*/.exec(input);
+    var groups = /^\s*(\u2200|\u2203)\s*([a-zA-Z0-9,\s]+)\u22C5\s*((?:\s*\S+)+)\s*$/.exec(input);
     var type;
     
     //If not 'all' or 'some' then continue parsing
@@ -15,6 +15,7 @@ function parseExpr(input){
     } else {
         type = expressionTypes.SOME;
     }
+    console.log(groups[3]);
     //Parse the variable list, and transform it into a tree structure
     return parseVarList(groups[2]).reduceRight(function(prev, curr){
         return {type: type, first: curr, second: prev};
@@ -28,7 +29,7 @@ function parseExpr(input){
  */
 function parseVarList(input){
     //Find variables
-    var regex = /^([a-zA-Z][0-9a-zA-Z]*)\s*(?:,\s*(.+))*/;
+    var regex = /^([a-zA-Z][0-9a-zA-Z]*)\s*(?:,\s*(.+))*$/;
     var groups = regex.exec(input);
     var list = [];
     //While more than one variables are found, keep adding them to the list
@@ -72,7 +73,17 @@ function balancedBrackets(input){
  */ 
 function parseExpr2(input) {
     //Try to match iff
+    var regex;
+    var num = 0;
     var groups = /^(.+?)\s*\u2194\s*(.+)$/.exec(input);
+
+    //If there was an 'iff' but it wrapped in brackets
+    while (groups && !(balancedBrackets(groups[1]) && balancedBrackets(groups[2]))) {
+        //Try to find another 'iff' skipping the previous 'iff's
+        num++;
+        regex = new RegExp('^(.+?(?:\u2194.+?){' + num + '})\\s*\u2194\\s*(.+)$');
+        groups = regex.exec(input);
+    }
 
     //If iff, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
@@ -91,7 +102,17 @@ function parseExpr2(input) {
  */
 function parseExpr3(input) {
     //Try to match implies
-    var groups = /^(.+?)\s*\u2192\s*(.+)$/.exec(input);
+    var regex;
+    var num = 0;
+    var groups = /^(.+?)\s*\u2192\s*(.+)$/.exec(input); 
+
+    //If there was an 'implies' but it wrapped in brackets
+    while (groups && !(balancedBrackets(groups[1]) && balancedBrackets(groups[2]))) {
+        //Try to find another 'implies' skipping the previous 'implies's
+        num++;
+        regex = new RegExp('^(.+?(?:\u2192.+?){' + num + '})\\s*\u2192\\s*(.+)$');
+        groups = regex.exec(input);
+    }
 
     //If implies, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
@@ -110,8 +131,18 @@ function parseExpr3(input) {
  */
 function parseExpr4(input) {
     //Try to match 'or' or 'xor'
+    var regex;
+    var num = 0;
     var groups = /^(.+?)\s*(\u2228|\u22BB)\s*(.+)$/.exec(input);
     
+    //If there was an 'or' or 'xor' but it wrapped in brackets
+    while (groups && !(balancedBrackets(groups[1]) && balancedBrackets(groups[2]))) {
+        //Try to find another 'or' or 'xor' skipping the previous 'or' or 'xor's
+        num++;
+        regex = new RegExp('^(.+?(?:[\u2228\u22BB].+?){' + num + '})\\s*(\u2228|\u22BB)\\s*(.+)$');
+        groups = regex.exec(input);
+    }
+
     //If it was, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[3])){
 
@@ -126,14 +157,23 @@ function parseExpr4(input) {
 }
 
 /**
- * Parse and expresssions
+ * Parse 'and' expresssions
  */
 function parseExpr5(input) {
-    //Try to match and
+    //Try to match 'and'
+    var num = 0;
     var regex = /^(.+?)\s*\u2227\s*(.+)$/;
     var groups = regex.exec(input);
     
-    //If and, parse children
+    //If there was an 'and' but it wrapped in brackets
+    while (groups && !(balancedBrackets(groups[1]) && balancedBrackets(groups[2]))) {
+        //Try to find another 'and' skipping the previous 'and's
+        num++;
+        regex = new RegExp('^(.+?(?:\u2227.+?){' + num + '})\\s*\u2227\\s*(.+)$');
+        groups = regex.exec(input);
+    }
+
+    //If 'and', parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
 
         return {type: expressionTypes.AND, 
@@ -186,10 +226,11 @@ function parseExpr7(input){
  */
 function parseComparisons(input) {
     //Try to match any comparisons
-    var groups = /^(.+?)\s*(=|!=|>|<|>=|<=)\s*(.+)$/.exec(input);
+    var groups = /^(.+?)\s*(=|!=|>=|<=|>|<)\s*(.+)$/.exec(input);
 
     //If it was a comparison, parse the values on either side
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[3])){
+        console.log(groups[3]);
         return {type: (groups[2] === '=') ? expressionTypes.EQUALS : 
                       (groups[2] === '!=') ? expressionTypes.NOT_EQUALS : //Possibly \u2260
                       (groups[2] === '>') ? expressionTypes.GREATER_THAN : 

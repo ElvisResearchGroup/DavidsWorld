@@ -29,9 +29,8 @@ width:44.5%;
 display: block;
 /*background:#FFDFBB;*/
 height:100%;
-
-
 }
+
 .top{
 float:left;
 border: none;
@@ -253,8 +252,6 @@ td{
 }
 
 .btn{
-  /*-webkit-border-radius: 4;*/
- /* -moz-border-radius: 4;*/
   font-family: Arial;
   color: #ffffff;
   font-size: 14px;

@@ -68,7 +68,9 @@ function performLogicTest(message, expr, expected, scope, succ) {
 
 function performLogicAndParserTest(input, expected, scope, succ) {
     total++;
-    var eval = evaluate(parseExpr(input), scope);
+    var expr = parseExpr(input);
+    console.log(expr);
+    var eval = evaluate(expr, scope);
     var pass = (eval === expected) === succ;
     if (pass) passed++;
 
@@ -231,8 +233,9 @@ performParserTest("¬(¬b)\u2194b", {type: 'IFF', first: {type: 'NOT', first: {t
 performParserTest("((a\u2227(¬b))\u2227b)\u2228(c\u2227d)\u2227¬(a\u2227c)", {type: 'OR', first: {type: 'AND', first: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'NOT', first: {type: 'VAR_ACCESS', vari: 'b', field: null}, second: null}}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}},
     second: {type: 'AND', first: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'c', field: null}, second: {type: 'VAR_ACCESS', vari: 'd', field: null}}, second: {type: 'NOT', first: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'VAR_ACCESS', vari: 'c', field: null}}, second: null}}}, true);
 
-//TODO: Rewrite due to it currently being broken
-//performParserTest("((a\u2227(¬b))\u2227b)\u2228(c\u2227d)\u2227¬(a\u2227c)", {type: 'OR', first: {type: 'AND', first: {type: 'AND', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'NOT', first: {type: 'VAR_ACCESS', vari: 'b', field: null}, second: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}}}, second: {}}, true);
+// ((a XOR not(b)) XOR b) OR (c XOR d) AND not(a XOR c)
+performParserTest("((a\u22BB(¬b))\u22BBb)\u2228(c\u22BBd)\u2227¬(a\u22BBc)", {type: 'OR', first: {type: 'XOR', first: {type: 'XOR', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'NOT', first: {type: 'VAR_ACCESS', vari: 'b', field: null}, second: null}}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}},
+    second: {type: 'AND', first: {type: 'XOR', first: {type: 'VAR_ACCESS', vari: 'c', field: null}, second: {type: 'VAR_ACCESS', vari: 'd', field: null}}, second: {type: 'NOT', first: {type: 'XOR', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'VAR_ACCESS', vari: 'c', field: null}}, second: null}}}, true);
 
 // a != b
 performParserTest("a!=b", {type: 'NOT_EQUALS', first: {type: 'VAR_ACCESS', vari: 'a', field: null}, second: {type: 'VAR_ACCESS', vari: 'b', field: null}}, true);
@@ -277,29 +280,38 @@ performLogicAndParserTest('"string"', "string", {}, true);
 performLogicAndParserTest('\u2203 p \u22C5 p.x = 3 \u2227 p.y = 2', true, {}, true);
 
 //All p . p.x < 10 or p.y > 3 (should be true)
+performLogicAndParserTest('\u2200 p \u22C5 p.x < 10 \u2228 p.y > 2', true, {}, true);
 
 //All p . p.x < 10 and p.y > 3 (should be false)
+performLogicAndParserTest('\u2200 p \u22C5 p.x < 10 \u2227 p.y > 3', false, {}, true);
 
 //All p . p.x != p.y (should be true)
+performLogicAndParserTest('\u2200 p \u22C5 p.x != p.y', true, {}, true);
 
 //Some p . p.x == p.y (should be false)
+performLogicAndParserTest('\u2203 p \u22C5 p.x = p.y', false, {}, true);
 
 //Some p, q . p.x == q.y (should be true)
+performLogicAndParserTest('\u2203 p, q \u22C5 p.x = q.y', true, {}, true);
 
 //All p, q . p != q -> p.y != q.y (should be false)
+performLogicAndParserTest('\u2200 p, q \u22C5 p != q \u2192 p.y != q.y', false, {}, true);
 
 //Some p, q . p = q (should be true)
+performLogicAndParserTest('\u2203 p, q \u22C5 p = q', true, {}, true);
 
 
 //All p . p.x > 6 iff p.y > 2 (should be false)
+performLogicAndParserTest('\u2200 p \u22C5 p.x > 6 \u2194 p.y > 2', false, {}, true);
 
 //Some p . p.x > 6 iff p.y > 2 (should be true)
+performLogicAndParserTest('\u2203 p \u22C5 p.x > 6 \u2194 p.y > 2', true, {}, true);
 
 //Some p . p.x == 8 and (All q . p.y >= q.y) (should be true)
+performLogicAndParserTest('\u2203 p \u22C5 p.x = 8 \u2227 (\u2200 q \u22C5 p.y >= q.y)', true, {}, true);
 
-
-
-//performLogicAndParserTest(input, expected, scope, succ)
+//Some p . p.x == 8 and (All q . p.y >= q.y) (should be true)
+performLogicAndParserTest('\u2203 p \u22C5 p.x = 8 \u2227 (\u2200 q \u22C5 p.y >= q.y)', true, {}, true);
 
 concludeTests('#evalparse', 'Parser feeding the evaluator');
 

@@ -1,7 +1,10 @@
 
-var expArray = [];
-var count = 0;
+var expArray = [];//holds ids of expression divs
+var count = 0; //used to count expression divs
 
+/**
+ * on click on add expression button, adds the written expression to list of expressions
+ */
 function add(ex){
 	//create a new element
 	var word = document.getElementById('textbox1').value;
@@ -32,7 +35,7 @@ function add(ex){
 
 	var lineBreak = document.createElement("br");
 
-	// 'foobar' is the div id, where new fields are to be added
+	// 'output' is the div id, where new fields are to be added
 	var output = document.getElementById("outputDiv");
 	//foo.style.display = "table-row";
 	expressionDiv.style.display = "table-cell";
@@ -48,7 +51,12 @@ function add(ex){
 
 }
 
+/**
+ * when user clicks go button - evaluates expressions that have been added
+ */
+
 function go(){
+
 	for (id in expArray){
 		console.log(id);
 		var expressionDiv = document.getElementById(id);
@@ -147,7 +155,12 @@ function button(operator){
 
 }
 
+/**
+ * Adds objects to the world ??? i think
+ */
+
 function populateObjectSelect(data){
+	//What does this do??
   var list = document.getElementById('objList');
   console.log("Populate", data);
   data.library.forEach(function(e){
@@ -160,13 +173,19 @@ function populateObjectSelect(data){
     
 }
 
+/**
+ * Adds objects from the user interface to the world
+ */
 function addObjectFromUI(){
-	  console.log('test2');
 	  var obj_index = document.getElementById('objList').selectedIndex;
 	  var default_x = 5, default_y = 5;
 	  var width = 50, height = 50;
 	  addObject(obj_index, default_x, default_y, width, height);  
 }
+
+/**
+ * Loads file
+ */
 
 function fileLoader(){
  var fileSelect = document.getElementById('fileSelect'),

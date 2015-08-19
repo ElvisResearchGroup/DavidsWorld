@@ -1,5 +1,5 @@
 
-var gitems = [];
+var gitems = []; //what does this hold?
 
 //Main function for local load - is triggered by event listener on file load
 function handleFileLoad(event){
@@ -36,20 +36,11 @@ function supportsLocalStorage()
       }
 }
 
-
-
-
-
-
-
 //Local Save - Handled with HTML5 - 
 function saveLocal(){
   if(supportsLocalStorage == true){
     
-    
-    
-    
-    
+ //TODO?? 
     
   }
   else{

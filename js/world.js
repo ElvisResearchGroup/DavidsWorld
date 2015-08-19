@@ -72,7 +72,7 @@ function createBonsaiShape(obj){
     return bonsaiImage(obj);//TODO!!!!
 }
 
-function bonsaiPoly(obj){
+function bonsaiPoly(obj){ //What does this method do?
   var sides = getValue(obj, "Sides");
   var myPoly,x,y;
   if(sides <= 2){
@@ -109,7 +109,7 @@ function bonsaiPoly(obj){
   return myPoly;
 }
 
-function getValue(obj, key){
+function getValue(obj, key){ //What value is this referring to?
   var index = obj.field_key.indexOf(key);
   if(index < 0)
     return null;

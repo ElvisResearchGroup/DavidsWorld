@@ -73,7 +73,17 @@ function balancedBrackets(input){
  */ 
 function parseExpr2(input) {
     //Try to match iff
+    var regex;
+    var num = 0;
     var groups = /^(.+?)\s*\u2194\s*(.+)$/.exec(input);
+
+    //If there was an 'iff' but it wrapped in brackets
+    while (groups && !(balancedBrackets(groups[1]) && balancedBrackets(groups[2]))) {
+        //Try to find another 'iff' skipping the previous 'iff's
+        num++;
+        regex = new RegExp('^(.+?(?:\u2194.+?){' + num + '})\\s*\u2194\\s*(.+)$');
+        groups = regex.exec(input);
+    }
 
     //If iff, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
@@ -92,7 +102,17 @@ function parseExpr2(input) {
  */
 function parseExpr3(input) {
     //Try to match implies
+    var regex;
+    var num = 0;
     var groups = /^(.+?)\s*\u2192\s*(.+)$/.exec(input); 
+
+    //If there was an 'implies' but it wrapped in brackets
+    while (groups && !(balancedBrackets(groups[1]) && balancedBrackets(groups[2]))) {
+        //Try to find another 'implies' skipping the previous 'implies's
+        num++;
+        regex = new RegExp('^(.+?(?:\u2192.+?){' + num + '})\\s*\u2192\\s*(.+)$');
+        groups = regex.exec(input);
+    }
 
     //If implies, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
@@ -111,8 +131,18 @@ function parseExpr3(input) {
  */
 function parseExpr4(input) {
     //Try to match 'or' or 'xor'
+    var regex;
+    var num = 0;
     var groups = /^(.+?)\s*(\u2228|\u22BB)\s*(.+)$/.exec(input);
     
+    //If there was an 'or' or 'xor' but it wrapped in brackets
+    while (groups && !(balancedBrackets(groups[1]) && balancedBrackets(groups[2]))) {
+        //Try to find another 'or' or 'xor' skipping the previous 'or' or 'xor's
+        num++;
+        regex = new RegExp('^(.+?(?:[\u2228\u22BB].+?){' + num + '})\\s*(\u2228|\u22BB)\\s*(.+)$');
+        groups = regex.exec(input);
+    }
+
     //If it was, parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[3])){
 
@@ -127,14 +157,23 @@ function parseExpr4(input) {
 }
 
 /**
- * Parse and expresssions
+ * Parse 'and' expresssions
  */
 function parseExpr5(input) {
-    //Try to match and
+    //Try to match 'and'
+    var num = 0;
     var regex = /^(.+?)\s*\u2227\s*(.+)$/;
     var groups = regex.exec(input);
     
-    //If and, parse children
+    //If there was an 'and' but it wrapped in brackets
+    while (groups && !(balancedBrackets(groups[1]) && balancedBrackets(groups[2]))) {
+        //Try to find another 'and' skipping the previous 'and's
+        num++;
+        regex = new RegExp('^(.+?(?:\u2227.+?){' + num + '})\\s*\u2227\\s*(.+)$');
+        groups = regex.exec(input);
+    }
+
+    //If 'and', parse children
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[2])){
 
         return {type: expressionTypes.AND, 

@@ -5,6 +5,17 @@ var library;
 var world = [];
 var stage_obj_map = [];
 var selected_object;
+var Colour = {
+  red:4280549631,
+  green:1355315455,
+  blue:8388607,
+  orange:4289003775,
+  yellow:4294377727,
+  purple:3664828159,
+  brown:3430359807,
+  black:255,
+  white:4294967295
+};
 
 stage.on('message', handleMessage);
 
@@ -30,6 +41,9 @@ function getSelectedObject(){
   return selected_object;
 }
 
+function getColours(){
+ return Colour; 
+}
 function setLibrary(lib){
     library = lib;
 }
@@ -61,7 +75,9 @@ function generateRandomWorld(size){
 	  var types = ["Rectangle","Circle","Triangle"]; //TODO change/remove
 	  var x = Math.random()*400+100;
 	  var y = Math.random()*400+100;
-	  addObject(types[type],x,y,50,50, color('white').randomize());
+	  var colour_list = Object.keys(Colour);
+	  var colour = Colour[colour_list[parseInt(""+Math.random()*colour_list.length)]];
+	  addObject(types[type],x,y,50,50, colour);
 	}
 }
 

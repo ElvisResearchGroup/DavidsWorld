@@ -116,7 +116,7 @@ function button(operator){
 			document.getElementById('textbox1').value = "\u2227";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + "\u2227";
+			insertAtCaret(document.getElementById('textbox1'),"\u2227");
 		}
 	}
 	else if (operator=='or'){
@@ -124,7 +124,7 @@ function button(operator){
 			document.getElementById('textbox1').value = "\u2228";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + "\u2228";
+			insertAtCaret(document.getElementById('textbox1'),"\u2228");
 		}
 	}
 	else if (operator =='not'){
@@ -132,7 +132,7 @@ function button(operator){
 			document.getElementById('textbox1').value = "¬";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + '¬';
+			insertAtCaret(document.getElementById('textbox1'),"¬");
 		}
 	}
 	else if (operator == 'dot'){
@@ -140,7 +140,7 @@ function button(operator){
 			document.getElementById('textbox1').value = '\u22C5';
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + '\u22C5';
+			insertAtCaret(document.getElementById('textbox1'),"\u22C5");
 		}
 	}
 	else if (operator == 'for all'){
@@ -148,7 +148,7 @@ function button(operator){
 			document.getElementById('textbox1').value = "\u2200";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + "\u2200";
+			insertAtCaret(document.getElementById('textbox1'), "\u2200");
 		}
 	}
 	else if (operator == 'there exists'){
@@ -156,7 +156,7 @@ function button(operator){
 			document.getElementById('textbox1').value ="\u2203";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + "\u2203";
+			insertAtCaret(document.getElementById('textbox1'), "\u2203");
 		}
 	}
 	else if(operator == 'clear'){
@@ -168,6 +168,33 @@ function button(operator){
 
 
 }
+
+
+//sourced from: http://stackoverflow.com/questions/1064089/inserting-a-text-where-cursor-is-using-javascript-jquery
+function insertAtCaret(element, text) {
+    if (document.selection) {
+        element.focus();
+        var sel = document.selection.createRange();
+        sel.text = text;
+        element.focus();
+    } else if (element.selectionStart || element.selectionStart === 0) {
+        var startPos = element.selectionStart;
+        var endPos = element.selectionEnd;
+        var scrollTop = element.scrollTop;
+        element.value = element.value.substring(0, startPos) + text + element.value.substring(endPos, element.value.length);
+        element.focus();
+        element.selectionStart = startPos + text.length;
+        element.selectionEnd = startPos + text.length;
+        element.scrollTop = scrollTop;
+    } else {
+        element.value += text;
+        element.focus();
+    }
+}
+
+
+
+
 
 /**
  * Adds objects to the world ??? i think

@@ -21,6 +21,10 @@ function handleMessage(message) {
     }
 }
 
+stage.on('message:addobject', function(data){
+  addObject(data.type, data.x, data.y, data.width, data.height, data.colour);
+  
+});
 
 function getSelectedObject(){
   return selected_object;
@@ -54,30 +58,45 @@ function generateRandomWorld(size){
   for (var i = 0; i < size; i++)
 	{	
 	  var type = parseInt(""+(Math.random() * 3));
+	  var types = ["Rectangle","Circle","Triangle"]; //TODO change/remove
 	  var x = Math.random()*400+100;
 	  var y = Math.random()*400+100;
-	  addObject(type,x,y,50,50, color('white').randomize());
+	  addObject(types[type],x,y,50,50, color('white').randomize());
 	}
 }
 
 //Passing null for x->height will make it use the default values.
-function addObject(obj_index, x, y, width, height, colour){
-    var lib_obj = library[obj_index];
+function addObject(obj_type, x, y, width, height, colour){
+    var lib_obj = null;
+    var i;
+    var lib;
+    for(i = 0; i < library.length; i++){
+      if(library[i].type == obj_type){
+	lib = library[i];
+	var lib_obj = {type: lib.type, colour: lib.colour, image: lib.image,
+	  x: lib.x, y: lib.y, width: lib.width, height: lib.height, field_key: lib.field_key, field_vals: lib.field_vals};
+	break;
+      }
+    }
+    if(lib_obj == null)
+      return;
     //Change the objects values based on parameters.
-    if(x != null)
+    if(x != undefined)
       lib_obj.x = x;
-    if(y != null)
+    if(y != undefined)
       lib_obj.y = y;
-    if(width != null)
+    if(width != undefined)
       lib_obj.width = width;
-    if(height != null)
+    if(height != undefined)
       lib_obj.height = height;
     if(colour != undefined)
       lib_obj.colour = colour;
     
+    console.log('libobj', lib_obj);
+    
     var index = world.length;
-    world[index] = lib_obj;
-    stage_obj_map[index] = createBonsaiShape(lib_obj);
+    world.push(lib_obj);
+    stage_obj_map.push(createBonsaiShape(lib_obj));
     
 }
 

@@ -100,6 +100,11 @@ function setupListeners(){
 		}
 
 	});
+	
+	$('#addObj').click(function(){
+	  worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 200, y: 200, width:50, height: 50, colour: $('#colourList').val()});
+	});
+
 }
 
 function button(operator){

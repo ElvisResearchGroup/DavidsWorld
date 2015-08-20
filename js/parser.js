@@ -227,10 +227,9 @@ function parseExpr7(input){
 function parseComparisons(input) {
     //Try to match any comparisons
     var groups = /^(.+?)\s*(=|!=|>=|<=|>|<)\s*(.+)$/.exec(input);
-    console.log('COMPAARE', groups[2]);
+
     //If it was a comparison, parse the values on either side
     if (groups && balancedBrackets(groups[1]) && balancedBrackets(groups[3])){
-        console.log(groups[2]);
         return {type: (groups[2] === '=') ? expressionTypes.EQUALS : 
                       (groups[2] === '!=') ? expressionTypes.NOT_EQUALS : //Possibly \u2260
                       (groups[2] === '>') ? expressionTypes.GREATER_THAN : 

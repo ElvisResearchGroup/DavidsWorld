@@ -6,10 +6,21 @@ var world = [];
 var stage_obj_map = [];
 var selected_object;
 
+stage.on('message', handleMessage);
+
 //block dealing with loading from JSON
 function buildWorld(){
 	generateRandomWorld(20);
 }
+
+function handleMessage(message) {
+    console.log('message', message);
+    if (message === 'getworldforeval'){
+        //TODO process world to be what is expected.
+        stage.sendMessage('evalworld', world);
+    }
+}
+
 
 function getSelectedObject(){
   return selected_object;

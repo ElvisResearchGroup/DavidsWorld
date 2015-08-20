@@ -56,41 +56,49 @@ function add(ex){
  */
 
 function go(){
+	worldstage.sendMessage('getworldforeval')
+}
 
-	for (id in expArray){
-		console.log(id);
-		var expressionDiv = document.getElementById(id);
+function setupListeners(){
+	worldstage.on('message:evalworld', function(data){
+		console.log(data)
+		world = data;
+		for (id in expArray){
+			console.log(id);
+			var expressionDiv = $(document.getElementById(id));
 
 
-		var expr = expressionDiv.innerHTML.toString();
+			var expr = expressionDiv.text();
 
-		console.log('expression= ' + expr.toString());
+			console.log('expression', expr);
 
-		var parsedTree = parseExpr(expr.toString());
+			var parsedTree = parseExpr(expr);
 
-		console.log(parsedTree);
+			console.log('tree', parsedTree);
 
-		var eval = getEvalWorld();
+			var eval = evaluate(parsedTree, {});
 
-		console.log(eval, parsedTree);
-		var resultDiv = document.getElementById(expressionDiv.id.toString()+'b');
-		resultDiv.style.fontSize = "large";
+			console.log('eval', eval);
+			var resultDiv = document.getElementById(id+'b');
+			resultDiv.style.fontSize = "large";
 
-		if(eval){
-		resultDiv.innerHTML = "true";
-		resultDiv.style.background = "#009933";
-		resultDiv.style.paddingLeft = "10px";
-		resultDiv.style.paddingRight = "10px";
+			if(eval){
+			resultDiv.innerHTML = "true";
+			resultDiv.style.background = "#009933";
+			resultDiv.style.paddingLeft = "10px";
+			resultDiv.style.paddingRight = "10px";
 
+			}
+			else {
+				resultDiv.innerHTML = " false";
+				resultDiv.style.background = "#FF5C5C";
+				resultDiv.style.paddingLeft = "7px";
+				resultDiv.style.paddingRight = "7px";
+			}	
+			
 		}
-		else {
-			resultDiv.innerHTML = " false";
-			resultDiv.style.background = "#FF5C5C";
-			resultDiv.style.paddingLeft = "7px";
-			resultDiv.style.paddingRight = "7px";
-		}	
-		
-	}
+
+	});
 }
 
 function button(operator){

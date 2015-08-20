@@ -61,6 +61,9 @@ Davids World
 
 			<script>
       //loadLibrary("geometry");
+
+var worldstage;
+
 $(document).ready(function () {
 		  console.log('ready');
 		  //$('[data-toggle="tooltip"]').tooltip();
@@ -68,7 +71,7 @@ $(document).ready(function () {
 		  $.getJSON("lib/" + library_name + "/" + library_name + ".json", function(data){
 				console.log(data);
 				setLibrary(data.library);
-				bonsai.run(document.getElementById('world'),{
+				worldstage = bonsai.run(document.getElementById('world'),{
 				  url: 'js/world.js',
 				  world: data,
 				  code: function(err, data) {
@@ -76,10 +79,12 @@ $(document).ready(function () {
 				    console.log("test", library);
 				    library_name = stage.options.world.library_name;
 				    bg_colour = stage.options.world.bg_colour;
+
 				    buildWorld();		    
 				  },
 			  
 				});
+				setupListeners();
 				populateObjectSelect(data);
 				
 			 }); 
@@ -209,7 +214,6 @@ $(document).ready(function () {
 		</div><!--Bottom box-->
 	</div>
 </div>
-
 <!--<script type ="text/javascript" src="js/userInterface.js" ></script>
 <script type ="text/javascript" src="world.js" ></script>
 -->

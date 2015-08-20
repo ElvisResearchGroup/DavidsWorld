@@ -69,7 +69,7 @@ function performLogicTest(message, expr, expected, scope, succ) {
 function performLogicAndParserTest(input, expected, scope, succ) {
     total++;
     var expr = parseExpr(input);
-    console.log(expr);
+
     var eval = evaluate(expr, scope);
     var pass = (eval === expected) === succ;
     if (pass) passed++;

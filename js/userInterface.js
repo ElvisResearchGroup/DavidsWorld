@@ -79,6 +79,7 @@ function setupListeners(){
 			var eval = evaluate(parsedTree, {});
 
 			console.log('eval', eval);
+			console.log('world', world);
 			var resultDiv = document.getElementById(id+'b');
 			resultDiv.style.fontSize = "large";
 

@@ -17,8 +17,7 @@ function handleMessage(message) {
     console.log('message', message);
     if (message === 'getworldforeval'){
         //TODO process world to be what is expected.
-	updateWorld();
-        stage.sendMessage('evalworld', world);
+        stage.sendMessage('evalworld', updateWorld());
     }
 }
 
@@ -31,13 +30,24 @@ function setLibrary(lib){
     library = lib;
 }
 function updateWorld(){
+    var updatedWorld = [];
+    var item;
     if(stage_obj_map.length != world.length)
 	console.log("Something is wrong. Error in world mapping");
     for(var i = 0; i < stage_obj_map.length; i++){
-	world[i].x = stage_obj_map[i]._attributes.x;
-	world[i].y = stage_obj_map[i]._attributes.y;
-	world[i].colour = stage_obj_map[i]._attributes.fillColor;
+	item = {};
+	item.x = stage_obj_map[i]._attributes.x;
+	item.y = stage_obj_map[i]._attributes.y;
+	item.colour = stage_obj_map[i]._attributes.fillColor;
+	item.type = world[i].type;
+	updatedWorld.push(item);
+	console.log('from world', item);
     }
+    
+    world = updatedWorld;
+    console.log('updated', world);
+    
+    return updatedWorld;
 }
 
 function generateRandomWorld(size){

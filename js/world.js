@@ -10,13 +10,14 @@ stage.on('message', handleMessage);
 
 //block dealing with loading from JSON
 function buildWorld(){
-	generateRandomWorld(20);
+	generateRandomWorld(5);
 }
 
 function handleMessage(message) {
     console.log('message', message);
     if (message === 'getworldforeval'){
         //TODO process world to be what is expected.
+	updateWorld();
         stage.sendMessage('evalworld', world);
     }
 }
@@ -29,20 +30,14 @@ function getSelectedObject(){
 function setLibrary(lib){
     library = lib;
 }
-function getEvalWorld(){
-  var scope = [];
+function updateWorld(){
+    if(stage_obj_map.length != world.length)
+	console.log("Something is wrong. Error in world mapping");
     for(var i = 0; i < stage_obj_map.length; i++){
-      var attr = stage_obj_map[i]._attributes;
-      var obj = {
-	type:world[i].type,
-	x:attr.x,
-	y:attr.y,
-	colour:attr.fillColor
-      }
-      scope[i] = obj;      
+	world[i].x = stage_obj_map[i]._attributes.x;
+	world[i].y = stage_obj_map[i]._attributes.y;
+	world[i].colour = stage_obj_map[i]._attributes.fillColor;
     }
-    
-    return scope;
 }
 
 function generateRandomWorld(size){

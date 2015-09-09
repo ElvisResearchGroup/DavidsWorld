@@ -21,6 +21,7 @@ stage.on('message', handleMessage);
 
 //block dealing with loading from JSON
 function buildWorld(){
+
 	generateRandomWorld(5);
 }
 
@@ -30,6 +31,7 @@ function handleMessage(message) {
         //TODO process world to be what is expected.
         stage.sendMessage('evalworld', updateWorld());
     }
+
 }
 
 stage.on('message:addobject', function(data){
@@ -68,6 +70,53 @@ function updateWorld(){
     return updatedWorld;
 }
 
+//THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
+//gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
+function generateWorldFromFile(worldTree){
+  console.log("gets to here...");
+  loadedLibrary = null;
+  var worldObjects = [];
+  var obj_list = []; //List of objects to draw to screen
+  var ind_list = []; //List of indexes mapped to same position as obj_list
+   if(loadedLibrary == null){
+    loadedLibrary = worldTree[0]; //The library should be the only file in the buffer
+    }
+  
+  
+  for(var i = 0; i<loadedLibrary.library.length; i++){
+  worldObjects[i] = loadedLibrary.library[i];//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
+  console.log(worldObjects[i]);
+  var obj = worldObjects[i];
+  var lib_index = null;
+  for(var index = 0; index < library.length;index++){
+    if(library[i].type == obj.type){
+      lib_index = i;
+    }
+  }
+  if(lib_index == null){
+    alert("Your loaded world has an object not supported in the current library");
+    return false;
+  }
+  
+  obj_list.push(obj);
+  ind_list.push(lib_index);
+  //TODO: nullchecking for above vars
+  
+  
+  
+  }
+  
+  for(var i = 0; i<obj_list.length;i++){
+    
+  if(obj_list[i] != null && ind_list[i] != null){
+ 
+  console.log("Printed a: " + obj_list[i].type + " " +ind_list[i] + " " + obj_list[i].colour);
+  addObject(ind_list[i], obj_list[i].x, obj_list[i].y, obj_list[i].width, obj_list[i].height, obj_list[i].colour);
+  }
+  }
+    
+}  
+  
 function generateRandomWorld(size){
   for (var i = 0; i < size; i++)
 	{	

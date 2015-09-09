@@ -1,5 +1,6 @@
 //Credit to: http://stackoverflow.com/questions/5023141/autocomplete-using-a-trie
 
+//ADD COMMENTS AND DOCUMENTATION 
 function createTrie(tokenArray) {
   var characterArray = "A,B,C,D,E,F,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z".split(',');
 

@@ -1,7 +1,10 @@
 
-var expArray = [];
-var count = 0;
+var expArray = [];//holds ids of expression divs
+var count = 0; //used to count expression divs
 
+/**
+ * on click on add expression button, adds the written expression to list of expressions
+ */
 function add(ex){
 	//create a new element
 	var word = document.getElementById('textbox1').value;
@@ -32,7 +35,7 @@ function add(ex){
 
 	var lineBreak = document.createElement("br");
 
-	// 'foobar' is the div id, where new fields are to be added
+	// 'output' is the div id, where new fields are to be added
 	var output = document.getElementById("outputDiv");
 	//foo.style.display = "table-row";
 	expressionDiv.style.display = "table-cell";
@@ -48,43 +51,60 @@ function add(ex){
 
 }
 
+/**
+ * when user clicks go button - evaluates expressions that have been added
+ */
+
 function go(){
-	for (id in expArray){
-		console.log(id);
-		var expressionDiv = document.getElementById(id);
+	worldstage.sendMessage('getworldforeval')
+}
+
+function setupListeners(){
+	worldstage.on('message:evalworld', function(data){
+		console.log(data)
+		world = data;
+		for (id in expArray){
+			console.log(id);
+			var expressionDiv = $(document.getElementById(id));
 
 
-		var expr = expressionDiv.innerHTML.toString();
+			var expr = expressionDiv.text();
 
-		console.log('expression= ' + expr.toString());
+			console.log('expression', expr);
 
-		var parsedTree = parse(expr.toString());
+			var parsedTree = parseExpr(expr);
 
-		console.log(parsedTree);
+			console.log('tree', parsedTree);
 
-		var eval = evaluate(parsedTree, 
-				{p:{x: 1, y: 2}}
-			);
+			var eval = evaluate(parsedTree, {Colour: getColours()});
 
-		console.log(eval, parsedTree);
-		var resultDiv = document.getElementById(expressionDiv.id.toString()+'b');
-		resultDiv.style.fontSize = "large";
+			console.log('eval', eval);
+			console.log('world', world);
+			var resultDiv = document.getElementById(id+'b');
+			resultDiv.style.fontSize = "large";
 
-		if(eval){
-		resultDiv.innerHTML = "true";
-		resultDiv.style.background = "#009933";
-		resultDiv.style.paddingLeft = "10px";
-		resultDiv.style.paddingRight = "10px";
+			if(eval){
+			resultDiv.innerHTML = "true";
+			resultDiv.style.background = "#009933";
+			resultDiv.style.paddingLeft = "10px";
+			resultDiv.style.paddingRight = "10px";
 
+			}
+			else {
+				resultDiv.innerHTML = " false";
+				resultDiv.style.background = "#FF5C5C";
+				resultDiv.style.paddingLeft = "7px";
+				resultDiv.style.paddingRight = "7px";
+			}	
+			
 		}
-		else {
-			resultDiv.innerHTML = " false";
-			resultDiv.style.background = "#FF5C5C";
-			resultDiv.style.paddingLeft = "7px";
-			resultDiv.style.paddingRight = "7px";
-		}	
-		
-	}
+
+	});
+	
+	$('#addObj').click(function(){
+	  worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 200, y: 200, width:50, height: 50, colour: $('#colourList').val()});
+	});
+
 }
 
 function button(operator){
@@ -96,7 +116,7 @@ function button(operator){
 			document.getElementById('textbox1').value = "\u2227";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + "\u2227";
+			insertAtCaret(document.getElementById('textbox1'),"\u2227");
 		}
 	}
 	else if (operator=='or'){
@@ -104,7 +124,7 @@ function button(operator){
 			document.getElementById('textbox1').value = "\u2228";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + "\u2228";
+			insertAtCaret(document.getElementById('textbox1'),"\u2228");
 		}
 	}
 	else if (operator =='not'){
@@ -112,15 +132,15 @@ function button(operator){
 			document.getElementById('textbox1').value = "¬";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + '¬';
+			insertAtCaret(document.getElementById('textbox1'),"¬");
 		}
 	}
 	else if (operator == 'dot'){
 		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = '.';
+			document.getElementById('textbox1').value = '\u22C5';
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + '.';
+			insertAtCaret(document.getElementById('textbox1'),"\u22C5");
 		}
 	}
 	else if (operator == 'for all'){
@@ -128,7 +148,7 @@ function button(operator){
 			document.getElementById('textbox1').value = "\u2200";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + "\u2200";
+			insertAtCaret(document.getElementById('textbox1'), "\u2200");
 		}
 	}
 	else if (operator == 'there exists'){
@@ -136,7 +156,7 @@ function button(operator){
 			document.getElementById('textbox1').value ="\u2203";
 		}
 		else{
-			document.getElementById('textbox1').value = currentExp + "\u2203";
+			insertAtCaret(document.getElementById('textbox1'), "\u2203");
 		}
 	}
 	else if(operator == 'clear'){
@@ -149,7 +169,39 @@ function button(operator){
 
 }
 
+
+//sourced from: http://stackoverflow.com/questions/1064089/inserting-a-text-where-cursor-is-using-javascript-jquery
+function insertAtCaret(element, text) {
+    if (document.selection) {
+        element.focus();
+        var sel = document.selection.createRange();
+        sel.text = text;
+        element.focus();
+    } else if (element.selectionStart || element.selectionStart === 0) {
+        var startPos = element.selectionStart;
+        var endPos = element.selectionEnd;
+        var scrollTop = element.scrollTop;
+        element.value = element.value.substring(0, startPos) + text + element.value.substring(endPos, element.value.length);
+        element.focus();
+        element.selectionStart = startPos + text.length;
+        element.selectionEnd = startPos + text.length;
+        element.scrollTop = scrollTop;
+    } else {
+        element.value += text;
+        element.focus();
+    }
+}
+
+
+
+
+
+/**
+ * Adds objects to the world ??? i think
+ */
+
 function populateObjectSelect(data){
+	//What does this do??
   var list = document.getElementById('objList');
   console.log("Populate", data);
   data.library.forEach(function(e){
@@ -162,11 +214,37 @@ function populateObjectSelect(data){
     
 }
 
+function populateColourSelect(){
+  var colours = getColours();
+  var elem = $('#colourList');
+  Object.keys(colours).forEach(function (c){
+    elem.append($('<option/>', {value: c}).text(c));
+  });
+  
+}
+
+/**
+ * Adds objects from the user interface to the world
+ */
 function addObjectFromUI(){
-	  console.log('test2');
 	  var obj_index = document.getElementById('objList').selectedIndex;
 	  var default_x = 5, default_y = 5;
 	  var width = 50, height = 50;
 	  addObject(obj_index, default_x, default_y, width, height);  
+}
+
+/**
+ * Loads file
+ */
+
+function fileLoader(){
+ var fileSelect = document.getElementById('fileSelect'),
+  fileElem = document.getElementById('files');
+ fileSelect.addEventListener("click", function(e){
+   if(fileElem){
+     fileElem.click();
+   }
+   e.preventDefault();
+ }, false);
 }
 

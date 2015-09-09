@@ -19,7 +19,7 @@ Davids World
 
 
 
-<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rel="stylesheet" type="text/css" href="userinterface.css">
 
 </head>
 
@@ -29,13 +29,13 @@ Davids World
 
 <div class = "main"> <!-- Main window-->
 
-	<div class="leftColumn" id = "test"> <!--Left Column-->
+	<div class="leftColumn"> <!--Left Column-->
 
 		<div class="top">
 			<div class="programHeading"><!--program heading= 'David's World'-->
 				<img src="davidsworld2.png" align="center">
 			</div>
-			<!--
+			<!--LEAVE THIS IN FOR NOW - LOADING CUBE FOR LOADING BAR
 			<div class="loadingBar" >
 				<div class="sk-cube-grid">
 					<div class="sk-cube sk-cube1"></div>
@@ -61,56 +61,43 @@ Davids World
 
 			<script>
       //loadLibrary("geometry");
+
+var worldstage;
+
 $(document).ready(function () {
-  console.log('ready');
-  //$('[data-toggle="tooltip"]').tooltip();
-  var library_name = "geometry";
-  $.getJSON("lib/" + library_name + "/" + library_name + ".json", function(data){
-		console.log(data);
-		setLibrary(data.library);
-		bonsai.run(document.getElementById('world'),{
-		  url: 'js/world.js',
-		  world: data,
-		  code: function(err, data) {
-		    library = stage.options.world.library;
-		    console.log("test", library);
-		    library_name = stage.options.world.library_name;
-		    bg_colour = stage.options.world.bg_colour;
-		    buildWorld();		    
-		  },
-		  //width: 10000,
-		  //height: 4000
-		  
+		  console.log('ready');
+		  //$('[data-toggle="tooltip"]').tooltip();
+		  var library_name = "geometry";
+		  $.getJSON("lib/" + library_name + "/" + library_name + ".json", function(data){
+				console.log(data);
+				setLibrary(data.library);
+				worldstage = bonsai.run(document.getElementById('world'),{
+				  url: 'js/world.js',
+				  world: data,
+				  code: function(err, data) {
+				    library = stage.options.world.library;
+				    console.log("test", library);
+				    library_name = stage.options.world.library_name;
+				    bg_colour = stage.options.world.bg_colour;
+
+				    buildWorld();		    
+				  },
+			  
+				});
+				setupListeners();
+				populateObjectSelect(data);
+				populateColourSelect();
+				
+			 }); 
 		});
-		populateObjectSelect(data);
-		
-	 }); 
-    
-  
-});
-
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
+		</script>
 
 		</div><!--Bottom box-->
 	</div>
 
 	<div class="rightColumn"><!--Right Column-->
 			<div class="top">
-				<div class = "dropdownBox"> 
+				<div class = "dropdownBox"> <!--Div holding buttons in the right hand corner-->
 					<div class="table">
 						<div class="row">
 						<div class= "cell2" id = "cell1">
@@ -135,22 +122,18 @@ $(document).ready(function () {
 					<div class="table">
 						<div class="row">
 						<div class= "cell2" id = "cell4">
-							<button type="button" class="btn" data-toggle="tooltip" title="What Do???">Bigger</button>
+							<button type="button" class="btn" data-toggle="tooltip" title="ObjectBigger">Bigger</button>
 						</div>
 						<div class= "cell2" id = "cell5">
-							<button type="button" class="btn" data-toggle="tooltip" title="What Do???">Smaller</button>
+							<button type="button" class="btn" data-toggle="tooltip" title="ObjectSmaller">Smaller</button>
 						</div>
 						<div  class= "cell2" id = "cell6">
-							<select data-toggle="tooltip" title="Select By Colour">
+							<select id="colourList" data-toggle="tooltip" title="Select By Colour">
 								  <option selected disabled>Colour</option>
-								  <option value="option1">Red</option>
-								  <option value="option 2">Green</option>
-								  <option value="option 3">Blue</option>
-								  <option value="option 4">Yellow</option>
 							</select> 
 						</div>
 						<div  class= "cell2" id = "cell7">
-							<select data-toggle="tooltip" title="What does???">
+							<select data-toggle="tooltip" title="Select by Name"><!--potentially change this to a text box-->
 								  <option selected disabled>Name</option>
 								  <option value="option1">A</option>
 								  <option value="option 2">B</option>
@@ -164,25 +147,29 @@ $(document).ready(function () {
 						<div class="row">
 						<div class= "cell2" id = "cell8">
 							<form>
-							<input type="text" name="expression" id ="textbox1" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="textbox1" data-toggle="tooltip" title="Expression Entry">
+							<input type="text" name="expression" id ="textbox1" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="textbox1" data-toggle="tooltip" title="Expression Entry"> <!-- need to rename textbox1 - be aware of dependencies--> 
 							</form>
 						</div>
-						<div class= "cell2" id = "cell9">
+						
+						
+					</div>
+					</div>
+					<div class= "cell2" id = "cell9">
 							<button onclick="add(document.getElementById('textbox1').value)"  type="button" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
 						</div>
 						<div class= "cell2" id = "cell10">
 							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
 						</div>
-						
-					</div>
-					</div>
 					<div class="table">
-					<input type="file" id="files" name="files[]" multiple />
+					
+					<input type="file" id="files" name="files[]" multiple style="display:none;"/>
                                                 <output id="list"></output>
                                                 <script>
-                                                document.getElementById('files').addEventListener('change', handleFileLoad, false);
+						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
                                                 </script>
+					  <button type="button" id="fileSelect" class="btn" onclick="fileLoader()" data-toggle="tooltip" title="Select a file to load." >Load File</button>
 					</div>
+					
 				</div>
 				<div class = "symbolsBox">
 					<div class="row">
@@ -224,7 +211,6 @@ $(document).ready(function () {
 		</div><!--Bottom box-->
 	</div>
 </div>
-
 <!--<script type ="text/javascript" src="js/userInterface.js" ></script>
 <script type ="text/javascript" src="world.js" ></script>
 -->

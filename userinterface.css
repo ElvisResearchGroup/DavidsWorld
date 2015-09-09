@@ -29,9 +29,8 @@ width:44.5%;
 display: block;
 /*background:#FFDFBB;*/
 height:100%;
-
-
 }
+
 .top{
 float:left;
 border: none;
@@ -247,13 +246,12 @@ td{
 .textbox1{
   width:96%;
   padding: 1% 1% 1% 1%;
+  margin:0.5%;
   height:96%;
   font-size: x-large;
 }
 
 .btn{
-  /*-webkit-border-radius: 4;*/
- /* -moz-border-radius: 4;*/
   font-family: Arial;
   color: #ffffff;
   font-size: 14px;
@@ -307,5 +305,6 @@ select{
   border: 10px;
   overflow-y: scroll;
 }
+
 
 

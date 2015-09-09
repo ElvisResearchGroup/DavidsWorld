@@ -5,33 +5,69 @@ var library;
 var world = [];
 var stage_obj_map = [];
 var selected_object;
+var Colour = {
+  red:4280549631,
+  green:1355315455,
+  blue:8388607,
+  orange:4289003775,
+  yellow:4294377727,
+  purple:3664828159,
+  brown:3430359807,
+  black:255,
+  white:4294967295
+};
+
+stage.on('message', handleMessage);
 
 //block dealing with loading from JSON
 function buildWorld(){
-	generateRandomWorld(0); //This should be removed or modified to always draw a set world
+
+	generateRandomWorld(5);
 }
+
+function handleMessage(message) {
+    console.log('message', message);
+    if (message === 'getworldforeval'){
+        //TODO process world to be what is expected.
+        stage.sendMessage('evalworld', updateWorld());
+    }
+
+}
+
+stage.on('message:addobject', function(data){
+  addObject(data.type, data.x, data.y, data.width, data.height, data.colour);
+  
+});
 
 function getSelectedObject(){
   return selected_object;
 }
 
+function getColours(){
+ return Colour; 
+}
 function setLibrary(lib){
     library = lib;
 }
-function getEvalWorld(){
-  var scope = [];
+function updateWorld(){
+    var updatedWorld = [];
+    var item;
+    if(stage_obj_map.length != world.length)
+	console.log("Something is wrong. Error in world mapping");
     for(var i = 0; i < stage_obj_map.length; i++){
-      var attr = stage_obj_map[i]._attributes;
-      var obj = {
-	type:world[i].type,
-	x:attr.x,
-	y:attr.y,
-	colour:attr.fillColor
-      }
-      scope[i] = obj;      
+	item = {};
+	item.x = stage_obj_map[i]._attributes.x;
+	item.y = stage_obj_map[i]._attributes.y;
+	item.colour = stage_obj_map[i]._attributes.fillColor;
+	item.type = world[i].type;
+	updatedWorld.push(item);
+	console.log('from world', item);
     }
     
-    return scope;
+    world = updatedWorld;
+    console.log('updated', world);
+    
+    return updatedWorld;
 }
 
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
@@ -81,48 +117,51 @@ function generateWorldFromFile(worldTree){
     
 }  
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function generateRandomWorld(size){
   for (var i = 0; i < size; i++)
 	{	
 	  var type = parseInt(""+(Math.random() * 3));
+	  var types = ["Rectangle","Circle","Triangle"]; //TODO change/remove
 	  var x = Math.random()*400+100;
 	  var y = Math.random()*400+100;
-	  addObject(type,x,y,50,50, color('white').randomize());
+	  var colour_list = Object.keys(Colour);
+	  var colour = Colour[colour_list[parseInt(""+Math.random()*colour_list.length)]];
+	  addObject(types[type],x,y,50,50, colour);
 	}
 }
 
 //Passing null for x->height will make it use the default values.
-function addObject(obj_index, x, y, width, height, colour){
-    var lib_obj = library[obj_index];
+function addObject(obj_type, x, y, width, height, colour){
+    var lib_obj = null;
+    var i;
+    var lib;
+    for(i = 0; i < library.length; i++){
+      if(library[i].type == obj_type){
+	lib = library[i];
+	var lib_obj = {type: lib.type, colour: lib.colour, image: lib.image,
+	  x: lib.x, y: lib.y, width: lib.width, height: lib.height, field_key: lib.field_key, field_vals: lib.field_vals};
+	break;
+      }
+    }
+    if(lib_obj == null)
+      return;
     //Change the objects values based on parameters.
-    if(x != null)
+    if(x != undefined)
       lib_obj.x = x;
-    if(y != null)
+    if(y != undefined)
       lib_obj.y = y;
-    if(width != null)
+    if(width != undefined)
       lib_obj.width = width;
-    if(height != null)
+    if(height != undefined)
       lib_obj.height = height;
     if(colour != undefined)
       lib_obj.colour = colour;
     
+    console.log('libobj', lib_obj);
+    
     var index = world.length;
-    world[index] = lib_obj;
-    stage_obj_map[index] = createBonsaiShape(lib_obj);
+    world.push(lib_obj);
+    stage_obj_map.push(createBonsaiShape(lib_obj));
     
 }
 
@@ -133,7 +172,7 @@ function createBonsaiShape(obj){
     return bonsaiImage(obj);//TODO!!!!
 }
 
-function bonsaiPoly(obj){
+function bonsaiPoly(obj){ //What does this method do?
   var sides = getValue(obj, "Sides");
   var myPoly,x,y;
   if(sides <= 2){
@@ -170,7 +209,7 @@ function bonsaiPoly(obj){
   return myPoly;
 }
 
-function getValue(obj, key){
+function getValue(obj, key){ //What value is this referring to?
   var index = obj.field_key.indexOf(key);
   if(index < 0)
     return null;

@@ -111,62 +111,50 @@ function button(operator){
 	//insert operator into expression box
 	var currentExp = document.getElementById('textbox1').value;
 	console.log(currentExp);
-	if(operator=='and'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = "\u2227";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'),"\u2227");
-		}
-	}
-	else if (operator=='or'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = "\u2228";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'),"\u2228");
-		}
-	}
-	else if (operator =='not'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = "¬";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'),"¬");
-		}
-	}
-	else if (operator == 'dot'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = '\u22C5';
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'),"\u22C5");
-		}
-	}
-	else if (operator == 'for all'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = "\u2200";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'), "\u2200");
-		}
-	}
-	else if (operator == 'there exists'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value ="\u2203";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'), "\u2203");
-		}
-	}
-	else if(operator == 'clear'){
-		document.getElementById('textbox1').value = "";
-	}
-	else {
-		document.getElementById('textbox1').value = currentExp;
-	}
 
+	var symbol = getSymbol(operator);
 
+	if(currentExp == "Input expression" || symbol == ""){
+		document.getElementById('textbox1').value = symbol;
+	}
+	else{
+		insertAtCaret(document.getElementById('textbox1'), symbol);
+	}
+}s
+
+function getSymbol(operator){
+	var symbol = "";
+	switch(operator){
+		case 'and':
+			symbol = "\u2227";
+			break;
+		case 'or':
+			symbol = "\u2228";
+			break;
+		case 'not':
+			symbol = "\u00AC";
+			break;
+		case 'dot':
+			symbol = "\u22C5";
+			break;
+		case 'for all':
+			symbol = "\u2200";
+			break;
+		case 'there exists':
+			symbol = "\u2203";
+			break;
+		case 'iff':
+			symbol = "\u2261";
+			break;
+		case 'nor':
+			symbol = "\u22BD";
+			break;
+		case 'implies':
+			symbol = "\u2192";
+			break;
+
+	}
+	return symbol;
 }
 
 

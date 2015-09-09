@@ -7,7 +7,7 @@ var count = 0; //used to count expression divs
  */
 function add(ex){
 	//create a new element
-	var word = document.getElementById('textbox1').value;
+	var word = document.getElementById('txtExpr').value;
 	//var element = document.createElement("input");
 
 	//Create Labels
@@ -42,8 +42,8 @@ function add(ex){
 	resultDiv.style.display = "table-cell";
 
 	//Append the element in page
-	console.log(document.getElementById('textbox1').value);
-	if(document.getElementById('textbox1').value!="Input expression" && document.getElementById('textbox1').value.length>0){
+	console.log(document.getElementById('txtExpr').value);
+	if(document.getElementById('txtExpr').value!="Input expression" && document.getElementById('txtExpr').value.length>0){
 	output.appendChild(expressionDiv);
 	output.appendChild(resultDiv);
 	output.appendChild(lineBreak);
@@ -109,16 +109,16 @@ function setupListeners(){
 
 function button(operator){
 	//insert operator into expression box
-	var currentExp = document.getElementById('textbox1').value;
+	var currentExp = document.getElementById('txtExpr').value;
 	console.log(currentExp);
 
 	var symbol = getSymbol(operator);
 
 	if(currentExp == "Input expression" || symbol == ""){
-		document.getElementById('textbox1').value = symbol;
+		document.getElementById('txtExpr').value = symbol;
 	}
 	else{
-		insertAtCaret(document.getElementById('textbox1'), symbol);
+		insertAtCaret(document.getElementById('txtExpr'), symbol);
 	}
 }s
 

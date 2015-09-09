@@ -133,13 +133,14 @@ $(document).ready(function () {
 							</select> 
 						</div>
 						<div  class= "cell2" id = "cell7">
-							<select data-toggle="tooltip" title="Select by Name"><!--potentially change this to a text box-->
+							<input type="text" name="objNamer" id="txtExpr" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;">
+							<!--<select data-toggle="tooltip" title="Select by Name"><!--potentially change this to a text box
 								  <option selected disabled>Name</option>
 								  <option value="option1">A</option>
 								  <option value="option 2">B</option>
 								  <option value="option 3">C</option>
 								  <option value="option 4">D</option>
-							</select> 
+							</select> -->
 						</div>
 					</div>
 					</div>
@@ -147,7 +148,7 @@ $(document).ready(function () {
 						<div class="row">
 						<div class= "cell2" id = "cell8">
 							<form>
-							<input type="text" name="expression" id ="textbox1" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="textbox1" data-toggle="tooltip" title="Expression Entry"> <!-- need to rename textbox1 - be aware of dependencies--> 
+							<input type="text" name="expression" id ="txtExpr" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="txtExpr" data-toggle="tooltip" title="Expression Entry"> 
 							</form>
 						</div>
 						
@@ -155,7 +156,7 @@ $(document).ready(function () {
 					</div>
 					</div>
 					<div class= "cell2" id = "cell9">
-							<button onclick="add(document.getElementById('textbox1').value)"  type="button" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
+							<button onclick="add(document.getElementById('txtExpr').value)"  type="button" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
 						</div>
 						<div class= "cell2" id = "cell10">
 							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>

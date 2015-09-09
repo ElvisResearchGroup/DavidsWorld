@@ -12,14 +12,17 @@ function handleFileLoad(event){
 	console.log("JSON is Valid syntax - Loading file");
         gitems.push(JSON.parse(reader.result));
       }
+      if(gitems.length <= 1){
+	loadLocal(gitems);
+      }
     });
     reader.readAsText(f);
    
   
 
   }
+  console.log("hi");
   
-  loadLocal(gitems);
 }
 
 
@@ -69,8 +72,8 @@ function saveLocal(){
 
 //Local Load - is called by handleFileLoad
 function loadLocal(json){
-  
-  
+  console.log("hello");
+  generateWorldFromFile(json);
   
 }
 

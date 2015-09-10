@@ -114,17 +114,32 @@ function setupListeners(){
 	$('#txtExpr').keypress(function(){
 		var field = $('#txtExpr');
 		var text = field.val();
+		var length = text.length;
+		
+		var startPos = field[0].selectionStart;
+        var endPos = field[0].selectionEnd;
+        var scrollTop = field[0].scrollTop;
+
 		text = replaceString(/<->/, text, '\u2194');
 		text = replaceString(/->/, text, '\u2192');
 		text = replaceString(/\^|&/, text, '\u2227');
 		text = replaceString(/\|/, text, '\u2228');
-		text = replaceString(/!/, text, '\u00AC');
+		text = replaceString(/~/, text, '\u00AC');
 		text = replaceString(/\\x/, text, '\u22BB');
 		text = replaceString(/:/, text, '\u22C5');
 		text = replaceString(/\\e/, text, '\u2203');
 		text = replaceString(/\\a/, text, '\u2200');
-		
-		field.val(text);
+
+		if (field.val() != text){
+			field.val(text);
+
+			if (length != text.length){
+				var diff = length-text.length;
+		        field[0].selectionStart = startPos-diff;
+		        field[0].selectionEnd = startPos-diff;
+		        field[0].scrollTop = scrollTop;
+		    }
+    	}
 	});
 
 	$('#sizeInc').click(function(){

@@ -161,7 +161,7 @@ function getSymbol(operator){
 			symbol = "\u2261";
 			break;
 		case 'xor':
-			symbol = "\u2295";
+			symbol = "\u22BB";
 			break;
 		case 'implies':
 			symbol = "\u2192";

@@ -64,7 +64,9 @@ function saveLocal(){
 //Local Load - is called by handleFileLoad
 function loadLocal(json){
   console.log("hello");
-  generateWorldFromFile(json);
+
+  worldstage.sendMessage('generateWorld', json);
+  
   
 }
 

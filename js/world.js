@@ -31,8 +31,14 @@ function handleMessage(message) {
         //TODO process world to be what is expected.
         stage.sendMessage('evalworld', updateWorld());
     }
+    
 
 }
+
+stage.on('message:generateWorld', function(data){
+generateWorldFromFile(data);
+});
+
 
 stage.on('message:addobject', function(data){
   addObject(data.type, data.x, data.y, data.width, data.height, data.colour);
@@ -74,6 +80,13 @@ function updateWorld(){
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
 function generateWorldFromFile(worldTree){
   console.log("gets to here...");
+  //world = [];
+
+  stage_obj_map.forEach(function(entry){
+	
+	stage.removeChild(entry);
+	});
+//stage_obj_map = [];
   loadedLibrary = null;
   var worldObjects = [];
   var obj_list = []; //List of objects to draw to screen
@@ -82,7 +95,7 @@ function generateWorldFromFile(worldTree){
     loadedLibrary = worldTree[0]; //The library should be the only file in the buffer
     }
   
-  
+  //Make sure to Change background colour
   for(var i = 0; i<loadedLibrary.library.length; i++){
   worldObjects[i] = loadedLibrary.library[i];//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
   console.log(worldObjects[i]);
@@ -98,8 +111,11 @@ function generateWorldFromFile(worldTree){
     return false;
   }
   
+  
   obj_list.push(obj);
-  ind_list.push(lib_index);
+  
+
+ind_list.push(lib_index);
   //TODO: nullchecking for above vars
   
   
@@ -111,7 +127,7 @@ function generateWorldFromFile(worldTree){
   if(obj_list[i] != null && ind_list[i] != null){
  
   console.log("Printed a: " + obj_list[i].type + " " +ind_list[i] + " " + obj_list[i].colour);
-  addObject(ind_list[i], obj_list[i].x, obj_list[i].y, obj_list[i].width, obj_list[i].height, obj_list[i].colour);
+  addObject(obj_list[i].type, obj_list[i].x, obj_list[i].y, obj_list[i].width, obj_list[i].height, obj_list[i].colour);
   }
   }
     
@@ -132,6 +148,7 @@ function generateRandomWorld(size){
 
 //Passing null for x->height will make it use the default values.
 function addObject(obj_type, x, y, width, height, colour){
+    console.log("Adding object from inside addObject: " + "Type: " + obj_type + "X : " + x + "Y: " + y + "Wid: " + width + "height: " + height + "colour: " + colour);
     var lib_obj = null;
     var i;
     var lib;
@@ -182,9 +199,15 @@ function bonsaiPoly(obj){ //What does this method do?
   }else{
     myPoly = new Polygon(obj.x,obj.y,obj.width/2,sides);
   }
-  
+	  
+	console.log(obj.colour)
   myPoly.addTo(stage);
-  myPoly.fill(color(obj.colour))
+	var colour = obj.colour;
+	if(Object.getOwnPropertyNames(Colour).indexOf(colour.toString().toLowerCase()) > -1){
+		colour = Colour[colour.toLowerCase()];
+	}
+	console.log("Final Colour: ", colour);
+  myPoly.fill(colour)
   .stroke('#000', 2)
   .on('multi:pointerdown', function(e){
       x = this.attr('x'); 

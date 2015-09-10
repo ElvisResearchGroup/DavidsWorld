@@ -103,15 +103,12 @@ function setupListeners(){
 	
 	$('#addObj').click(function(){
 		var name = "";
-		console.log("test");
 		if($('#objNamer').val() != "Object Name"){
 			console.log("test2");
 			var temp = {type: $('#objList').val(), name: $('#objNamer').val(), colour: $('#colourList').val()};
-			console.log(temp);
 			worldstage.sendMessage('addobject', temp);
 		}
 		else{
-			console.log("test3");
 	  		worldstage.sendMessage('addobject', {type: $('#objList').val(), width:50, height: 50, colour: $('#colourList').val()});
 	  	}
 	});
@@ -148,6 +145,7 @@ function setupListeners(){
 	});
 
 	$('#sizeInc').click(function(){
+	  console.log("test")
 	  worldstage.sendMessage('changeSize', 1);
 	});
 

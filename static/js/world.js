@@ -44,9 +44,18 @@ stage.on('message:addobject', function(data){
   addObject(data.type, {x: data.x, y: data.y, width: data.width, height: data.height, def_col: data.colour});
 });
 
-stage.on('message.size', function(data){
-  console.log(data, selected_object);
-  selected_object._attributes.radius += data;
+stage.on('message:changeSize', function(data){
+  console.log("tests2", data, selected_object);
+  var scale = (data == 1) ? 1.4 : 0.71; 
+  if (!selected_object.scaleX) selected_object.scaleX = 1;
+  if (!selected_object.scaleY) selected_object.scaleY = 1;
+	 console.log(selected_object.scaleX, selected_object.scaleY);
+  selected_object.animate(10, {
+    scaleX: selected_object.scaleX*scale,
+    scaleY: selected_object.scaleY*scale
+  });
+  selected_object.scaleX = selected_object.scaleX*scale;
+  selected_object.scaleY = selected_object.scaleY*scale;
 });
 
 function getSelectedObject(){

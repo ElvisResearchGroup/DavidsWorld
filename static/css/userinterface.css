@@ -171,7 +171,7 @@ img {
   height: 100%;
   display: table-cell;
   padding: 1%;
-   border:"black";
+  border: black;
 
 }
 
@@ -251,6 +251,10 @@ td{
   height:96%;
     font-size: x-large;
 
+}
+
+.btn.symbol {
+  padding: 0px;
 }
 
 .btn{

@@ -111,6 +111,22 @@ function setupListeners(){
 	  	}
 	});
 
+	$('#txtExpr').keypress(function(){
+		var field = $('#txtExpr');
+		var text = field.val();
+		text = replaceString(/<->/, text, '\u2194');
+		text = replaceString(/->/, text, '\u2192');
+		text = replaceString(/\^|&/, text, '\u2227');
+		text = replaceString(/\|/, text, '\u2228');
+		text = replaceString(/!/, text, '\u00AC');
+		text = replaceString(/\\x/, text, '\u22BB');
+		text = replaceString(/:/, text, '\u22C5');
+		text = replaceString(/\\e/, text, '\u2203');
+		text = replaceString(/\\a/, text, '\u2200');
+		
+		field.val(text);
+	});
+
 	$('#sizeInc').click(function(){
 	  worldstage.sendMessage('changeSize', 1);
 	});
@@ -119,6 +135,15 @@ function setupListeners(){
 	  worldstage.sendMessage('changeSize', -1);
 	});
 
+}
+
+function replaceString(regex, string, replacement){
+	var changed = string.replace(regex, replacement);
+	while (changed != string){
+		string = changed;
+		changed = string.replace(regex, replacement);
+	}
+	return changed;
 }
 
 function button(operator){
@@ -158,7 +183,7 @@ function getSymbol(operator){
 			symbol = "\u2203";
 			break;
 		case 'iff':
-			symbol = "\u2261";
+			symbol = "\u2194";
 			break;
 		case 'xor':
 			symbol = "\u22BB";

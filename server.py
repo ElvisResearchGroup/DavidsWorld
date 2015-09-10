@@ -4,13 +4,6 @@ from flask import send_from_directory
 import jinja2
 app = Flask(__name__) 
 
-#Add data directory as a source of templates
-my_loader = jinja2.ChoiceLoader([
-    app.jinja_loader,
-    jinja2.FileSystemLoader('./data'),
-])
-app.jinja_loader = my_loader
-
 @app.route("/")
 def index():
     return render_template('./index.html', test=123)

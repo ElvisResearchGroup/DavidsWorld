@@ -102,7 +102,21 @@ function setupListeners(){
 	});
 	
 	$('#addObj').click(function(){
-	  worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 200, y: 200, width:50, height: 50, colour: $('#colourList').val()});
+		var name = "";
+		if($('#objNamer').val() != "Object Name"){
+			worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 10, y: 10, name: $('#objNamer').val(), colour: $('#colourList').val()});
+		}
+		else{
+	  		worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 200, y: 200, width:50, height: 50, colour: $('#colourList').val()});
+	  	}
+	});
+
+	$('#sizeInc').click(function(){
+	  worldstage.sendMessage('changeSize', 1);
+	});
+
+	$('#sizeDec').click(function(){
+	  worldstage.sendMessage('changeSize', -1);
 	});
 
 }
@@ -120,7 +134,7 @@ function button(operator){
 	else{
 		insertAtCaret(document.getElementById('txtExpr'), symbol);
 	}
-}s
+}
 
 function getSymbol(operator){
 	var symbol = "";
@@ -146,8 +160,8 @@ function getSymbol(operator){
 		case 'iff':
 			symbol = "\u2261";
 			break;
-		case 'nor':
-			symbol = "\u22BD";
+		case 'xor':
+			symbol = "\u2295";
 			break;
 		case 'implies':
 			symbol = "\u2192";

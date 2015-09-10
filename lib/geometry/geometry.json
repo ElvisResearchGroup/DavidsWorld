@@ -1,5 +1,8 @@
 {"library_name":"Geometry",
   "bg_colour":"White",
+
+  "default_radius": 10,
+
   "library":[
     {"type":"Rectangle",
       "poly":4,
@@ -15,6 +18,37 @@
     {"type":"Circle",
       "def_col":"yellow",
       "poly":0,
+      "radius":10
+    },
+    {"type":"Pentagon",
+      "def_col":"blue",
+      "poly":5,
+      "radius":10
+    },  
+    
+    {"type":"Hexagon",
+      "def_col":"blue",
+      "poly":6,
+      "radius":10
+    },  
+    {"type":"Heptagon",
+      "def_col":"blue",
+      "poly":7,
+      "radius":10
+    },  
+    {"type":"Octagon",
+      "def_col":"blue",
+      "poly":8,
+      "radius":10
+    },  
+    {"type":"Nonagon",
+      "def_col":"blue",
+      "poly":9,
+      "radius":10
+    },  
+    {"type":"Decagon",
+      "def_col":"blue",
+      "poly":10s,
       "radius":10
     }
 

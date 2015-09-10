@@ -122,10 +122,10 @@ $(document).ready(function () {
 					<div class="table">
 						<div class="row">
 						<div class= "cell2" id = "cell4">
-							<button type="button" class="btn" data-toggle="tooltip" title="ObjectBigger">Bigger</button>
+							<button type="button" class="btn" data-toggle="tooltip" title="ObjectBigger" id="sizeInc">Bigger</button>
 						</div>
 						<div class= "cell2" id = "cell5">
-							<button type="button" class="btn" data-toggle="tooltip" title="ObjectSmaller">Smaller</button>
+							<button type="button" class="btn" data-toggle="tooltip" title="ObjectSmaller" id="sizeDec">Smaller</button>
 						</div>
 						<div  class= "cell2" id = "cell6">
 							<select id="colourList" data-toggle="tooltip" title="Select By Colour">
@@ -133,14 +133,7 @@ $(document).ready(function () {
 							</select> 
 						</div>
 						<div  class= "cell2" id = "cell7">
-							<input type="text" name="objNamer" id="txtExpr" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;">
-							<!--<select data-toggle="tooltip" title="Select by Name"><!--potentially change this to a text box
-								  <option selected disabled>Name</option>
-								  <option value="option1">A</option>
-								  <option value="option 2">B</option>
-								  <option value="option 3">C</option>
-								  <option value="option 4">D</option>
-							</select> -->
+							<input type="text" name="objNamer" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;">
 						</div>
 					</div>
 					</div>
@@ -192,7 +185,7 @@ $(document).ready(function () {
 							<button type="button" class="btn" onclick="button('dot')" data-toggle="tooltip" title="Seperator"><img class="autoResizeImage" src="Buttons/dot.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<button type="button" class="btn" onclick="button('nor')" data-toggle="tooltip" title="Not Or"><img class="autoResizeImage" src="Buttons/nor.png" align="middle"></button>
+							<button type="button" class="btn" onclick="button('xor')" data-toggle="tooltip" title="Exclusive Or"><img class="autoResizeImage" src="Buttons/xor.png" align="middle"></button>
 						</div>
 					</div>
 					<div class="row">

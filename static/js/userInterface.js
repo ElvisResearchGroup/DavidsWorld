@@ -13,11 +13,19 @@ function add(ex){
 	//Create Labels
 	var expressionDiv = document.createElement("div");
 	var resultDiv = document.createElement("div");  
+	var deleteDiv = document.createElement("div");
 	expressionDiv.innerHTML = word;
 	resultDiv.innerHTML = ' - ';
 	expressionDiv.id = count++;
 	resultDiv.id = expressionDiv.id.toString() + 'b';
+	deleteDiv.id = expressionDiv.id.toString() + 'c'; //MIGHT NOT WORK
+	deleteDiv.innerHTML = '<select>
+								<option value = 'X'>X</option><button onclick="delete(' + expressionDiv.id + ')">delete</button>
+								</select>
+								'; //MIGHT NOT WORK
 	expArray.push(expressionDiv.id);
+
+
 
 	//add styling to expression div
 	expressionDiv.style.fontWeight = "normal";
@@ -40,15 +48,22 @@ function add(ex){
 	//foo.style.display = "table-row";
 	expressionDiv.style.display = "table-cell";
 	resultDiv.style.display = "table-cell";
+	deleteDiv.style.display = "table-cell";
 
 	//Append the element in page
 	console.log(document.getElementById('txtExpr').value);
 	if(document.getElementById('txtExpr').value!="Input expression" && document.getElementById('txtExpr').value.length>0){
 	output.appendChild(expressionDiv);
 	output.appendChild(resultDiv);
+	output.appendChild(deleteDiv);
 	output.appendChild(lineBreak);
 	}
 
+}
+
+function delete(divId){ //MIGHT NOT WORK
+	var div = document.getElementById(divId);
+	div.parentNode.removeChild(div);
 }
 
 /**

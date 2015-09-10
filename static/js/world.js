@@ -46,16 +46,12 @@ stage.on('message:addobject', function(data){
 
 stage.on('message:changeSize', function(data){
   console.log("tests2", data, selected_object);
-  var scale = (data == 1) ? 1.4 : 0.71; 
-  if (!selected_object.scaleX) selected_object.scaleX = 1;
-  if (!selected_object.scaleY) selected_object.scaleY = 1;
-	 console.log(selected_object.scaleX, selected_object.scaleY);
+  var scale = (data == 1) ? 1.4 : (1/1.4); 
+  
+  console.log(Object.getOwnPropertyNames(selected_object));
   selected_object.animate(10, {
-    scaleX: selected_object.scaleX*scale,
-    scaleY: selected_object.scaleY*scale
+      radius: selected_object._attributes.radius*scale
   });
-  selected_object.scaleX = selected_object.scaleX*scale;
-  selected_object.scaleY = selected_object.scaleY*scale;
 });
 
 function getSelectedObject(){
@@ -69,22 +65,26 @@ function setLibrary(lib){
     library = lib;
 }
 function updateWorld(){
-    var updatedWorld = [];
     var item;
     if(stage_obj_map.length != world.length)
 	console.log("Something is wrong. Error in world mapping");
     for(var i = 0; i < stage_obj_map.length; i++){
-	item = {};
-	item.x = stage_obj_map[i]._attributes.x;
-	item.y = stage_obj_map[i]._attributes.y;
-	item.colour = stage_obj_map[i]._attributes.fillColor;
-	item.type = world[i].type;
-	updatedWorld.push(item);
+      	item = world[i];
+      	item.x = stage_obj_map[i]._attributes.x;
+      	item.y = stage_obj_map[i]._attributes.y;
+      	item.colour = stage_obj_map[i]._attributes.fillColor;
+      	item.type = world[i].type;
+        if(item.radius !== undefined){
+          item.radius = stage_obj_map[i]._attributes.radius;
+        }
+        else if(item.width !== undefined && item.height !== undefined){
+          item.height = stage_obj_map[i]._attributes.height;
+          item.width = stage_obj_map[i]._attributes.width; 
+        }
+        console.log('item', item, world[i]);
     }
     
-    world = updatedWorld;
-    
-    return updatedWorld;
+    return world;
 }
 
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai

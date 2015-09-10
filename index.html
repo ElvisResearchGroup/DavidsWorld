@@ -68,7 +68,9 @@ $(document).ready(function () {
 		  console.log('ready');
 		  //$('[data-toggle="tooltip"]').tooltip();
 		  var library_name = "geometry";
+                  console.log(library_name);
 		  $.getJSON("lib/" + library_name + "/" + library_name + ".json", function(data){
+console.log(library_name + "2" );
 				console.log(data);
 				setLibrary(data.library);
 				worldstage = bonsai.run(document.getElementById('world'),{

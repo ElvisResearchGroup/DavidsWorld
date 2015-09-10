@@ -7,7 +7,7 @@ var count = 0; //used to count expression divs
  */
 function add(ex){
 	//create a new element
-	var word = document.getElementById('textbox1').value;
+	var word = document.getElementById('txtExpr').value;
 	//var element = document.createElement("input");
 
 	//Create Labels
@@ -42,8 +42,8 @@ function add(ex){
 	resultDiv.style.display = "table-cell";
 
 	//Append the element in page
-	console.log(document.getElementById('textbox1').value);
-	if(document.getElementById('textbox1').value!="Input expression" && document.getElementById('textbox1').value.length>0){
+	console.log(document.getElementById('txtExpr').value);
+	if(document.getElementById('txtExpr').value!="Input expression" && document.getElementById('txtExpr').value.length>0){
 	output.appendChild(expressionDiv);
 	output.appendChild(resultDiv);
 	output.appendChild(lineBreak);
@@ -102,71 +102,73 @@ function setupListeners(){
 	});
 	
 	$('#addObj').click(function(){
-	  worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 200, y: 200, width:50, height: 50, colour: $('#colourList').val()});
+		var name = "";
+		if($('#objNamer').val() != "Object Name"){
+			worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 10, y: 10, name: $('#objNamer').val(), colour: $('#colourList').val()});
+		}
+		else{
+	  		worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 200, y: 200, width:50, height: 50, colour: $('#colourList').val()});
+	  	}
+	});
+
+	$('#sizeInc').click(function(){
+	  worldstage.sendMessage('changeSize', 1);
+	});
+
+	$('#sizeDec').click(function(){
+	  worldstage.sendMessage('changeSize', -1);
 	});
 
 }
 
 function button(operator){
 	//insert operator into expression box
-	var currentExp = document.getElementById('textbox1').value;
+	var currentExp = document.getElementById('txtExpr').value;
 	console.log(currentExp);
-	if(operator=='and'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = "\u2227";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'),"\u2227");
-		}
-	}
-	else if (operator=='or'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = "\u2228";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'),"\u2228");
-		}
-	}
-	else if (operator =='not'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = "¬";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'),"¬");
-		}
-	}
-	else if (operator == 'dot'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = '\u22C5';
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'),"\u22C5");
-		}
-	}
-	else if (operator == 'for all'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value = "\u2200";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'), "\u2200");
-		}
-	}
-	else if (operator == 'there exists'){
-		if(currentExp=="Input expression"){
-			document.getElementById('textbox1').value ="\u2203";
-		}
-		else{
-			insertAtCaret(document.getElementById('textbox1'), "\u2203");
-		}
-	}
-	else if(operator == 'clear'){
-		document.getElementById('textbox1').value = "";
-	}
-	else {
-		document.getElementById('textbox1').value = currentExp;
-	}
 
+	var symbol = getSymbol(operator);
 
+	if(currentExp == "Input expression" || symbol == ""){
+		document.getElementById('txtExpr').value = symbol;
+	}
+	else{
+		insertAtCaret(document.getElementById('txtExpr'), symbol);
+	}
+}
+
+function getSymbol(operator){
+	var symbol = "";
+	switch(operator){
+		case 'and':
+			symbol = "\u2227";
+			break;
+		case 'or':
+			symbol = "\u2228";
+			break;
+		case 'not':
+			symbol = "\u00AC";
+			break;
+		case 'dot':
+			symbol = "\u22C5";
+			break;
+		case 'for all':
+			symbol = "\u2200";
+			break;
+		case 'there exists':
+			symbol = "\u2203";
+			break;
+		case 'iff':
+			symbol = "\u2261";
+			break;
+		case 'xor':
+			symbol = "\u22BB";
+			break;
+		case 'implies':
+			symbol = "\u2192";
+			break;
+
+	}
+	return symbol;
 }
 
 

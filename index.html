@@ -122,10 +122,10 @@ $(document).ready(function () {
 					<div class="table">
 						<div class="row">
 						<div class= "cell2" id = "cell4">
-							<button type="button" class="btn" data-toggle="tooltip" title="ObjectBigger">Bigger</button>
+							<button type="button" class="btn" data-toggle="tooltip" title="ObjectBigger" id="sizeInc">Bigger</button>
 						</div>
 						<div class= "cell2" id = "cell5">
-							<button type="button" class="btn" data-toggle="tooltip" title="ObjectSmaller">Smaller</button>
+							<button type="button" class="btn" data-toggle="tooltip" title="ObjectSmaller" id="sizeDec">Smaller</button>
 						</div>
 						<div  class= "cell2" id = "cell6">
 							<select id="colourList" data-toggle="tooltip" title="Select By Colour">
@@ -133,34 +133,22 @@ $(document).ready(function () {
 							</select> 
 						</div>
 						<div  class= "cell2" id = "cell7">
-							<select data-toggle="tooltip" title="Select by Name"><!--potentially change this to a text box-->
-								  <option selected disabled>Name</option>
-								  <option value="option1">A</option>
-								  <option value="option 2">B</option>
-								  <option value="option 3">C</option>
-								  <option value="option 4">D</option>
-							</select> 
+							<input type="text" name="objNamer" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;">
 						</div>
 					</div>
 					</div>
-					<div class="table">
-						<div class="row">
-						<div class= "cell2" id = "cell8">
-							<form>
-							<input type="text" name="expression" id ="textbox1" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="textbox1" data-toggle="tooltip" title="Expression Entry"> <!-- need to rename textbox1 - be aware of dependencies--> 
-							</form>
-						</div>
-						
-						
-					</div>
+					<div class="table">						
+						<form>
+							<input type="text" name="expression" id ="txtExpr" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="txtExpr" data-toggle="tooltip" title="Expression Entry"> 
+							</form>						
 					</div>
 					<div class= "cell2" id = "cell9">
-							<button onclick="add(document.getElementById('textbox1').value)"  type="button" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
-						</div>
-						<div class= "cell2" id = "cell10">
+							<button onclick="add(document.getElementById('txtExpr').value)"  type="button" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
+					</div>
+					<div class= "cell2" id = "cell10">
 							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
-						</div>
-					<div class="table">
+					</div>
+					<!--<div class="table">
 					
 					<input type="file" id="files" name="files[]" multiple style="display:none;"/>
                                                 <output id="list"></output>
@@ -168,7 +156,7 @@ $(document).ready(function () {
 						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
                                                 </script>
 					  <button type="button" id="fileSelect" class="btn" onclick="fileLoader()" data-toggle="tooltip" title="Select a file to load." >Load File</button>
-					</div>
+					</div>-->
 					
 				</div>
 				<div class = "symbolsBox">
@@ -179,6 +167,9 @@ $(document).ready(function () {
 						<div class ="cell">
 							<button type="button" class="btn" onclick="button('or')" data-toggle="tooltip" title="Logical Or"><img class="autoResizeImage" src="Buttons/or.png" align="middle"></button>
 						</div>
+						<div class ="cell">
+							<button type="button" class="btn" onclick="button('iff')" data-toggle="tooltip" title="Iff"><img class="autoResizeImage" src="Buttons/iff.png" align="middle"></button>
+						</div>
 					</div>
 					<div class="row">
 						<div class ="cell">
@@ -186,6 +177,9 @@ $(document).ready(function () {
 						</div>
 						<div class ="cell">
 							<button type="button" class="btn" onclick="button('dot')" data-toggle="tooltip" title="Seperator"><img class="autoResizeImage" src="Buttons/dot.png" align="middle"></button>
+						</div>
+						<div class ="cell">
+							<button type="button" class="btn" onclick="button('xor')" data-toggle="tooltip" title="Exclusive or"><img class="autoResizeImage" src="Buttons/xor.png" align="middle"></button>
 						</div>
 					</div>
 					<div class="row">
@@ -195,7 +189,17 @@ $(document).ready(function () {
 						<div class ="cell">
 							<button type="button" class="btn" onclick="button('there exists')" data-toggle="tooltip" title="There Exists"><img class="autoResizeImage" src="Buttons/thereexists.png" align="middle"></button>
 						</div>
+						<div class ="cell">
+							<button type="button" class="btn" onclick="button('implies')" data-toggle="tooltip" title="Implies"><img class="autoResizeImage" src="Buttons/implies.png" align="middle"></button>
+						</div>
 					</div>
+
+					<input type="file" id="files" name="files[]" multiple style="display:none;"/>
+                                                <output id="list"></output>
+                                                <script>
+						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
+                                                </script>
+					  <button type="button" id="fileSelect" class="btn" onclick="fileLoader()" data-toggle="tooltip" title="Select a file to load." >Load File</button>
 			<!--Top box-->
 
 				</div>

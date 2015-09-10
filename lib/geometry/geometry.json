@@ -1,47 +1,55 @@
 {"library_name":"Geometry",
   "bg_colour":"White",
+
+  "default_radius": 10,
+
   "library":[
     {"type":"Rectangle",
-      "colour":"Black",
-      "x":0,
-      "y":0,
-      "width":-1,
-      "height":-1,
-      "image":"\\poly",
-      "field_key":[
-	  "Sides"
-      ],
-      "field_vals":[
-	  4
-      ]
+      "poly":4,
+      "def_col":"Black",
+      "width":10,
+      "height":10,
     },
     {"type":"Triangle",
-      "colour":"blue",
-      "image":"\\poly",
-      "x":0,
-      "y":0,
-      "width":-1,
-      "height":-1,
-      "field_key":[
-	"Sides"
-      ],
-      "field_vals":[
-	3
-      ]
+      "def_col":"blue",
+      "poly":3,
+      "radius":10
     },    
     {"type":"Circle",
-      "colour":"yellow",
-      "image":"\\poly",
-      "x":0,
-      "y":0,
-      "width":-1,
-      "height":-1,
-      "field_key":[
-	"Sides"
-      ],
-      "field_vals":[
-	0
-      ]
+      "def_col":"yellow",
+      "poly":0,
+      "radius":10
+    },
+    {"type":"Pentagon",
+      "def_col":"blue",
+      "poly":5,
+      "radius":10
+    },  
+    
+    {"type":"Hexagon",
+      "def_col":"blue",
+      "poly":6,
+      "radius":10
+    },  
+    {"type":"Heptagon",
+      "def_col":"blue",
+      "poly":7,
+      "radius":10
+    },  
+    {"type":"Octagon",
+      "def_col":"blue",
+      "poly":8,
+      "radius":10
+    },  
+    {"type":"Nonagon",
+      "def_col":"blue",
+      "poly":9,
+      "radius":10
+    },  
+    {"type":"Decagon",
+      "def_col":"blue",
+      "poly":10s,
+      "radius":10
     }
 
   ]

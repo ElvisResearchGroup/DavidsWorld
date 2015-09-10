@@ -103,11 +103,16 @@ function setupListeners(){
 	
 	$('#addObj').click(function(){
 		var name = "";
+		console.log("test");
 		if($('#objNamer').val() != "Object Name"){
-			worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 10, y: 10, name: $('#objNamer').val(), colour: $('#colourList').val()});
+			console.log("test2");
+			var temp = {type: $('#objList').val(), name: $('#objNamer').val(), colour: $('#colourList').val()};
+			console.log(temp);
+			worldstage.sendMessage('addobject', temp);
 		}
 		else{
-	  		worldstage.sendMessage('addobject', {type: $('#objList').val(), x: 200, y: 200, width:50, height: 50, colour: $('#colourList').val()});
+			console.log("test3");
+	  		worldstage.sendMessage('addobject', {type: $('#objList').val(), width:50, height: 50, colour: $('#colourList').val()});
 	  	}
 	});
 

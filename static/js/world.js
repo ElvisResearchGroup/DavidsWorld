@@ -1,5 +1,6 @@
 
 var library_name;
+var DEFAULT_X = 10, DEFAULT_Y = 10;
 var bg_colour;
 var library;
 var world = [];
@@ -30,8 +31,7 @@ function handleMessage(message) {
     if (message === 'getworldforeval'){
         //TODO process world to be what is expected.
         stage.sendMessage('evalworld', updateWorld());
-    }
-    
+    }    
 
 }
 
@@ -41,8 +41,12 @@ generateWorldFromFile(data);
 
 
 stage.on('message:addobject', function(data){
-  addObject(data.type, data.x, data.y, data.width, data.height, data.colour);
-  
+  addObject(data.type, {x: data.x, y: data.y, width: data.width, height: data.height, def_col: data.colour});
+});
+
+stage.on('message.size', function(data){
+  console.log(data, selected_object);
+  selected_object._attributes.radius += data;
 });
 
 function getSelectedObject(){
@@ -67,11 +71,9 @@ function updateWorld(){
 	item.colour = stage_obj_map[i]._attributes.fillColor;
 	item.type = world[i].type;
 	updatedWorld.push(item);
-	console.log('from world', item);
     }
     
     world = updatedWorld;
-    console.log('updated', world);
     
     return updatedWorld;
 }
@@ -79,7 +81,6 @@ function updateWorld(){
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
 function generateWorldFromFile(worldTree){
-  console.log("gets to here...");
   //world = [];
 
   stage_obj_map.forEach(function(entry){
@@ -98,7 +99,6 @@ function generateWorldFromFile(worldTree){
   //Make sure to Change background colour
   for(var i = 0; i<loadedLibrary.library.length; i++){
   worldObjects[i] = loadedLibrary.library[i];//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
-  console.log(worldObjects[i]);
   var obj = worldObjects[i];
   var lib_index = null;
   for(var index = 0; index < library.length;index++){
@@ -126,8 +126,7 @@ ind_list.push(lib_index);
     
   if(obj_list[i] != null && ind_list[i] != null){
  
-  console.log("Printed a: " + obj_list[i].type + " " +ind_list[i] + " " + obj_list[i].colour);
-  addObject(obj_list[i].type, obj_list[i].x, obj_list[i].y, obj_list[i].width, obj_list[i].height, obj_list[i].colour);
+  createBonsaiShape(obj_list[i]);
   }
   }
     
@@ -142,71 +141,70 @@ function generateRandomWorld(size){
 	  var y = Math.random()*400+100;
 	  var colour_list = Object.keys(Colour);
 	  var colour = Colour[colour_list[parseInt(""+Math.random()*colour_list.length)]];
-	  addObject(types[type],x,y,50,50, colour);
+	  addObject(types[type]);
 	}
 }
 
 //Passing null for x->height will make it use the default values.
-function addObject(obj_type, x, y, width, height, colour){
-    console.log("Adding object from inside addObject: " + "Type: " + obj_type + "X : " + x + "Y: " + y + "Wid: " + width + "height: " + height + "colour: " + colour);
-    var lib_obj = null;
-    var i;
-    var lib;
-    for(i = 0; i < library.length; i++){
+function addObject(obj_type, data){
+    var lib_obj = new Object();
+
+    //Cloning the object from the library.
+
+    for(var i = 0; i < library.length; i++){
+	//If we find the correct object to create from.
       if(library[i].type == obj_type){
-	lib = library[i];
-	var lib_obj = {type: lib.type, colour: lib.colour, image: lib.image,
-	  x: lib.x, y: lib.y, width: lib.width, height: lib.height, field_key: lib.field_key, field_vals: lib.field_vals};
-	break;
+	var keys = Object.keys(library[i]).forEach(function(key){
+	    if(data != null && Object.keys(data).indexOf(key) >= 0 && data[key] != undefined){
+		lib_obj[key] = data[key];
+	    }
+	    else
+		lib_obj[key] = library[i][key];
+	});
+	//lib_obj = Object.clone(library[i].prototype);
+
       }
     }
-    if(lib_obj == null)
-      return;
-    //Change the objects values based on parameters.
-    if(x != undefined)
-      lib_obj.x = x;
-    if(y != undefined)
-      lib_obj.y = y;
-    if(width != undefined)
-      lib_obj.width = width;
-    if(height != undefined)
-      lib_obj.height = height;
-    if(colour != undefined)
-      lib_obj.colour = colour;
-    
-    console.log('libobj', lib_obj);
-    
-    var index = world.length;
-    world.push(lib_obj);
-    stage_obj_map.push(createBonsaiShape(lib_obj));
-    
+    lib_obj["x"] = DEFAULT_X;
+    lib_obj["y"] = DEFAULT_Y; 
+    createBonsaiShape(lib_obj);
 }
 
 function createBonsaiShape(obj){
-  if(obj.image == "\\poly")
-      return bonsaiPoly(obj);
+  var index = world.length;
+  var bonsaiObj;
+  
+  if(obj.poly >= 0)
+      bonsaiObj = bonsaiPoly(obj);
   else
-    return bonsaiImage(obj);//TODO!!!!
+      bonsaiObj = bonsaiImage(obj);//TODO!!!!
+      
+  world.push(obj);
+  stage_obj_map.push(bonsaiObj);
+     
+}
+
+function bonsaiImage(obj){
+	//TODO!!!
 }
 
 function bonsaiPoly(obj){ //What does this method do?
-  var sides = getValue(obj, "Sides");
-  var myPoly,x,y;
+  var sides = obj.poly;
+  var myPoly;
   if(sides <= 2){
-    myPoly = new Circle(obj.x,obj.y,obj.width/2);
+ 
+    myPoly = new Circle(obj.x, obj.y, obj.radius);
   }else if(sides == 4){
-    myPoly = new Rect(obj.x, obj.y, obj.width, obj.height);
+    myPoly = new Rect(DEFAULT_X, DEFAULT_Y, obj.width, obj.height);
   }else{
-    myPoly = new Polygon(obj.x,obj.y,obj.width/2,sides);
+    myPoly = new Polygon(DEFAULT_X,DEFAULT_Y,obj.radius,obj.poly);
   }
 	  
-	console.log(obj.colour)
   myPoly.addTo(stage);
-	var colour = obj.colour;
-	if(Object.getOwnPropertyNames(Colour).indexOf(colour.toString().toLowerCase()) > -1){
-		colour = Colour[colour.toLowerCase()];
-	}
-	console.log("Final Colour: ", colour);
+  var colour = obj.def_col;
+  if(Object.getOwnPropertyNames(Colour).indexOf(colour.toString().toLowerCase()) > -1){
+	colour = Colour[colour.toLowerCase()];
+  }
   myPoly.fill(colour)
   .stroke('#000', 2)
   .on('multi:pointerdown', function(e){
@@ -217,11 +215,10 @@ function bonsaiPoly(obj){ //What does this method do?
   .on('multi:drag', function(e){
     this.attr({
 	x: x + e.diffX,
-	y: y+ e.diffY
+	y: y + e.diffY
       });
    })
   .on("pointerdown", function(e){
-    console.log(selected_object);
     if(!(selected_object === undefined))
       selected_object.stroke("#000", 2);
     this.stroke("#FFF", 2);
@@ -232,12 +229,12 @@ function bonsaiPoly(obj){ //What does this method do?
   return myPoly;
 }
 
-function getValue(obj, key){ //What value is this referring to?
+/**function getValue(obj, key){ //What value is this referring to?
   var index = obj.field_key.indexOf(key);
   if(index < 0)
     return null;
   return obj.field_vals[index];
-}
+}*/
 
 function moveObj(obj, x, y){
     var index = world.indexOf(obj);

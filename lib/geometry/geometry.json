@@ -1,56 +1,62 @@
-{"library_name":"Geometry",
+{
+  "library_name":"Geometry",
   "bg_colour":"White",
-
   "default_radius": 10,
-
   "library":[
-    {"type":"Rectangle",
+    {
+      "type":"Rectangle",
       "poly":4,
       "def_col":"Black",
       "width":10,
-      "height":10,
+      "height":10
     },
-    {"type":"Triangle",
+    {
+      "type":"Triangle",
       "def_col":"blue",
       "poly":3,
       "radius":10
     },    
-    {"type":"Circle",
+    {
+      "type":"Circle",
       "def_col":"yellow",
       "poly":0,
       "radius":10
     },
-    {"type":"Pentagon",
+    {
+      "type":"Pentagon",
       "def_col":"blue",
       "poly":5,
       "radius":10
     },  
-    
-    {"type":"Hexagon",
+    {
+      "type":"Hexagon",
       "def_col":"blue",
       "poly":6,
       "radius":10
     },  
-    {"type":"Heptagon",
+    {
+      "type":"Heptagon",
       "def_col":"blue",
       "poly":7,
       "radius":10
     },  
-    {"type":"Octagon",
+    {
+      "type":"Octagon",
       "def_col":"blue",
       "poly":8,
       "radius":10
     },  
-    {"type":"Nonagon",
+    {
+      "type":"Nonagon",
       "def_col":"blue",
       "poly":9,
       "radius":10
     },  
-    {"type":"Decagon",
+    {
+      "type":"Decagon",
       "def_col":"blue",
-      "poly":10s,
+      "poly":10,
       "radius":10
     }
-
   ]
 }

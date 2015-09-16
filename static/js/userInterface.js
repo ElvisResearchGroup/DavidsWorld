@@ -67,26 +67,20 @@ function add(ex){
 }
 
 function deleteExp(divId){ //MIGHT NOT WORK
-	if(!pressedGo){
-		go();
-		pressedGo = true;
-		deleteExp(divId);
+	var expressionDiv = document.getElementById(divId);
+	expressionDiv.parentNode.removeChild(expressionDiv);
+	var resultDiv = document.getElementById(divId+'b');
+	resultDiv.parentNode.removeChild(resultDiv);
+	var deleteDiv = document.getElementById(divId+'c');
+	deleteDiv.parentNode.removeChild(deleteDiv);
+	var lineBreak = document.getElementById(divId+'d');
+	lineBreak.parentNode.removeChild(lineBreak);
+	var index = -1;
+	for (i = 0; i < expArray.length; i++) {
+		if (expArray[i] == divId) index = i;
 	}
-	else{
-		var expressionDiv = document.getElementById(divId);
-		expressionDiv.parentNode.removeChild(expressionDiv);
-		var resultDiv = document.getElementById(divId+'b');
-		resultDiv.parentNode.removeChild(resultDiv);
-		var deleteDiv = document.getElementById(divId+'c');
-		deleteDiv.parentNode.removeChild(deleteDiv);
-		var lineBreak = document.getElementById(divId+'d');
-		lineBreak.parentNode.removeChild(lineBreak);
-		var index = expArray.indexOf(divId);
-		if (index > -1){
-			expArray.splice(index, 1);
-		}
-		console.log(divId + "delete div id");
-		console.log(expArray+" delete phase");
+	if (index > -1){
+		expArray.splice(index, 1);
 	}
 }
 

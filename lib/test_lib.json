@@ -1,14 +1,16 @@
 {"library_name":"Example library",
+  "Ver":"1.2",
 
   "bg_colour":"White",
-  "grid_size": 50,
-
+  "grid_width": 50,
+  "gird_height": 50,
+  
   "library":[
     {"obj_name":"polygon_example",
       "poly": 7,
 
       "def_col":"green",
-      "radius": 50,      
+      "size": 50,      
     },
     {"obj_name":"rectangle_example",
       "poly":4,

@@ -200,13 +200,15 @@ function bonsaiImage(obj){
 function bonsaiPoly(obj){ //What does this method do?
   var sides = obj.poly;
   var myPoly;
-  if(sides <= 2){
- 
+  if(sides == 1){
+    //We assume that the circle has a radius, and do not account for the case where the lib specifies size instead.
     myPoly = new Circle(obj.x, obj.y, obj.radius);
   }else if(sides == 4){
+    //We handle an edge case for rectangles, as the Polygon method would create a diamond shape.
     myPoly = new Rect(DEFAULT_X, DEFAULT_Y, obj.width, obj.height);
   }else{
-    myPoly = new Polygon(DEFAULT_X,DEFAULT_Y,obj.radius,obj.poly);
+    //We make the inverse assumtion to the Circle.
+    myPoly = new Polygon(DEFAULT_X,DEFAULT_Y,obj.size,obj.poly);
   }
 	  
   myPoly.addTo(stage);

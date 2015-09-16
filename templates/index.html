@@ -100,11 +100,10 @@ $(document).ready(function () {
 						<div class="row">
 						<div class= "cell2" id = "cell1">
 							<select data-toggle="tooltip" title="Library Selection">
-								  <option selected disabled>Library</option>
-								  <option value="option1">Library 1</option>
-								  <option value="option 2">Library 2</option>
-								  <option value="option 3">Library 3</option>
-								  <option value="option 4">Library 4</option>
+							{% for library in libraries %}
+								<option {% if loop.first %}selected{% endif %} 
+									value="{{ library }}">{{ library.capitalize() }}</option>
+							{% endfor %}
 							</select> 
 						</div>
 						<div class= "cell2" id = "cell2">

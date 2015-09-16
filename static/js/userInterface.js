@@ -91,7 +91,6 @@ function deleteExp(divId){ //MIGHT NOT WORK
 function go(){
 	pressedGo = true;
 	worldstage.sendMessage('getworldforeval')
-	console.log(expArray +" Go Phase");
 }
 
 function setupListeners(){

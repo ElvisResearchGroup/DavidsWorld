@@ -1,6 +1,7 @@
 
 var expArray = [];//holds ids of expression divs
 var count = 0; //used to count expression divs
+var pressedGo = false;
 
 /**
  * on click on add expression button, adds the written expression to list of expressions
@@ -15,14 +16,11 @@ function add(ex){
 	var resultDiv = document.createElement("div");  
 	var deleteDiv = document.createElement("div");
 	expressionDiv.innerHTML = word;
-	resultDiv.innerHTML = ' - ';
+	resultDiv.innerHTML = ' ';
 	expressionDiv.id = count++;
 	resultDiv.id = expressionDiv.id.toString() + 'b';
 	deleteDiv.id = expressionDiv.id.toString() + 'c'; //MIGHT NOT WORK
-	deleteDiv.innerHTML = '<select>
-								<option value = 'X'>X</option><button onclick="delete(' + expressionDiv.id + ')">delete</button>
-								</select>
-								'; //MIGHT NOT WORK
+	deleteDiv.innerHTML = "<p onclick='deleteExp(" + expressionDiv.id + ")'>X</p>"; //MIGHT NOT WORK
 	expArray.push(expressionDiv.id);
 
 
@@ -41,7 +39,14 @@ function add(ex){
 	resultDiv.style.background = "#0390B2";
 	resultDiv.style.color= "#FFFFFF";
 
+	deleteDiv.style.width = "40px";
+	deleteDiv.style.background = "#0390B2";
+	deleteDiv.style.color= "#FFFFFF";
+	deleteDiv.style.fontSize = "large";
+
 	var lineBreak = document.createElement("br");
+	lineBreak.id = expressionDiv.id.toString() + 'd';
+	console.log(lineBreak.id);
 
 	// 'output' is the div id, where new fields are to be added
 	var output = document.getElementById("outputDiv");
@@ -61,9 +66,28 @@ function add(ex){
 
 }
 
-function delete(divId){ //MIGHT NOT WORK
-	var div = document.getElementById(divId);
-	div.parentNode.removeChild(div);
+function deleteExp(divId){ //MIGHT NOT WORK
+	if(!pressedGo){
+		go();
+		pressedGo = true;
+		deleteExp(divId);
+	}
+	else{
+		var expressionDiv = document.getElementById(divId);
+		expressionDiv.parentNode.removeChild(expressionDiv);
+		var resultDiv = document.getElementById(divId+'b');
+		resultDiv.parentNode.removeChild(resultDiv);
+		var deleteDiv = document.getElementById(divId+'c');
+		deleteDiv.parentNode.removeChild(deleteDiv);
+		var lineBreak = document.getElementById(divId+'d');
+		lineBreak.parentNode.removeChild(lineBreak);
+		var index = expArray.indexOf(divId);
+		if (index > -1){
+			expArray.splice(index, 1);
+		}
+		console.log(divId + "delete div id");
+		console.log(expArray+" delete phase");
+	}
 }
 
 /**
@@ -71,15 +95,19 @@ function delete(divId){ //MIGHT NOT WORK
  */
 
 function go(){
+	pressedGo = true;
 	worldstage.sendMessage('getworldforeval')
+	console.log(expArray +" Go Phase");
 }
 
 function setupListeners(){
 	worldstage.on('message:evalworld', function(data){
-		console.log(data)
+		console.log('data '+data)
 		world = data;
-		for (id in expArray){
-			console.log(id);
+		console.log(expArray + " set up phase");
+		for (var i = 0; i < expArray.length; i++){
+			var id = expArray[i];
+			console.log('id' +id);
 			var expressionDiv = $(document.getElementById(id));
 
 

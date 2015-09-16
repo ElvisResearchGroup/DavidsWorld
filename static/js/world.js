@@ -1,11 +1,15 @@
 
+
+//----------------------------------------------------
+//Global Variables
+//----------------------------------------------------
 var library_name;
 var DEFAULT_X = 10, DEFAULT_Y = 10;
 var bg_colour;
 var library;
-var world = [];
 var stage_obj_map = [];
 var selected_object;
+
 var Colour = {
   red:4280549631,
   green:1355315455,
@@ -18,25 +22,23 @@ var Colour = {
   white:4294967295
 };
 
+
+//----------------------------------------------------
+//Messsage Handling
+//----------------------------------------------------
 stage.on('message', handleMessage);
-
-//block dealing with loading from JSON
-function buildWorld(){
-
-	generateRandomWorld(5);
-}
 
 function handleMessage(message) {
     console.log('message', message);
     if (message === 'getworldforeval'){
         //TODO process world to be what is expected.
-        stage.sendMessage('evalworld', updateWorld());
+        stage.sendMessage('evalworld', getWorld());
     }    
 
 }
 
 stage.on('message:generateWorld', function(data){
-generateWorldFromFile(data);
+  generateWorldFromFile(data);
 });
 
 
@@ -54,6 +56,9 @@ stage.on('message:changeSize', function(data){
   });
 });
 
+//----------------------------------------------------
+//Getters and Setters
+//----------------------------------------------------
 function getSelectedObject(){
   return selected_object;
 }
@@ -61,22 +66,32 @@ function getSelectedObject(){
 function getColours(){
  return Colour; 
 }
+
 function setLibrary(lib){
     library = lib;
 }
-function updateWorld(){
+
+//----------------------------------------------------
+//World Generation
+//----------------------------------------------------
+
+function getWorld(){
+    var world = [];
     var item;
-    if(stage_obj_map.length != world.length)
-	console.log("Something is wrong. Error in world mapping");
+    
     for(var i = 0; i < stage_obj_map.length; i++){
-      	item = world[i];
+      	item = new Object();
       	item.x = stage_obj_map[i]._attributes.x;
       	item.y = stage_obj_map[i]._attributes.y;
       	item.colour = stage_obj_map[i]._attributes.fillColor;
       	item.type = world[i].type;
+	item.size = stage_obj_map[i]._attribute.radius;
         if(item.radius !== undefined){
           item.radius = stage_obj_map[i]._attributes.radius;
         }
+        /**else if(!item.size){
+	    item.size = stage_obj_map[i]._attribute.radius;
+	}*/
         else if(item.width !== undefined && item.height !== undefined){
           item.height = stage_obj_map[i]._attributes.height;
           item.width = stage_obj_map[i]._attributes.width; 
@@ -90,13 +105,12 @@ function updateWorld(){
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
 function generateWorldFromFile(worldTree){
-  //world = [];
 
   stage_obj_map.forEach(function(entry){
 	
 	stage.removeChild(entry);
 	});
-//stage_obj_map = [];
+
   loadedLibrary = null;
   var worldObjects = [];
   var obj_list = []; //List of objects to draw to screen
@@ -140,20 +154,10 @@ ind_list.push(lib_index);
   }
     
 }  
-  
-function generateRandomWorld(size){
-  for (var i = 0; i < size; i++)
-	{	
-	  var type = parseInt(""+(Math.random() * 3));
-	  var types = ["Rectangle","Circle","Triangle"]; //TODO change/remove
-	  var x = Math.random()*400+100;
-	  var y = Math.random()*400+100;
-	  var colour_list = Object.keys(Colour);
-	  var colour = Colour[colour_list[parseInt(""+Math.random()*colour_list.length)]];
-	  addObject(types[type]);
-	}
-}
 
+//----------------------------------------------------
+//Object Handling
+//----------------------------------------------------
 //Passing null for x->height will make it use the default values.
 function addObject(obj_type, data){
     var lib_obj = new Object();
@@ -180,7 +184,6 @@ function addObject(obj_type, data){
 }
 
 function createBonsaiShape(obj){
-  var index = world.length;
   var bonsaiObj;
   
   if(obj.poly >= 0)
@@ -188,7 +191,7 @@ function createBonsaiShape(obj){
   else
       bonsaiObj = bonsaiImage(obj);//TODO!!!!
       
-  world.push(obj);
+  //world.push(obj);
   stage_obj_map.push(bonsaiObj);
      
 }
@@ -240,17 +243,10 @@ function bonsaiPoly(obj){ //What does this method do?
   return myPoly;
 }
 
-/**function getValue(obj, key){ //What value is this referring to?
-  var index = obj.field_key.indexOf(key);
-  if(index < 0)
-    return null;
-  return obj.field_vals[index];
-}*/
-
-function moveObj(obj, x, y){
+/**function moveObj(obj, x, y){
     var index = world.indexOf(obj);
     stage_obj_map[index].moveBy(x,y);
-}
+}*/
 
 //creates a bitmap from an image that may not be a bitmap from the start - Bonsai requires a picture to be a bitmap to draw onto the svg canvas. The bitmap is then drawn at x,y on the screen
 function drawImage(inputPath, xIn, yIn){

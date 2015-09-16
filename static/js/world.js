@@ -7,6 +7,7 @@ var library_name;
 var DEFAULT_X = 10, DEFAULT_Y = 10;
 var bg_colour;
 var library;
+var stage_obj_types = [];
 var stage_obj_map = [];
 var selected_object;
 
@@ -84,10 +85,10 @@ function getWorld(){
       	item.x = stage_obj_map[i]._attributes.x;
       	item.y = stage_obj_map[i]._attributes.y;
       	item.colour = stage_obj_map[i]._attributes.fillColor;
-      	item.type = world[i].type;
-	item.size = stage_obj_map[i]._attribute.radius;
-        if(item.radius !== undefined){
-          item.radius = stage_obj_map[i]._attributes.radius;
+      	item.type = stage_obj_types[i];
+	item.size = stage_obj_map[i]._attributes.radius*2;
+        if(!item.size){
+          item.size = Math.max(stage_obj_map[i]._attributes.width, stage_obj_map[i]._attributes.height);
         }
         /**else if(!item.size){
 	    item.size = stage_obj_map[i]._attribute.radius;
@@ -96,9 +97,10 @@ function getWorld(){
           item.height = stage_obj_map[i]._attributes.height;
           item.width = stage_obj_map[i]._attributes.width; 
         }
-        console.log('item', item, world[i]);
+        //Add the object
+	world.push(item);
     }
-    
+    console.log("World", world);
     return world;
 }
 
@@ -185,13 +187,15 @@ function addObject(obj_type, data){
 
 function createBonsaiShape(obj){
   var bonsaiObj;
+  console.log("obj test",obj)
   
   if(obj.poly >= 0)
       bonsaiObj = bonsaiPoly(obj);
   else
       bonsaiObj = bonsaiImage(obj);//TODO!!!!
       
-  //world.push(obj);
+  stage_obj_types.push(obj.type);
+  console.log(stage_obj_types);
   stage_obj_map.push(bonsaiObj);
      
 }
@@ -203,7 +207,7 @@ function bonsaiImage(obj){
 function bonsaiPoly(obj){ //What does this method do?
   var sides = obj.poly;
   var myPoly;
-  if(sides == 1){
+  if(sides <= 2){
     //We assume that the circle has a radius, and do not account for the case where the lib specifies size instead.
     myPoly = new Circle(obj.x, obj.y, obj.radius);
   }else if(sides == 4){

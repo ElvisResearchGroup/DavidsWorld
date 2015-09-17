@@ -145,7 +145,7 @@ function setupListeners(){
 	$('body').on('change', '#liblist', function(){
 		var library_name = $('#liblist').val();
 		$.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
-			setLibrary(data.library);
+			worldstage.sendMessage('setlibrary', data.library);
 			
 			worldstage.sendMessage('clearworld');
 
@@ -313,10 +313,3 @@ function update(id){
 	var textbox = document.getElementById('txtExpr');
 	textbox.value = expr;
 }
-
-document.getElementById('txtExpr').onkeypress=function(e){
-    if(e.keyCode==13){
-        document.getElementById('addExpr').click();
-    }
-}
-

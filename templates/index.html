@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="static/js/parser.js" ></script>
 		<script type="text/javascript" src="static/js/evaluation.js" ></script>
 		<script type="text/javascript" src="static/js/world.js"></script>
+		<script type="text/javascript" src="static/js/grid.js"></script>
 		<!--[if IE 6]>
 		<link rel="stylesheet" type="tex/css" href="iespecific.css" />
 		<![endif]-->
@@ -72,11 +73,9 @@ $(document).ready(function () {
 				  world: data,
 				  code: function(err, data) {
 				    library = stage.options.world.library;
-				    console.log("test", library);
 				    library_name = stage.options.world.library_name;
 				    bg_colour = stage.options.world.bg_colour;
-
-				    buildWorld();		    
+				    buildWorld();
 				  }
 				});
 				setupListeners();

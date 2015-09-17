@@ -5,6 +5,7 @@ var bg_colour;
 var library;
 var world = [];
 var stage_obj_map = [];
+var grid_lines = [[],[]];
 var selected_object;
 var Colour = {
   red:4280549631,
@@ -22,7 +23,7 @@ stage.on('message', handleMessage);
 
 //block dealing with loading from JSON
 function buildWorld(){
-
+        drawGrid(5, 5);
 	generateRandomWorld(5);
 }
 
@@ -37,6 +38,10 @@ function handleMessage(message) {
 
 stage.on('message:generateWorld', function(data){
 generateWorldFromFile(data);
+});
+
+stage.on('message:clearworld', function(){
+    clearWorld();
 });
 
 
@@ -70,8 +75,15 @@ function updateWorld(){
 	console.log("Something is wrong. Error in world mapping");
     for(var i = 0; i < stage_obj_map.length; i++){
       	item = world[i];
-      	item.x = stage_obj_map[i]._attributes.x;
-      	item.y = stage_obj_map[i]._attributes.y;
+	if(grid_lines[0].length > 0){
+	    var obj = getGridCoord(stage_obj_map[i]);
+	    item.x = obj.x;
+	    item.y = obj.y;
+	}
+	else{
+	    item.x = stage_obj_map[i]._attributes.x;
+	    item.y = stage_obj_map[i]._attributes.y;
+	}
       	item.colour = stage_obj_map[i]._attributes.fillColor;
       	item.type = world[i].type;
         if(item.radius !== undefined){
@@ -87,15 +99,46 @@ function updateWorld(){
     return world;
 }
 
+function clearWorld(){
+    stage_obj_map.forEach(function(entry){
+	
+	stage.removeChild(entry);
+    });
+    
+    for(int i = 0; i < 2; i++){
+      for(int j = 0; j < grid_lines[i].length; j++){
+	stage.removeChild(grid_lines[i][j]);
+      }
+    }
+}
+
+function getGridCoord(bonsai_obj){
+    var x, y;
+    
+    for(y = 0; y < grid_lines[0].length; y++){
+	var temp = grid_lines[0][y]._segments[0][1];
+	if(temp > bonsai_obj._attributes.y){
+	  break;
+	}
+    }
+    
+    for(x = 0; x < grid_lines[1].length;x++){
+	var temp = grid_lines[1][x]._segments[1][2];
+	if(temp > bonsai_obj._attributes.x){
+	  break;
+	}
+    }
+    console.log("test", x, y);
+    return {x: x, y: y};
+}
+
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
 function generateWorldFromFile(worldTree){
   //world = [];
 
-  stage_obj_map.forEach(function(entry){
-	
-	stage.removeChild(entry);
-	});
+  clearWorld();
+  
 //stage_obj_map = [];
   loadedLibrary = null;
   var worldObjects = [];
@@ -200,7 +243,7 @@ function bonsaiImage(obj){
 function bonsaiPoly(obj){ //What does this method do?
   var sides = obj.poly;
   var myPoly;
-  if(sides == 1){
+  if(sides <= 2){
     //We assume that the circle has a radius, and do not account for the case where the lib specifies size instead.
     myPoly = new Circle(obj.x, obj.y, obj.radius);
   }else if(sides == 4){
@@ -225,8 +268,8 @@ function bonsaiPoly(obj){ //What does this method do?
     })
   .on('multi:drag', function(e){
     this.attr({
-	x: x + e.diffX,
-	y: y + e.diffY
+	x: objMove(x, 1, e.diffX),
+	y: objMove(y, 2, e.diffY)
       });
    })
   .on("pointerdown", function(e){
@@ -238,6 +281,20 @@ function bonsaiPoly(obj){ //What does this method do?
   }); 
   
   return myPoly;
+}
+
+//i = 1, for x.
+//i = 2, for y.
+function objMove(x, i, diff){
+  var new_co = x + diff;
+  if(grid_lines[i%2].length > 0){
+    var min = grid_lines[i%2][0]._segments[0][2];
+    var max = grid_lines[i%2][grid_lines[i%2].length - 1]._segments[1][1];
+    return Math.max(min, Math.min(new_co, max));
+
+  }else{
+    return new_co;
+  }
 }
 
 /**function getValue(obj, key){ //What value is this referring to?
@@ -268,4 +325,28 @@ function drawImage(inputPath, xIn, yIn){
    
   
 }
+
+//draws grid on screen
+function drawGrid(x, y){ 
+  var cell_width = stage.width/x;
+  var cell_height = stage.height/y;
+  console.log(cell_width, cell_height);
+
+  //vertical
+ for(var i=0; i<=y;i++){
+   grid_lines[0][i] = new Path()
+   .moveTo(i*cell_height,0)
+   .lineTo(i*cell_height,stage.height)//Height
+   .stroke('#000', 1)
+   .addTo(stage);   
+ }
+ //horizontal 
+   for(var i=0; i <= x;i++){
+   grid_lines[1][i] = new Path()
+   .moveTo(0,i*cell_width)
+   .lineTo(stage.width,i*cell_width)//width
+   .stroke('#000', 1)
+   .addTo(stage);   
+ }
   
+}

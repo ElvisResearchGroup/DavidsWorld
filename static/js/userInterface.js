@@ -183,17 +183,13 @@ function setupListeners(){
 
 	$('body').on('change', '#liblist', function(){
 		var library_name = $('#liblist').val();
-		console.log('look');
 		$.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
-			console.log('data', data);
 			setLibrary(data.library);
 			
-			//TODO: Reset world
+			worldstage.sendMessage('clearworld');
 
 			populateObjectSelect(data);			
-		}).error(function(xhr) {
-            console.log('error', xhr)
-        });
+		});
 	});
 
 	$('#sizeInc').click(function(){

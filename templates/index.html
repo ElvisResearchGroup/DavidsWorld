@@ -59,7 +59,7 @@ $(document).ready(function () {
 		  console.log('ready');
 
 		  //$('[data-toggle="tooltip"]').tooltip();
-		  var library_name = "geometry";
+		  var library_name = $('#liblist').val();
 
 		  console.log('almost data');
 		  $.getJSON("lib/" + library_name + "/" + library_name + ".json", function(data){
@@ -99,7 +99,7 @@ $(document).ready(function () {
 					<div class="table">
 						<div class="row">
 						<div class= "cell2" id = "cell1">
-							<select data-toggle="tooltip" title="Library Selection">
+							<select id='liblist' data-toggle="tooltip" title="Library Selection">
 							{% for library in libraries %}
 								<option {% if loop.first %}selected{% endif %} 
 									value="{{ library }}">{{ library.capitalize() }}</option>

@@ -8,7 +8,7 @@ function parseExpr(input){
     
     //If not 'all' or 'some' then continue parsing
     if (groups === null){
-        return parseExpr2(input);
+        return parseExpr2(input.trim());
     //If 'all' or 'some' record the type as such
     } else if (groups[1] === '\u2200'){
         type = expressionTypes.ALL;

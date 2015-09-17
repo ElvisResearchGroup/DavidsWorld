@@ -140,7 +140,7 @@ $(document).ready(function () {
 							</form>						
 					</div>
 					<div class= "cell2" id = "cell9">
-							<button onclick="add(document.getElementById('txtExpr').value)"  type="button" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
+							<button onclick="add(document.getElementById('txtExpr').value); button('clear');"  type="button" id="addExpr" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
 					</div>
 					<div class= "cell2" id = "cell10">
 							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
@@ -159,35 +159,35 @@ $(document).ready(function () {
 				<div class = "symbolsBox">
 					<div class="row">
 						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('and')" data-toggle="tooltip" title="Logical And"><img class="autoResizeImage" src="static/img/and.png" align="middle"></button>
+							<button type="button" class="btn symbol" onclick="button('and')" data-toggle="tooltip" title="Logical And. ^ and & are keyboard shortcuts"><img class="autoResizeImage" src="static/img/and.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('or')" data-toggle="tooltip" title="Logical Or"><img class="autoResizeImage" src="static/img/or.png" align="middle"></button>
+							<button type="button" class="btn symbol" onclick="button('or')" data-toggle="tooltip" title="Logical Or. | is the keyboard shortcut"><img class="autoResizeImage" src="static/img/or.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('iff')" data-toggle="tooltip" title="Iff"><img class="autoResizeImage" src="static/img/iff.png" align="middle"></button>
-						</div>
-					</div>
-					<div class="row">
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('not')" data-toggle="tooltip" title="Not"><img class="autoResizeImage" src="static/img/notsymbol.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('dot')" data-toggle="tooltip" title="Seperator"><img class="autoResizeImage" src="static/img/dot.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('xor')" data-toggle="tooltip" title="Exclusive or"><img class="autoResizeImage" src="static/img/xor.png" align="middle"></button>
+							<button type="button" class="btn symbol" onclick="button('iff')" data-toggle="tooltip" title="Iff. <-> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/iff.png" align="middle"></button>
 						</div>
 					</div>
 					<div class="row">
 						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('for all')" data-toggle="tooltip" title="For All"><img class="autoResizeImage" src="static/img/all.png" align="middle"></button>
+							<button type="button" class="btn symbol" onclick="button('not')" data-toggle="tooltip" title="Not. ~ is the keyboard shortcut"><img class="autoResizeImage" src="static/img/notsymbol.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('there exists')" data-toggle="tooltip" title="There Exists"><img class="autoResizeImage" src="static/img/thereexists.png" align="middle"></button>
+							<button type="button" class="btn symbol" onclick="button('dot')" data-toggle="tooltip" title="Seperator. : is the keyboard shortcut"><img class="autoResizeImage" src="static/img/dot.png" align="middle"></button>
 						</div>
 						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('implies')" data-toggle="tooltip" title="Implies"><img class="autoResizeImage" src="static/img/implies.png" align="middle"></button>
+							<button type="button" class="btn symbol" onclick="button('xor')" data-toggle="tooltip" title="Exclusive Or. \x is the keyboard shortcut"><img class="autoResizeImage" src="static/img/xor.png" align="middle"></button>
+						</div>
+					</div>
+					<div class="row">
+						<div class ="cell">
+							<button type="button" class="btn symbol" onclick="button('for all')" data-toggle="tooltip" title="For All. \a is the keyboard shortcut"><img class="autoResizeImage" src="static/img/all.png" align="middle"></button>
+						</div>
+						<div class ="cell">
+							<button type="button" class="btn symbol" onclick="button('there exists')" data-toggle="tooltip" title="There Exists. \e is the keyboard shortcut"><img class="autoResizeImage" src="static/img/thereexists.png" align="middle"></button>
+						</div>
+						<div class ="cell">
+							<button type="button" class="btn symbol" onclick="button('implies')" data-toggle="tooltip" title="Implies. -> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/implies.png" align="middle"></button>
 						</div>
 					</div>
 

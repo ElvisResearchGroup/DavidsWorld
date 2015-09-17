@@ -181,6 +181,21 @@ function setupListeners(){
     	}
 	});
 
+	$('body').on('change', '#liblist', function(){
+		var library_name = $('#liblist').val();
+		console.log('look');
+		$.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
+			console.log('data', data);
+			setLibrary(data.library);
+			
+			//TODO: Reset world
+
+			populateObjectSelect(data);			
+		}).error(function(xhr) {
+            console.log('error', xhr)
+        });
+	});
+
 	$('#sizeInc').click(function(){
 	  console.log("test")
 	  worldstage.sendMessage('changeSize', 1);
@@ -284,16 +299,13 @@ function insertAtCaret(element, text) {
 
 function populateObjectSelect(data){
 	//What does this do??
-  var list = document.getElementById('objList');
-  console.log("Populate", data);
-  data.library.forEach(function(e){
-    console.log(e);
-    var temp = document.createElement('option');
-    temp.innerHTML = e.type;
-    list.appendChild(temp); 
-  }
-  );
-    
+	var list = $('#objList');
+	list.empty();
+  	console.log("Populate", data);
+  	data.library.forEach(function(e){
+   		console.log(e);
+   		list.append($('<option/>', {value: e.type}).text(e.type));
+	});
 }
 
 function populateColourSelect(){

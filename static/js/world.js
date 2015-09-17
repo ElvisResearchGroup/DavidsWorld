@@ -3,7 +3,6 @@
 //----------------------------------------------------
 //Global Variables
 //----------------------------------------------------
-var library_name;
 var DEFAULT_X = 10, DEFAULT_Y = 10;
 var bg_colour;
 var library;
@@ -33,15 +32,18 @@ stage.on('message', handleMessage);
 
 //block dealing with loading from JSON
 function buildWorld(){
-        drawGrid(5, 5);
-	generateRandomWorld(5);
+    if(!library.grid_width &7 !library.grid_height)
+        drawGrid(library.grid_width, library.grid_height);
+    if(!library.bg_colour){
+	//TODO set background colour
+    }
+      
 }
 
 
 function handleMessage(message) {
     console.log('message', message);
     if (message === 'getworldforeval'){
-        //TODO process world to be what is expected.
         stage.sendMessage('evalworld', getWorld());
     }    
 
@@ -77,17 +79,9 @@ function getSelectedObject(){
   return selected_object;
 }
 
-function getColours(){
- return Colour; 
-}
-
 function setLibrary(lib){
     library = lib;
 }
-
-//----------------------------------------------------
-//World Generation
-//----------------------------------------------------
 
 function getWorld(){
     var world = [];
@@ -130,6 +124,10 @@ function getWorld(){
     return world;
 }
 
+//----------------------------------------------------
+//World Handling
+//----------------------------------------------------
+
 function clearWorld(){
     stage_obj_map.forEach(function(entry){
 	
@@ -167,17 +165,8 @@ function getGridCoord(bonsai_obj){
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
 function generateWorldFromFile(worldTree){
 
-
-  stage_obj_map.forEach(function(entry){
-	
-	stage.removeChild(entry);
-	});
-
-
   clearWorld();
   
-//stage_obj_map = [];
-
   loadedLibrary = null;
   var worldObjects = [];
   var obj_list = []; //List of objects to draw to screen
@@ -219,7 +208,7 @@ ind_list.push(lib_index);
   createBonsaiShape(obj_list[i]);
   }
   }
-    
+  generateWorld();  
 }  
 
 //----------------------------------------------------
@@ -312,9 +301,6 @@ function bonsaiPoly(obj){ //What does this method do?
   return myPoly;
 }
 
-
-function moveObj(obj, x, y){
-
 //i = 1, for x.
 //i = 2, for y.
 function objMove(x, i, diff){
@@ -335,12 +321,6 @@ function getValue(obj, key){ //What value is this referring to?
     return null;
   return obj.field_vals[index];
 }
-
-/**function moveObj(obj, x, y){
-
-    var index = world.indexOf(obj);
-    stage_obj_map[index].moveBy(x,y);
-}*/
 
 //creates a bitmap from an image that may not be a bitmap from the start - Bonsai requires a picture to be a bitmap to draw onto the svg canvas. The bitmap is then drawn at x,y on the screen
 function drawImage(inputPath, xIn, yIn){

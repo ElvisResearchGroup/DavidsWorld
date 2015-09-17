@@ -9,61 +9,31 @@ var expArray = [];
  */
 function add(ex){
 	//create a new element
-	var word = document.getElementById('txtExpr').value;
+	var word = $('#txtExpr').val();
 	//var element = document.createElement("input");
 
 	//Create Labels
-	var expressionDiv = document.createElement("div");
-	var resultDiv = document.createElement("div");  
-	var deleteDiv = document.createElement("div");
-	expressionDiv.id = count++;
-	expressionDiv.innerHTML = "<p onclick='update(" + expressionDiv.id + ")'> "+word+" &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</p>";
-	resultDiv.innerHTML = ' ';
-	
-	resultDiv.id = expressionDiv.id.toString() + 'b';
-	deleteDiv.id = expressionDiv.id.toString() + 'c'; //MIGHT NOT WORK
-	deleteDiv.innerHTML = "<p onclick='deleteExp(" + expressionDiv.id + ")'>X</p>"; //MIGHT NOT WORK
-	exprIdArray.push(expressionDiv.id);
+	var id =  count++;
+	var expressionDiv = $('<div/>', {'id': id, 'class': 'expression'})
+		.append($('<p/>', {'onclick': 'update(' + id + ')'})
+			.text(word));
+	var resultDiv = $('<div/>', {'id': id + 'b', 'class':'result'})
+		.append($('<p/>'));
+	var deleteDiv = $('<div/>', {'id': id + 'c', 'class':'delexpr'})
+		.append($('<p/>', {'onclick': 'deleteExp(' + id + ')'})
+			.text('X'));
 
+	var lineBreak = $('<br/>', {'id': id + 'd'});
 
-
-	//add styling to expression div
-	expressionDiv.style.fontWeight = "normal";
-	expressionDiv.style.fontFamily = "Arial, Helvetica, sans-serif";
-	expressionDiv.style.padding = "0.5%";
-	expressionDiv.style.margin =  "0.5%";
-	expressionDiv.style.background = "#0390B2";
-	expressionDiv.style.color= "#FFFFFF";
-	expressionDiv.style.width = "100%";
-	expressionDiv.style.fontSize = "large";
-
-	resultDiv.style.width = "18%";
-	resultDiv.style.background = "#0390B2";
-	resultDiv.style.color= "#FFFFFF";
-
-	deleteDiv.style.width = "40px";
-	deleteDiv.style.background = "#0390B2";
-	deleteDiv.style.color= "#FFFFFF";
-	deleteDiv.style.fontSize = "large";
-
-	var lineBreak = document.createElement("br");
-	lineBreak.id = expressionDiv.id.toString() + 'd';
-	console.log(lineBreak.id);
-
-	// 'output' is the div id, where new fields are to be added
-	var output = document.getElementById("outputDiv");
-	//foo.style.display = "table-row";
-	expressionDiv.style.display = "table-cell";
-	resultDiv.style.display = "table-cell";
-	deleteDiv.style.display = "table-cell";
 
 	//Append the element in page
-	console.log(document.getElementById('txtExpr').value);
-	if(document.getElementById('txtExpr').value!="Input expression" && document.getElementById('txtExpr').value.length>0){
-	output.appendChild(expressionDiv);
-	output.appendChild(resultDiv);
-	output.appendChild(deleteDiv);
-	output.appendChild(lineBreak);
+	if(word !="Input expression" && word.length > 0){
+		exprIdArray.push(id);
+
+		$('#outputDiv').append(expressionDiv)
+			.append(resultDiv)
+			.append(deleteDiv)
+			.append(lineBreak);
 	}
 
 }
@@ -97,44 +67,34 @@ function go(){
 
 function setupListeners(){
 	worldstage.on('message:evalworld', function(data){
-		console.log('data '+data)
 		world = data;
-		console.log(exprIdArray + " set up phase");
+
 		for (var i = 0; i < exprIdArray.length; i++){
 			var id = exprIdArray[i];
-			console.log('id' +id);
+
 			var expressionDiv = $('#' + id + ' p');
 
 
 			var expr = expressionDiv.text();
 
-			console.log('expression', expr);
-
 			var parsedTree = parseExpr(expr);
 
-			console.log('tree', parsedTree);
 
-			var eval = evaluate(parsedTree, {Colour: getColours()});
+			var eval = false;
+			try { 
+				eval = evaluate(parsedTree, {Colour: getColours()});
+			} catch(error){
+				console.error(error);
+			}
 
 			console.log('eval', eval);
 			console.log('world', world);
 			var resultDiv = document.getElementById(id+'b');
-			resultDiv.style.fontSize = "large";
 
-			if(eval){
-			resultDiv.innerHTML = "<p>true</p>";
-			resultDiv.style.background = "#009933";
-			resultDiv.style.paddingLeft = "10px";
-			resultDiv.style.paddingRight = "10px";
-
-			}
-			else {
-				resultDiv.innerHTML = "<p>false</p>";
-				resultDiv.style.background = "#FF5C5C";
-				resultDiv.style.paddingLeft = "7px";
-				resultDiv.style.paddingRight = "7px";
-			}	
-			
+			$('#' + id + 'b')
+				.toggleClass('fail', !eval)
+				.toggleClass('pass', eval)
+				.find('p').text(eval);
 		}
 
 	});
@@ -185,7 +145,7 @@ function setupListeners(){
 	$('body').on('change', '#liblist', function(){
 		var library_name = $('#liblist').val();
 		$.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
-			setLibrary(data.library);
+			worldstage.sendMessage('setlibrary', data.library);
 			
 			worldstage.sendMessage('clearworld');
 
@@ -353,10 +313,3 @@ function update(id){
 	var textbox = document.getElementById('txtExpr');
 	textbox.value = expr;
 }
-
-document.getElementById('txtExpr').onkeypress=function(e){
-    if(e.keyCode==13){
-        document.getElementById('addExpr').click();
-    }
-}
-

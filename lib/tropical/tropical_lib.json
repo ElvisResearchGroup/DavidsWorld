@@ -3,61 +3,66 @@
   "background":"White",
   "library":[
     {"type":"Palm_Tree",
-      "image_path":"palm.jpg",
+      "image_path":"/lib/tropical/palm.jpg",
       "width":100,
       "height":20
     },
     
     {"type":"Pirate_Ship",
-      "image_path":"boat.png",
+      "image_path":"/lib/tropical/boat.png",
       "width":100,
       "height":20
     },
 
       {"type":"Cocktail",
-      "image_path":"cocktail.png",
+      "image_path":"/lib/tropical/cocktail.png",
       "width":100,
       "height":20
     },
 
       {"type":"Fish",
-      "image_path":"fish.png",
+      "image_path":"/lib/tropical/fish.png",
       "width":100,
       "height":20
     },
 
       {"type":"Flower",
-      "image_path":"flower.png",
+      "image_path":"/lib/tropical/flower.png",
       "width":100,
       "height":20
     },
 
+<<<<<<< HEAD
       {"type":"Money",
       "image_path":"money.png",
+=======
+      {"type":"Mpney",
+      "image_path":"/lib/tropical/money.png",
+>>>>>>> 51d135c0546944e480f482bbd8aaa367df76c416
       "width":100,
       "height":20
     },
 
       {"type":"Parrot",
-      "image_path":"parrot.png",
+      "image_path":"/lib/tropical/parrot.png",
       "width":100,
       "height":20
     },
 
       {"type":"Pineapple",
-      "image_path":"pineapple.png",
+      "image_path":"/lib/tropical/pineapple.png",
       "width":100,
       "height":20
     },
 
       {"type":"Skull",
-      "image_path":"skull.png",
+      "image_path":"/lib/tropical/skull.png",
       "width":100,
       "height":20
     },
 
       {"type":"Toucan",
-      "image_path":"toucan.png",
+      "image_path":"/lib/tropical/toucan.png",
       "width":100,
       "height":20
     }

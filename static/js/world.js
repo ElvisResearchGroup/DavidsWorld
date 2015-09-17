@@ -66,6 +66,10 @@ stage.on('message:clearworld', function(){
     clearWorld();
 });
 
+stage.on('message:setlibrary', function(data){
+    setLibrary(data);
+});
+
 
 stage.on('message:addobject', function(data){
   addObject(data.type, {x: data.x, y: data.y, width: data.width, height: data.height, def_col: data.colour});
@@ -77,7 +81,9 @@ stage.on('message:changeSize', function(data){
   
   console.log(Object.getOwnPropertyNames(selected_object));
   selected_object.animate(10, {
-      radius: selected_object._attributes.radius*scale
+      radius: selected_object._attributes.radius*scale,
+      width: selected_object._attributes.width*scale,
+      height: selected_object._attributes.height*scale
   });
 });
 
@@ -273,8 +279,39 @@ function createBonsaiShape(obj){
 }
 
 function bonsaiImage(obj){
-    console.log("STARTING IMAGE DRAW. NOT");
-	//TODO!!!
+  console.log('exception', library, obj.image_path);
+  return new Bitmap(obj.image_path, function(err) {
+    if (err){
+      console.log(err);
+      return;
+    }
+    this.attr({
+      y: obj.y,
+      x: obj.x,
+      width: obj.width,
+      height: obj.height
+    });
+
+    this
+      .on('multi:pointerdown', function(e){
+        x = this.attr('x'); 
+        y = this.attr('y');
+        this.addTo(this.parent); 
+      })
+      .on('multi:drag', function(e){
+        this.attr({
+          x: objMove(x, 1, e.diffX),
+          y: objMove(y, 2, e.diffY)
+        });
+      })
+      .on("pointerdown", function(e){
+      if(!(selected_object === undefined) && selected_object.stroke !== undefined)
+        selected_object.stroke("#000", 2);
+      selected_object = this;
+    }); 
+    console.log(obj);
+    stage.addChild(this);
+  });
 }
 
 function bonsaiPoly(obj){ //What does this method do?
@@ -310,7 +347,7 @@ function bonsaiPoly(obj){ //What does this method do?
       });
    })
   .on("pointerdown", function(e){
-    if(!(selected_object === undefined))
+    if(!(selected_object === undefined) && selected_object.stroke !== undefined)
       selected_object.stroke("#000", 2);
     this.stroke("#FFF", 2);
     selected_object = this;
@@ -339,23 +376,6 @@ function getValue(obj, key){ //What value is this referring to?
   if(index < 0)
     return null;
   return obj.field_vals[index];
-}
-
-//creates a bitmap from an image that may not be a bitmap from the start - Bonsai requires a picture to be a bitmap to draw onto the svg canvas. The bitmap is then drawn at x,y on the screen
-function drawImage(inputPath, xIn, yIn){
-  
-  new Bitmap(inputPath, function(err) {
-  if (err) return;
-  this.attr({
-    y: yIn,
-    x: xIn
-  });
-  stage.addChild(this);
- 
-});
- 
-   
-  
 }
 
 //draws grid on screen

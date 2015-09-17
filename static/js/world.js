@@ -72,7 +72,9 @@ stage.on('message:changeSize', function(data){
   
   console.log(Object.getOwnPropertyNames(selected_object));
   selected_object.animate(10, {
-      radius: selected_object._attributes.radius*scale
+      radius: selected_object._attributes.radius*scale,
+      width: selected_object._attributes.width*scale,
+      height: selected_object._attributes.height*scale
   });
 });
 
@@ -329,7 +331,7 @@ function bonsaiPoly(obj){ //What does this method do?
       });
    })
   .on("pointerdown", function(e){
-    if(!(selected_object === undefined))
+    if(!(selected_object === undefined) && selected_object.stroke !== undefined)
       selected_object.stroke("#000", 2);
     this.stroke("#FFF", 2);
     selected_object = this;

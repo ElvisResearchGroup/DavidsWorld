@@ -32,7 +32,7 @@ stage.on('message', handleMessage);
 
 //block dealing with loading from JSON
 function buildWorld(){
-    if(!library.grid_width &7 !library.grid_height)
+    if(!library.grid_width & !library.grid_height)
         drawGrid(library.grid_width, library.grid_height);
     if(!library.bg_colour){
 	//TODO set background colour

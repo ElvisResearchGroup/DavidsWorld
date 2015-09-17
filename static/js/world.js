@@ -402,3 +402,7 @@ function drawGrid(x, y){
  }
   
 }
+
+function getColours(){
+  return ['white'];
+}

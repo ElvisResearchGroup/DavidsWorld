@@ -3,43 +3,43 @@
   "background":"Blue",
   "library":[
     {"type":"Blue_Fish",
-      "image_path":"bluefish.png",
+      "image_path":"/lib/ocean/bluefish.png",
       "width":100,
       "height":20
     },
     {"type":"Orange_Fish",
-      "image_path":"orangefish.png",
+      "image_path":"/lib/ocean/orangefish.png",
       "width":100,
       "height":20
     },
         {"type":"Dolphin",
-      "image_path":"dolphin.png",
+      "image_path":"/lib/ocean/dolphin.png",
       "width":100,
       "height":20
     },
         {"type":"Whale",
-      "image_path":"whale.png",
+      "image_path":"/lib/ocean/whale.png",
       "width":100,
       "height":20
     },
         {"type":"Orca",
-      "image_path":"orca.png",
+      "image_path":"/lib/ocean/orca.png",
       "width":100,
       "height":20
     },
         {"type":"Diver",
-      "image_path":"diver.png",
+      "image_path":"/lib/ocean/diver.png",
       "width":100,
       "height":20
     },
         {"type":"Anchor",
-      "image_path":"anchor.png",
+      "image_path":"/lib/ocean/anchor.png",
       "width":100,
       "height":20
     },
 
         {"type":"Sword_Fish",
-      "image_path":"swordfish.png",
+      "image_path":"/lib/ocean/swordfish.png",
       "width":100,
       "height":20
     }

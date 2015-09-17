@@ -313,7 +313,7 @@ function populateObjectSelect(data){
 }
 
 function populateColourSelect(){
-  var colours = getColours();
+  var colours = Colour;
   var elem = $('#colourList');
   Object.keys(colours).forEach(function (c){
     elem.append($('<option/>', {value: c}).text(c));

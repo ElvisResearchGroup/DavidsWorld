@@ -32,10 +32,12 @@ stage.on('message', handleMessage);
 
 //block dealing with loading from JSON
 function buildWorld(){
-    if(!library.grid_width & !library.grid_height)
+    console.log("building world...");
+    console.log(library);
+    if(library.grid_width != undefined && library.grid_height != undefined)
         drawGrid(library.grid_width, library.grid_height);
     if(!library.bg_colour){
-	//TODO set background colour
+	stage.setBackGroundColor(getColour(library.bg_colour));
     }
       
 }
@@ -45,7 +47,13 @@ function handleMessage(message) {
     console.log('message', message);
     if (message === 'getworldforeval'){
         stage.sendMessage('evalworld', getWorld());
-    }    
+    } 
+    else if(message === 'clearworld'){
+	clearWorld();
+    }
+    else if(message === 'buildworld'){
+      buildWorld();
+    }
 
 }
 
@@ -54,6 +62,7 @@ stage.on('message:generateWorld', function(data){
 });
 
 stage.on('message:clearworld', function(){
+  console.log("TIME TO CLEAN UP");
     clearWorld();
 });
 
@@ -124,6 +133,13 @@ function getWorld(){
     return world;
 }
 
+function getColour(col){
+  if(!Colour[col.toString().toLowerCase()]){
+	col = Colour[col.toLowerCase()];
+  }
+  return col;
+}
+
 //----------------------------------------------------
 //World Handling
 //----------------------------------------------------
@@ -139,6 +155,10 @@ function clearWorld(){
 	stage.removeChild(grid_lines[i][j]);
       }
     }
+    
+    stage_obj_map = [];
+    stage_obj_types = [];
+    
 }
 
 function getGridCoord(bonsai_obj){
@@ -176,12 +196,12 @@ function generateWorldFromFile(worldTree){
     }
   
   //Make sure to Change background colour
-  for(var i = 0; i<loadedLibrary.library.length; i++){
-  worldObjects[i] = loadedLibrary.library[i];//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
+  for(var i = 0; i<loadedLibrary.library.library.length; i++){
+  worldObjects[i] = loadedLibrary.library.library[i];//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
   var obj = worldObjects[i];
   var lib_index = null;
-  for(var index = 0; index < library.length;index++){
-    if(library[i].type == obj.type){
+  for(var index = 0; index < library.library.length;index++){
+    if(library.library[i].type == obj.type){
       lib_index = i;
     }
   }
@@ -220,17 +240,16 @@ function addObject(obj_type, data){
 
     //Cloning the object from the library.
 
-    for(var i = 0; i < library.length; i++){
+    for(var i = 0; i < library.library.length; i++){
 	//If we find the correct object to create from.
-      if(library[i].type == obj_type){
-	var keys = Object.keys(library[i]).forEach(function(key){
+      if(library.library[i].type == obj_type){
+	var keys = Object.keys(library.library[i]).forEach(function(key){
 	    if(data != null && Object.keys(data).indexOf(key) >= 0 && data[key] != undefined){
 		lib_obj[key] = data[key];
 	    }
 	    else
-		lib_obj[key] = library[i][key];
+		lib_obj[key] = library.library[i][key];
 	});
-	//lib_obj = Object.clone(library[i].prototype);
 
       }
     }
@@ -241,9 +260,8 @@ function addObject(obj_type, data){
 
 function createBonsaiShape(obj){
   var bonsaiObj;
-  console.log("obj test",obj)
   
-  if(obj.poly >= 0)
+  if(obj.image_path == undefined)
       bonsaiObj = bonsaiPoly(obj);
   else
       bonsaiObj = bonsaiImage(obj);//TODO!!!!
@@ -255,6 +273,7 @@ function createBonsaiShape(obj){
 }
 
 function bonsaiImage(obj){
+    console.log("STARTING IMAGE DRAW. NOT");
 	//TODO!!!
 }
 
@@ -273,10 +292,10 @@ function bonsaiPoly(obj){ //What does this method do?
   }
 	  
   myPoly.addTo(stage);
-  var colour = obj.def_col;
-  if(Object.getOwnPropertyNames(Colour).indexOf(colour.toString().toLowerCase()) > -1){
-	colour = Colour[colour.toLowerCase()];
-  }
+  
+  var colour = getColour(obj.def_col);
+  console.log(colour);
+  
   myPoly.fill(colour)
   .stroke('#000', 2)
   .on('multi:pointerdown', function(e){
@@ -341,9 +360,9 @@ function drawImage(inputPath, xIn, yIn){
 
 //draws grid on screen
 function drawGrid(x, y){ 
+  console.log("Drawing Grid:", x, y);
   var cell_width = stage.width/x;
   var cell_height = stage.height/y;
-  console.log(cell_width, cell_height);
 
   //vertical
  for(var i=0; i<=y;i++){

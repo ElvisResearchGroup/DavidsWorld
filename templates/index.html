@@ -67,19 +67,13 @@ $(document).ready(function () {
 		  		console.log('data');
 
 				console.log(data);
-				setLibrary(data.library);
+				setLibrary(data);
 				worldstage = bonsai.run(document.getElementById('world'),{
 				  url: 'static/js/world.js',
 				  world: data,
 				  code: function(err, data) {
-				    library = stage.options.world.library;
-				    library_name = stage.options.world.library_name;
-				    bg_colour = stage.options.world.bg_colour;
-
-	    
-
+				    library = stage.options.world;
 				    buildWorld();
-
 				  }
 				});
 				setupListeners();

@@ -11,10 +11,12 @@ svg
   
 }
 
-div{
+#world > div{
  height:100%; 
  width:100%;
+ float:left;
 }
+
 .main{
 overflow:hidden;
 margin:0;

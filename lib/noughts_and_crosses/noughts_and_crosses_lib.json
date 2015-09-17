@@ -1,6 +1,8 @@
-{"library_name":"Ocean",
-  "version":"1.0",
+{"library_name":"Noughts and Crosses",
+  "version":"1.1",
   "background":"White",
+  "grid_width":3,
+  "grid_height":3,
   "library":[
     {"type":"Nought",
       "image_path":"nought.png",

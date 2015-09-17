@@ -17,36 +17,25 @@ function add(ex){
 	var expressionDiv = $('<div/>', {'id': id, 'class': 'expression'})
 		.append($('<p/>', {'onclick': 'update(' + id + ')'})
 			.text(word));
-	var resultDiv = $('<div/>', {'id': id + 'b', 'class':'result'})
-		.append($('<p/>'));
-	var deleteDiv = $('<div/>', {'id': id + 'c', 'class':'delexpr'})
-		.append($('<p/>', {'onclick': 'deleteExp(' + id + ')'})
-			.text('X'));
-
-	var lineBreak = $('<br/>', {'id': id + 'd'});
+	var resultDiv = $('<div/>', {'class':'result'});
+	var deleteDiv = $('<div/>', {'class':'delexpr', 'onclick': 'deleteExp(' + id + ')'})
+		.text('X');
 
 
 	//Append the element in page
 	if(word !="Input expression" && word.length > 0){
 		exprIdArray.push(id);
 
-		$('#outputDiv').append(expressionDiv)
-			.append(resultDiv)
+		$('#outputDiv').append(expressionDiv
 			.append(deleteDiv)
-			.append(lineBreak);
+			.append(resultDiv));
 	}
 
 }
 
-function deleteExp(divId){ //MIGHT NOT WORK
-	var expressionDiv = document.getElementById(divId);
-	expressionDiv.parentNode.removeChild(expressionDiv);
-	var resultDiv = document.getElementById(divId+'b');
-	resultDiv.parentNode.removeChild(resultDiv);
-	var deleteDiv = document.getElementById(divId+'c');
-	deleteDiv.parentNode.removeChild(deleteDiv);
-	var lineBreak = document.getElementById(divId+'d');
-	lineBreak.parentNode.removeChild(lineBreak);
+function deleteExp(divId){
+	$('#' + divId).remove();
+
 	var index = -1;
 	for (i = 0; i < exprIdArray.length; i++) {
 		if (exprIdArray[i] == divId) index = i;
@@ -72,13 +61,10 @@ function setupListeners(){
 		for (var i = 0; i < exprIdArray.length; i++){
 			var id = exprIdArray[i];
 
-			var expressionDiv = $('#' + id + ' p');
+			var expressionDiv = $('#' + id);
 
-
-			var expr = expressionDiv.text();
-
+			var expr = expressionDiv.find('p').text();
 			var parsedTree = parseExpr(expr);
-
 
 			var eval = false;
 			try { 
@@ -89,12 +75,11 @@ function setupListeners(){
 
 			console.log('eval', eval);
 			console.log('world', world);
-			var resultDiv = document.getElementById(id+'b');
 
-			$('#' + id + 'b')
+			expressionDiv.find('.result')
 				.toggleClass('fail', !eval)
 				.toggleClass('pass', eval)
-				.find('p').text(eval);
+				.text(eval);
 		}
 
 	});
@@ -307,9 +292,5 @@ function fileLoader(){
 }
 
 function update(id){
-	var expr = document.getElementById(id).innerText;
-	console.log("expr = " + expr);
-	console.log("id = " + id);
-	var textbox = document.getElementById('txtExpr');
-	textbox.value = expr;
+	$('#txtExpr').val($('#' +id + ' p').text());
 }

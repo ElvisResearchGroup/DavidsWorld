@@ -191,6 +191,13 @@ function setupListeners(){
 	  worldstage.sendMessage('changeSize', -1);
 	});
 
+	 $('#txtExpr').keydown(function(event) {
+        if (event.keyCode == 13) {
+            $('#addExpr').click();
+            event.preventDefault();
+         }
+    });
+
 }
 
 function replaceString(regex, string, replacement){
@@ -337,5 +344,11 @@ function update(id){
 	console.log("id = " + id);
 	var textbox = document.getElementById('txtExpr');
 	textbox.value = expr;
+}
+
+document.getElementById('txtExpr').onkeypress=function(e){
+    if(e.keyCode==13){
+        document.getElementById('addExpr').click();
+    }
 }
 

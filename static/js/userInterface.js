@@ -1,7 +1,8 @@
 
-var expArray = [];//holds ids of expression divs
+var exprIdArray = [];//holds ids of expression divs
 var count = 0; //used to count expression divs
 var pressedGo = false;
+var expArray = [];
 
 /**
  * on click on add expression button, adds the written expression to list of expressions
@@ -15,13 +16,14 @@ function add(ex){
 	var expressionDiv = document.createElement("div");
 	var resultDiv = document.createElement("div");  
 	var deleteDiv = document.createElement("div");
-	expressionDiv.innerHTML = word;
-	resultDiv.innerHTML = ' ';
 	expressionDiv.id = count++;
+	expressionDiv.innerHTML = "<p onclick='update(" + expressionDiv.id + ")'> "+word+" &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</p>";
+	resultDiv.innerHTML = ' ';
+	
 	resultDiv.id = expressionDiv.id.toString() + 'b';
 	deleteDiv.id = expressionDiv.id.toString() + 'c'; //MIGHT NOT WORK
 	deleteDiv.innerHTML = "<p onclick='deleteExp(" + expressionDiv.id + ")'>X</p>"; //MIGHT NOT WORK
-	expArray.push(expressionDiv.id);
+	exprIdArray.push(expressionDiv.id);
 
 
 
@@ -76,11 +78,11 @@ function deleteExp(divId){ //MIGHT NOT WORK
 	var lineBreak = document.getElementById(divId+'d');
 	lineBreak.parentNode.removeChild(lineBreak);
 	var index = -1;
-	for (i = 0; i < expArray.length; i++) {
-		if (expArray[i] == divId) index = i;
+	for (i = 0; i < exprIdArray.length; i++) {
+		if (exprIdArray[i] == divId) index = i;
 	}
 	if (index > -1){
-		expArray.splice(index, 1);
+		exprIdArray.splice(index, 1);
 	}
 }
 
@@ -97,11 +99,11 @@ function setupListeners(){
 	worldstage.on('message:evalworld', function(data){
 		console.log('data '+data)
 		world = data;
-		console.log(expArray + " set up phase");
-		for (var i = 0; i < expArray.length; i++){
-			var id = expArray[i];
+		console.log(exprIdArray + " set up phase");
+		for (var i = 0; i < exprIdArray.length; i++){
+			var id = exprIdArray[i];
 			console.log('id' +id);
-			var expressionDiv = $(document.getElementById(id));
+			var expressionDiv = $('#' + id + ' p');
 
 
 			var expr = expressionDiv.text();
@@ -120,14 +122,14 @@ function setupListeners(){
 			resultDiv.style.fontSize = "large";
 
 			if(eval){
-			resultDiv.innerHTML = "true";
+			resultDiv.innerHTML = "<p>true</p>";
 			resultDiv.style.background = "#009933";
 			resultDiv.style.paddingLeft = "10px";
 			resultDiv.style.paddingRight = "10px";
 
 			}
 			else {
-				resultDiv.innerHTML = " false";
+				resultDiv.innerHTML = "<p>false</p>";
 				resultDiv.style.background = "#FF5C5C";
 				resultDiv.style.paddingLeft = "7px";
 				resultDiv.style.paddingRight = "7px";
@@ -327,5 +329,13 @@ function fileLoader(){
    }
    e.preventDefault();
  }, false);
+}
+
+function update(id){
+	var expr = document.getElementById(id).innerText;
+	console.log("expr = " + expr);
+	console.log("id = " + id);
+	var textbox = document.getElementById('txtExpr');
+	textbox.value = expr;
 }
 

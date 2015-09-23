@@ -5,60 +5,60 @@
     {"type":"Palm_Tree",
       "image_path":"/lib/tropical/palm.jpg",
       "width":100,
-      "height":20
+      "height":100
     },
     
     {"type":"Pirate_Ship",
       "image_path":"/lib/tropical/boat.png",
       "width":100,
-      "height":20
+      "height":100
     },
 
       {"type":"Cocktail",
       "image_path":"/lib/tropical/cocktail.png",
       "width":100,
-      "height":20
+      "height":100
     },
 
       {"type":"Fish",
       "image_path":"/lib/tropical/fish.png",
       "width":100,
-      "height":20
+      "height":100
     },
 
       {"type":"Flower",
       "image_path":"/lib/tropical/flower.png",
       "width":100,
-      "height":20
+      "height":100
     },
       {"type":"Money",
       "image_path":"/lib/tropical/money.png",
       "width":100,
-      "height":20
+      "height":100
     },
 
       {"type":"Parrot",
       "image_path":"/lib/tropical/parrot.png",
       "width":100,
-      "height":20
+      "height":100
     },
 
       {"type":"Pineapple",
       "image_path":"/lib/tropical/pineapple.png",
       "width":100,
-      "height":20
+      "height":100
     },
 
       {"type":"Skull",
       "image_path":"/lib/tropical/skull.png",
       "width":100,
-      "height":20
+      "height":100
     },
 
       {"type":"Toucan",
       "image_path":"/lib/tropical/toucan.png",
       "width":100,
-      "height":20
+      "height":100
     }
   ]
 }

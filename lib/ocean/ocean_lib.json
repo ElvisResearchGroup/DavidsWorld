@@ -12,23 +12,13 @@
       "width":100,
       "height":20
     },
-<<<<<<< HEAD
     {"type":"Dolphin",
-      "image_path":"dolphin.png",
-      "width":100,
-      "height":20
-    },
-    {"type":"Whale",
-      "image_path":"whale.png",
-=======
-        {"type":"Dolphin",
       "image_path":"/lib/ocean/dolphin.png",
       "width":100,
       "height":20
     },
-        {"type":"Whale",
+    {"type":"Whale",
       "image_path":"/lib/ocean/whale.png",
->>>>>>> 51d135c0546944e480f482bbd8aaa367df76c416
       "width":100,
       "height":20
     },
@@ -47,14 +37,8 @@
       "width":100,
       "height":20
     },
-<<<<<<< HEAD
     {"type":"Sword_Fish",
-      "image_path":"swordfish.png",
-=======
-
-        {"type":"Sword_Fish",
       "image_path":"/lib/ocean/swordfish.png",
->>>>>>> 51d135c0546944e480f482bbd8aaa367df76c416
       "width":100,
       "height":20
     }

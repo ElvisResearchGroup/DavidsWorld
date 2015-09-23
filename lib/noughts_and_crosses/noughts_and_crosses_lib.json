@@ -1,9 +1,7 @@
 {"library_name":"Noughts and Crosses",
-<<<<<<< HEAD
+
   "version":"1.1",
-=======
-  "version":"1.0",
->>>>>>> 51d135c0546944e480f482bbd8aaa367df76c416
+
   "background":"White",
   "grid_width":3,
   "grid_height":3,

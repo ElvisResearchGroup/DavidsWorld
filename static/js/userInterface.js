@@ -130,7 +130,7 @@ function setupListeners(){
 	$('body').on('change', '#liblist', function(){
 		var library_name = $('#liblist').val();
 		$.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
-			worldstage.sendMessage('setlibrary', data.library);
+			worldstage.sendMessage('setlibrary', data);
 			
 			worldstage.sendMessage('clearworld');
 

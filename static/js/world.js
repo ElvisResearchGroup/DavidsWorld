@@ -49,7 +49,9 @@ function handleMessage(message) {
         stage.sendMessage('evalworld', getWorld());
     } 
     else if(message === 'clearworld'){
-	clearWorld();
+      console.log("TIME TO CLEAN UP");
+      clearWorld();
+      buildWorld();
     }
     else if(message === 'buildworld'){
       buildWorld();
@@ -59,11 +61,6 @@ function handleMessage(message) {
 
 stage.on('message:generateWorld', function(data){
   generateWorldFromFile(data);
-});
-
-stage.on('message:clearworld', function(){
-  console.log("TIME TO CLEAN UP");
-    clearWorld();
 });
 
 stage.on('message:setlibrary', function(data){
@@ -108,7 +105,6 @@ function getWorld(){
       	item.x = stage_obj_map[i]._attributes.x;
       	item.y = stage_obj_map[i]._attributes.y;
 
-      	item = world[i];
 	if(grid_lines[0].length > 0){
 	    var obj = getGridCoord(stage_obj_map[i]);
 	    item.x = obj.x;

@@ -31,14 +31,8 @@
       "width":100,
       "height":20
     },
-
-<<<<<<< HEAD
       {"type":"Money",
-      "image_path":"money.png",
-=======
-      {"type":"Mpney",
       "image_path":"/lib/tropical/money.png",
->>>>>>> 51d135c0546944e480f482bbd8aaa367df76c416
       "width":100,
       "height":20
     },

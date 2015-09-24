@@ -1,6 +1,37 @@
 body{
 margin: 0px;
 overflow-y:scroll;
+background-color: #9EE4F5;
+   font-family: Arial;
+
+}
+
+#titleBar {
+  height: 100px;
+  background-color: #72BFD3;
+}
+
+#titleBar > div {
+  padding-left: 5px;
+}
+
+.nav-item {
+  background-color: #FF9F48;
+  height: 35px;
+  float: right;
+  margin-right: 5px;
+  margin-top: 65px;
+}
+
+#liblist {
+  color: #ffffff;
+  font-size: 13.3px;
+  font-weight: bold;
+  background: #1495b7;
+  text-decoration: none;
+  border:solid;
+  height: 100%;
+  border-color: #FF9F48;
 }
 
 svg 
@@ -299,7 +330,7 @@ td{
 #addExpr {
   height: ;
 }
-select{
+.main select{
     font-family: Arial;
   color: #ffffff;
   font-size: 13.3px;

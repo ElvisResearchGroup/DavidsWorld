@@ -16,10 +16,23 @@
 	<![endif]-->
 	<link rel="stylesheet" type="text/css" href="static/css/userinterface.css">
 </head>
-<body bgcolor="#9EE4F5">
+<body>
+	<div id="titleBar">
+		<img src="static/img/davidsworld2.png" align="center">
+		<button class="nav-item">Load Exercise</button>
+		<button class="nav-item">Save File</button>
+		<button class="nav-item">Load File</button>
+		<div class="nav-item">Current Library
+			<select id='liblist' data-toggle="tooltip" title="Library Selection">
+			{% for library in libraries %}
+				<option {% if loop.first %}selected{% endif %} 
+					value="{{ library }}">{{ library.capitalize() }}</option>
+			{% endfor %}
+			</select> 
+		</div>
 
+	</div>
 	<div class = "main"> <!-- Main window-->
-
 	<div class="leftColumn"> <!--Left Column-->
 
 		<div class="top">
@@ -40,12 +53,7 @@
 					<div class="table">
 						<div class="row">
 						<div class= "cell2" id = "cell1">
-							<select id='liblist' data-toggle="tooltip" title="Library Selection">
-							{% for library in libraries %}
-								<option {% if loop.first %}selected{% endif %} 
-									value="{{ library }}">{{ library.capitalize() }}</option>
-							{% endfor %}
-							</select> 
+							
 						</div>
 						<div class= "cell2" id = "cell2">
 							<select data-toggle="tooltip" title="Object Selection" id="objList">ss

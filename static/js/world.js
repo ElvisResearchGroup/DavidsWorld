@@ -37,7 +37,8 @@ function buildWorld(){
     if(library.grid_width != undefined && library.grid_height != undefined)
         drawGrid(library.grid_width, library.grid_height);
     if(!library.bg_colour){
-	stage.setBackGroundColor(getColour(library.bg_colour));
+    	console.log(library.background);
+	stage.setBackgroundColor(getColour(library.background));
     }
       
 }
@@ -136,10 +137,11 @@ function getWorld(){
 }
 
 function getColour(col){
-  if(!Colour[col.toString().toLowerCase()]){
-	col = Colour[col.toLowerCase()];
-  }
-  return col;
+	if (!col) return Colour['white'];
+  	if(Colour[col.toString().toLowerCase()]){
+		col = Colour[col.toString().toLowerCase()];
+  	}
+  	return col;
 }
 
 //----------------------------------------------------
@@ -185,26 +187,29 @@ function getGridCoord(bonsai_obj){
 
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
-function generateWorldFromFile(worldTree){
+function generateWorldFromFile(worldJSON){
 
   clearWorld();
-  
-  loadedLibrary = null;
+  buildWorld();
   var worldObjects = [];
   var obj_list = []; //List of objects to draw to screen
   var ind_list = []; //List of indexes mapped to same position as obj_list
-   if(loadedLibrary == null){
-    loadedLibrary = worldTree[0]; //The library should be the only file in the buffer
-    }
-  
+
+  console.log("loaded", worldJSON);
   //Make sure to Change background colour
-  for(var i = 0; i<loadedLibrary.library.library.length; i++){
-  worldObjects[i] = loadedLibrary.library.library[i];//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
+  for(var i = 0; i< worldJSON.world.length; i++){
+  worldObjects.push(worldJSON.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
   var obj = worldObjects[i];
   var lib_index = null;
   for(var index = 0; index < library.library.length;index++){
-    if(library.library[i].type == obj.type){
-      lib_index = i;
+    if(library.library[index].type == obj.type){
+    		var keys = Object.keys(library.library[index]).forEach(function(key){
+	  	  if(Object.keys(obj).indexOf(key) >= 0 && obj[key] != undefined){
+	 	   }
+	 	   else
+			obj[key] = library.library[index][key];
+		});
+      lib_index = index;
     }
   }
   if(lib_index == null){
@@ -230,7 +235,6 @@ ind_list.push(lib_index);
   createBonsaiShape(obj_list[i]);
   }
   }
-  generateWorld();  
 }  
 
 //----------------------------------------------------

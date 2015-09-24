@@ -7,23 +7,20 @@ var expArray = [];
 /**
  * on click on add expression button, adds the written expression to list of expressions
  */
-function add(ex){
-	//create a new element
-	var word = $('#txtExpr').val();
-	//var element = document.createElement("input");
+function add(expr){
 
 	//Create Labels
 	var id =  count++;
 	var expressionDiv = $('<div/>', {'id': id, 'class': 'expression'})
 		.append($('<p/>', {'onclick': 'update(' + id + ')'})
-			.text(word));
+			.text(expr));
 	var resultDiv = $('<div/>', {'class':'result'});
 	var deleteDiv = $('<div/>', {'class':'delexpr', 'onclick': 'deleteExp(' + id + ')'})
 		.text('X');
 
 
 	//Append the element in page
-	if(word !="Input expression" && word.length > 0){
+	if(expr !="Input expression" && expr.length > 0){
 		exprIdArray.push(id);
 
 		$('#outputDiv').append(expressionDiv
@@ -153,7 +150,11 @@ function setupListeners(){
             event.preventDefault();
          }
     });
-
+    
+	$('#fileSelect').click(function (e){
+			$('#files').click();
+   		e.preventDefault();
+	});
 }
 
 function replaceString(regex, string, replacement){
@@ -276,21 +277,18 @@ function addObjectFromUI(){
 	  addObject(obj_index, default_x, default_y, width, height);  
 }
 
-/**
- * Loads file
- */
-
-function fileLoader(){
- var fileSelect = document.getElementById('fileSelect'),
-  fileElem = document.getElementById('files');
- fileSelect.addEventListener("click", function(e){
-   if(fileElem){
-     fileElem.click();
-   }
-   e.preventDefault();
- }, false);
-}
-
 function update(id){
 	$('#txtExpr').val($('#' +id + ' p').text());
+}
+
+function setExpressionList(exprs){
+	//TODO remove br after it is removed from index.
+	$('#outputDiv').empty().append($('<br/>'));
+	exprIdArray = [];
+	count = 0;
+	console.log("EXPRESSIONS", exprs);
+	exprs.forEach(function(d){
+		console.log('d', d);
+		add(d);
+	});
 }

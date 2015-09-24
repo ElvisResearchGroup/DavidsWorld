@@ -187,21 +187,18 @@ function getGridCoord(bonsai_obj){
 
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
-function generateWorldFromFile(worldTree){
+function generateWorldFromFile(worldJSON){
 
   clearWorld();
   buildWorld();
-  loadedLibrary = null;
   var worldObjects = [];
   var obj_list = []; //List of objects to draw to screen
   var ind_list = []; //List of indexes mapped to same position as obj_list
-   if(loadedLibrary == null){
-    loadedLibrary = worldTree[0]; //The library should be the only file in the buffer
-    }
-  console.log("loaded", worldTree);
+
+  console.log("loaded", worldJSON);
   //Make sure to Change background colour
-  for(var i = 0; i<loadedLibrary.world.length; i++){
-  worldObjects.push(loadedLibrary.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
+  for(var i = 0; i< worldJSON.world.length; i++){
+  worldObjects.push(worldJSON.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
   var obj = worldObjects[i];
   var lib_index = null;
   for(var index = 0; index < library.library.length;index++){

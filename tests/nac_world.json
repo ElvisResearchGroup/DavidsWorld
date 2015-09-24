@@ -1,0 +1,24 @@
+{"library_name":"Noughts_and_crosses",
+  "world":[
+    {"type":"Nought",
+      "x":5,
+      "y":10
+    },
+    {"type":"Cross",
+      "x":50,
+      "y":70
+    },    
+    {"type":"Nought",
+      "x":100,
+      "y":210
+    },
+     {"type":"Nought",
+      "x":5,
+      "y":10
+    }
+  ],
+  "expressions": [
+    "∃x,y,z ⋅ x != y ∧ y != z ∧ z != x ∧ x.type = y.type ∧ y.type = z.type ∧ (x.x = y.x ∧ y.x = z.x)"
+  ]
+  
+} 

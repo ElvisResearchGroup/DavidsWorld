@@ -21,7 +21,7 @@
 		<img src="static/img/davidsworld2.png" align="center">
 		<button class="nav-item">Load Exercise</button>
 		<button class="nav-item">Save File</button>
-		<button class="nav-item">Load File</button>
+		<button class="nav-item" type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." >Load File</button>
 		<div class="nav-item">Current Library
 			<select id='liblist' data-toggle="tooltip" title="Library Selection">
 			{% for library in libraries %}
@@ -135,7 +135,7 @@
                                                 <script>
 						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
                                                 </script>
-					  <button type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." >Load File</button>
+					  
 			<!--Top box-->
 
 				</div>

@@ -57,6 +57,8 @@ $(document).ready(function () {
 				    buildWorld();
 				  }
 				});
+				//worldstage.renderer.height = 655;
+				//console.log("test", worldstage.renderer.svg[0].height = 655);
 				setupListeners();
 				populateObjectSelect(data);
 				populateColourSelect();
@@ -117,7 +119,7 @@ $(document).ready(function () {
 							</form>						
 					</div>
 					<div class= "cell2" id = "cell9">
-							<button onclick="add(document.getElementById('txtExpr').value); button('clear');"  type="button" id="addExpr" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
+							<button onclick="add($('#txtExpr').val()); button('clear');"  type="button" id="addExpr" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
 					</div>
 					<div class= "cell2" id = "cell10">
 							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
@@ -173,7 +175,7 @@ $(document).ready(function () {
                                                 <script>
 						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
                                                 </script>
-					  <button type="button" id="fileSelect" class="btn" onclick="fileLoader()" data-toggle="tooltip" title="Select a file to load." >Load File</button>
+					  <button type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." >Load File</button>
 			<!--Top box-->
 
 				</div>

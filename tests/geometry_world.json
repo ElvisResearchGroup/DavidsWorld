@@ -1,0 +1,29 @@
+{"library_name":"Geometry",
+  "world":[
+    {"type":"Rectangle",
+      "colour":"Black",
+      "x":5,
+      "y":10,
+      "width":40,
+      "height":60
+    },
+    {"type":"Triangle",
+      "colour":"Blue",
+      "x":50,
+      "y":70,
+      "width":40,
+      "height":60
+    },    
+    {"type":"Circle",
+      "colour":"Yellow",
+      "x":100,
+      "y":210,
+      "width":40,
+      "height":60
+    }
+
+  ],
+  "expressions": [
+  ]
+  
+}

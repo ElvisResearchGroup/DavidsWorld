@@ -43,11 +43,7 @@ function buildWorld(){
       
 }
 
-/**
- * Takes a message from outside process scope and handles it
- * @param {message} message to be handled
- * 
- */
+
 function handleMessage(message) {
     console.log('message', message);
     if (message === 'getworldforeval'){
@@ -100,12 +96,6 @@ function setLibrary(lib){
     library = lib;
 }
 
-
-
-
-/**
- * Deals with creating the world object, and then returns it.
- */
 function getWorld(){
     var world = [];
     var item;
@@ -175,10 +165,6 @@ function clearWorld(){
     
 }
 
-/**
- * Finds coordinates of object on grid, assuming grid exists.
- * @param {bonsai_obj} Bonsai object to find coordinates for
- */
 function getGridCoord(bonsai_obj){
     var x, y;
     
@@ -201,18 +187,21 @@ function getGridCoord(bonsai_obj){
 
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
-function generateWorldFromFile(worldJSON){
+function generateWorldFromFile(worldTree){
 
   clearWorld();
   buildWorld();
+  loadedLibrary = null;
   var worldObjects = [];
   var obj_list = []; //List of objects to draw to screen
   var ind_list = []; //List of indexes mapped to same position as obj_list
-
-  console.log("loaded", worldJSON);
+   if(loadedLibrary == null){
+    loadedLibrary = worldTree[0]; //The library should be the only file in the buffer
+    }
+  console.log("loaded", worldTree);
   //Make sure to Change background colour
-  for(var i = 0; i< worldJSON.world.length; i++){
-  worldObjects.push(worldJSON.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
+  for(var i = 0; i<loadedLibrary.world.length; i++){
+  worldObjects.push(loadedLibrary.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
   var obj = worldObjects[i];
   var lib_index = null;
   for(var index = 0; index < library.library.length;index++){
@@ -278,11 +267,6 @@ function addObject(obj_type, data){
     createBonsaiShape(lib_obj);
 }
 
-
-/**
- * Figures out what type of bonsai object the structure will become
- * @param {obj} Object passed from json tree structure - contains an image path for this function to deal with ELSE it is a polygon/other defined shape
- */
 function createBonsaiShape(obj){
   var bonsaiObj;
   
@@ -297,12 +281,6 @@ function createBonsaiShape(obj){
      
 }
 
-
-
-/**
- * Deals with creating a bonsai object from an image
- * @param {obj} Object passed from json tree structure - contains an image path for this function to deal with
- */
 function bonsaiImage(obj){
   console.log('exception', library, obj.image_path);
   return new Bitmap(obj.image_path, function(err) {
@@ -339,11 +317,6 @@ function bonsaiImage(obj){
   });
 }
 
-
-/**
- * Deals with creating a bonsai object that is not from an image
- * @param {obj} Object passed from json tree structure - contains information pertinent to which shape it will draw
- */
 function bonsaiPoly(obj){ //What does this method do?
   var sides = obj.poly;
   var myPoly;
@@ -408,9 +381,7 @@ function getValue(obj, key){ //What value is this referring to?
   return obj.field_vals[index];
 }
 
-/**
- * Draws grid on the screen - this function is called on load if a grid is defined in a library or saved world.
- */
+//draws grid on screen
 function drawGrid(x, y){ 
   console.log("Drawing Grid:", x, y);
   var cell_width = stage.width/x;

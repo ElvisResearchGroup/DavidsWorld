@@ -140,6 +140,9 @@ function evaulateVarAccess(vari, field, scope){
 }
 
 //TODO Fix
+/**
+* Returns a string representation of the expression.
+*/
 function toString(expr){
 	if (expr.type === expressionTypes.SOME 
 		|| expr.type === expressionTypes.ALL 

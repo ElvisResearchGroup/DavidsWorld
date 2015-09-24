@@ -33,6 +33,9 @@ function add(ex){
 
 }
 
+/**
+* This function deletes an expression when the user clicks the "X" button next to the expression.
+*/
 function deleteExp(divId){
 	$('#' + divId).remove();
 
@@ -46,7 +49,7 @@ function deleteExp(divId){
 }
 
 /**
- * when user clicks go button - evaluates expressions that have been added
+ * when user clicks go button - evaluates expressions that have been added and displays true or false.
  */
 
 function go(){
@@ -54,6 +57,9 @@ function go(){
 	worldstage.sendMessage('getworldforeval')
 }
 
+/**
+* 
+*/
 function setupListeners(){
 	worldstage.on('message:evalworld', function(data){
 		world = data;
@@ -156,6 +162,10 @@ function setupListeners(){
 
 }
 
+/**
+* This function is used to display the corresponding logic symbol in place of the text code that the user types in the expression bar. For example
+* if the user types in '\a' in the expression bar it would be replaced by the actual unicode symbol for the forall symbol.
+*/
 function replaceString(regex, string, replacement){
 	var changed = string.replace(regex, replacement);
 	while (changed != string){
@@ -180,6 +190,9 @@ function button(operator){
 	}
 }
 
+/**
+* This function returns the unicode character for the corresponding logic symbol.
+*/
 function getSymbol(operator){
 	var symbol = "";
 	switch(operator){
@@ -217,6 +230,9 @@ function getSymbol(operator){
 
 
 //sourced from: http://stackoverflow.com/questions/1064089/inserting-a-text-where-cursor-is-using-javascript-jquery
+/**
+* This function inserts symbol at the location of the cursor when the button is pressed. 
+*/
 function insertAtCaret(element, text) {
     if (document.selection) {
         element.focus();

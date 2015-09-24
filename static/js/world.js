@@ -78,7 +78,6 @@ stage.on('message:addobject', function(data){
 });
 
 stage.on('message:changeSize', function(data){
-  console.log("tests2", data, selected_object);
   var scale = (data == 1) ? 1.4 : (1/1.4); 
   
   console.log(Object.getOwnPropertyNames(selected_object));
@@ -154,13 +153,16 @@ function getColour(col){
   	return col;
 }
 
+function getColours(){
+    return colour;
+}
+
 //----------------------------------------------------
 //World Handling
 //----------------------------------------------------
 
 function clearWorld(){
     stage_obj_map.forEach(function(entry){
-	
 	stage.removeChild(entry);
     });
     
@@ -169,9 +171,11 @@ function clearWorld(){
 	stage.removeChild(grid_lines[i][j]);
       }
     }
-    
+    grid_lines = [[],[]];
     stage_obj_map = [];
     stage_obj_types = [];
+    
+    console.log('cleared grid',grid_lines);
     
 }
 
@@ -195,7 +199,6 @@ function getGridCoord(bonsai_obj){
 	  break;
 	}
     }
-    console.log("test", x, y);
     return {x: x, y: y};
 }
 
@@ -208,8 +211,6 @@ function generateWorldFromFile(worldJSON){
   var worldObjects = [];
   var obj_list = []; //List of objects to draw to screen
   var ind_list = []; //List of indexes mapped to same position as obj_list
-
-  console.log("loaded", worldJSON);
   //Make sure to Change background colour
   for(var i = 0; i< worldJSON.world.length; i++){
   worldObjects.push(worldJSON.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
@@ -286,10 +287,45 @@ function addObject(obj_type, data){
 function createBonsaiShape(obj){
   var bonsaiObj;
   
+    
   if(obj.image_path == undefined)
       bonsaiObj = bonsaiPoly(obj);
   else
       bonsaiObj = bonsaiImage(obj);//TODO!!!!
+      
+  var x_offset = 0, y_offset = 0;
+  //If it is an image or a square
+  //Create an offset.
+  //This is because thier coords are in the top left of the object, and not the centre.
+  if(obj.image_path != undefined || obj.poly == 4){
+      
+      x_offset = obj.width/2;
+      y_offset = obj.height/2;
+      console.log('Creating Offset', x_offset, y_offset);
+  }
+      
+  bonsaiObj.on('multi:pointerdown', function(e){
+        x = this.attr('x'); 
+        y = this.attr('y');
+        this.addTo(this.parent); 
+      })
+      .on('multi:drag', function(e){
+        this.attr({
+          x: objMove(x, 1, e.diffX),
+          y: objMove(y, 2, e.diffY)
+        });
+      })
+      .on('multi:pointerup', function(e){
+	this.attr({
+	  x: gridSnap(x, 1, this, e.diffX, this._attributes.width/2),
+	  y: gridSnap(y, 2, this, e.diffY, this._attributes.height/2)
+	});
+      })
+      .on("pointerdown", function(e){
+      if(!(selected_object === undefined) && selected_object.stroke !== undefined)
+        selected_object.stroke("#FFF", 2);
+	selected_object = this;
+    }); 
       
   stage_obj_types.push(obj.type);
   console.log(stage_obj_types);
@@ -316,24 +352,7 @@ function bonsaiImage(obj){
       width: obj.width,
       height: obj.height
     });
-
-    this
-      .on('multi:pointerdown', function(e){
-        x = this.attr('x'); 
-        y = this.attr('y');
-        this.addTo(this.parent); 
-      })
-      .on('multi:drag', function(e){
-        this.attr({
-          x: objMove(x, 1, e.diffX),
-          y: objMove(y, 2, e.diffY)
-        });
-      })
-      .on("pointerdown", function(e){
-      if(!(selected_object === undefined) && selected_object.stroke !== undefined)
-        selected_object.stroke("#000", 2);
-      selected_object = this;
-    }); 
+      
     console.log(obj);
     stage.addChild(this);
   });
@@ -364,25 +383,7 @@ function bonsaiPoly(obj){ //What does this method do?
   console.log(colour);
   
   myPoly.fill(colour)
-  .stroke('#000', 2)
-  .on('multi:pointerdown', function(e){
-      x = this.attr('x'); 
-      y = this.attr('y');
-      myPoly.addTo(myPoly.parent); 
-    })
-  .on('multi:drag', function(e){
-    this.attr({
-	x: objMove(x, 1, e.diffX),
-	y: objMove(y, 2, e.diffY)
-      });
-   })
-  .on("pointerdown", function(e){
-    if(!(selected_object === undefined) && selected_object.stroke !== undefined)
-      selected_object.stroke("#000", 2);
-    this.stroke("#FFF", 2);
-    selected_object = this;
-    
-  }); 
+  .stroke('#000', 2);
   
   return myPoly;
 }
@@ -391,13 +392,47 @@ function bonsaiPoly(obj){ //What does this method do?
 //i = 2, for y.
 function objMove(x, i, diff){
   var new_co = x + diff;
-  if(grid_lines[i%2].length > 0){
+  //If there is a grid.
+  if(grid_lines[i%2].length > 0){  
+    
+    //Minimum value inside the grid.
     var min = grid_lines[i%2][0]._segments[0][2];
+    //Maximum value inside the grid.
     var max = grid_lines[i%2][grid_lines[i%2].length - 1]._segments[1][1];
     return Math.max(min, Math.min(new_co, max));
 
   }else{
+    //If there is not a grid, just return the changed value.
     return new_co;
+  }
+}
+
+function gridSnap(coord, i, obj, diff, offset){
+  //If there is a grid
+  if(grid_lines[i%2].length > 0){
+      var grid_location = getGridCoord(obj);
+      if(i == 1) 
+	grid_location = grid_location.x;
+      else
+	grid_location = grid_location.y;
+      
+      //If it is outside the grid
+      if(grid_location == 0 || grid_location == grid_lines[i%2].length){
+	console.log('why am I here?');
+      }
+      else{
+	//The Line before the object
+	var first_line = grid_lines[i%2][grid_location-1]._segments[2-i][3-i];
+	//Line after the object
+	var second_line = grid_lines[i%2][grid_location]._segments[2-i][3-i];
+	//Return the mid point of the two lines.
+	return (first_line+second_line)/2 - offset;
+      }
+      
+  }
+  //If there is no grid, dont snap to grid.
+  else{
+    return coord + diff;
   }
 }
 
@@ -412,7 +447,6 @@ function getValue(obj, key){ //What value is this referring to?
  * Draws grid on the screen - this function is called on load if a grid is defined in a library or saved world.
  */
 function drawGrid(x, y){ 
-  console.log("Drawing Grid:", x, y);
   var cell_width = stage.width/x;
   var cell_height = stage.height/y;
 
@@ -433,8 +467,4 @@ function drawGrid(x, y){
    .addTo(stage);   
  }
   
-}
-
-function getColours(){
-  return ['white'];
 }

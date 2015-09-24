@@ -65,7 +65,7 @@ function setupListeners(){
 
 			var eval = false;
 			try { 
-				eval = evaluate(parsedTree, {Colour: getColours()});
+				eval = evaluate(parsedTree, {Colour: getColour()});
 			} catch(error){
 				console.error(error);
 			}

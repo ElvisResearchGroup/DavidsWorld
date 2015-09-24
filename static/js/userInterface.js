@@ -153,7 +153,11 @@ function setupListeners(){
             event.preventDefault();
          }
     });
-
+    
+	$('#fileSelect').click(function (e){
+			$('#files').click();
+   		e.preventDefault();
+	});
 }
 
 function replaceString(regex, string, replacement){
@@ -274,21 +278,6 @@ function addObjectFromUI(){
 	  var default_x = 5, default_y = 5;
 	  var width = 50, height = 50;
 	  addObject(obj_index, default_x, default_y, width, height);  
-}
-
-/**
- * Loads file
- */
-
-function fileLoader(){
- var fileSelect = document.getElementById('fileSelect'),
-  fileElem = document.getElementById('files');
- fileSelect.addEventListener("click", function(e){
-   if(fileElem){
-     fileElem.click();
-   }
-   e.preventDefault();
- }, false);
 }
 
 function update(id){

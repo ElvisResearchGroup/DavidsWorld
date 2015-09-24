@@ -9,11 +9,11 @@ function handleFileLoad(event){
     reader.addEventListener('loadend', function() {
       //File is valid json, push the parsed object structures to gitems and call load on them
       if(validateJSON(reader.result) == true){
-	console.log("JSON is Valid syntax - Loading file");
+			console.log("JSON is Valid syntax - Loading file");
         gitems.push(JSON.parse(reader.result));
       }
       if(gitems.length <= 1){
-	loadLocal(gitems);
+			loadLocal(gitems);
       }
     });
     reader.readAsText(f);

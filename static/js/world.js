@@ -99,7 +99,6 @@ function getWorld(){
       	item.x = stage_obj_map[i]._attributes.x;
       	item.y = stage_obj_map[i]._attributes.y;
 
-      	item = world[i];
 	if(grid_lines[0].length > 0){
 	    var obj = getGridCoord(stage_obj_map[i]);
 	    item.x = obj.x;

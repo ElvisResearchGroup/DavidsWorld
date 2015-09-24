@@ -60,7 +60,8 @@ function loadLocal(json){
 		$.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
 			worldstage.sendMessage('setlibrary', data);
 
-			populateObjectSelect(data);	
+			populateObjectSelect(data);
+			setExpressionList(json.expressions);
 			 worldstage.sendMessage('generateWorld', json);		
 		});
 }

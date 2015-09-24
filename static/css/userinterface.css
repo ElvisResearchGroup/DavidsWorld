@@ -34,6 +34,49 @@ background-color: #9EE4F5;
   border-color: #FF9F48;
 }
 
+#world-column {
+  float: left;
+  width: 50%;
+}
+
+#expression-column {
+  float: right;
+  width: 50%;
+}
+
+.clear {
+  clear: both;
+}
+
+button.symbol {
+  width:8.88888%;
+  height: 50px;
+  float: left;
+}
+
+#expr-box {
+  margin: 5px;
+  height: 100px;
+  background-color: #FF9F48;
+}
+
+#expr-box form {
+  height: 45px;
+  margin: 0px;
+  float: left;
+  width: 80%;
+}
+
+#expr-box input {
+  height: 35px;
+}
+
+#expr-box button.press {
+  width: 20%;
+  height: 50%;
+  float: right;
+}
+
 svg 
 {
   width:100%;
@@ -314,7 +357,6 @@ td{
   font-weight: bold;
   background: #1495b7;
   padding: 1% 1% 1% 1%;
-  width:100%;
   text-decoration: none;
   border:solid;
   border-color: #FF9F48;

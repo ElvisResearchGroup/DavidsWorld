@@ -17,11 +17,13 @@
 	<link rel="stylesheet" type="text/css" href="static/css/userinterface.css">
 </head>
 <body>
-	<div id="titleBar">
+	<div id="titleBar"> <!-- START OF TITLE BAR -->
 		<img src="static/img/davidsworld2.png" align="center">
 		<button class="nav-item">Load Exercise</button>
 		<button class="nav-item">Save File</button>
 		<button class="nav-item" type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." >Load File</button>
+		<input type="file" id="files" name="files[]" multiple style="display:none;"/>
+        <output id="list"></output>
 		<div class="nav-item">Current Library
 			<select id='liblist' data-toggle="tooltip" title="Library Selection">
 			{% for library in libraries %}
@@ -30,8 +32,36 @@
 			{% endfor %}
 			</select> 
 		</div>
+	</div> <!-- END OF TITLE BAR -->
 
-	</div>
+	<div id="world-column"> <!-- START OF WORLD COLUMN -->
+
+	</div> <!-- END OF WORLD COLUMN -->
+
+	<div id="expression-column"> <!-- START OF EXPRESSIOn COLUMN -->
+		<div id="expr-box">
+			<form>
+				<input type="text" name="expression" id ="txtExpr" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="txtExpr" data-toggle="tooltip" title="Expression Entry"> 
+			</form>
+			<button onclick="add($('#txtExpr').val()); button('clear');"  type="button" id="addExpr" class="btn press" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
+			<div class="clear"></div>
+			<button type="button" class="btn symbol" onclick="button('not')" data-toggle="tooltip" title="Not. ~ is the keyboard shortcut"><img class="autoResizeImage" src="static/img/notsymbol.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('and')" data-toggle="tooltip" title="Logical And. ^ and & are keyboard shortcuts"><img class="autoResizeImage" src="static/img/and.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('or')" data-toggle="tooltip" title="Logical Or. | is the keyboard shortcut"><img class="autoResizeImage" src="static/img/or.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('xor')" data-toggle="tooltip" title="Exclusive Or. \x is the keyboard shortcut"><img class="autoResizeImage" src="static/img/xor.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('implies')" data-toggle="tooltip" title="Implies. -> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/implies.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('iff')" data-toggle="tooltip" title="Iff. <-> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/iff.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('for all')" data-toggle="tooltip" title="For All. \a is the keyboard shortcut"><img class="autoResizeImage" src="static/img/all.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('there exists')" data-toggle="tooltip" title="There Exists. \e is the keyboard shortcut"><img class="autoResizeImage" src="static/img/thereexists.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('dot')" data-toggle="tooltip" title="Seperator. : is the keyboard shortcut"><img class="autoResizeImage" src="static/img/dot.png" align="middle"></button>
+
+			<button type="button"class="btn press" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
+			<div class="clear"></div>
+
+		</div>
+	</div> <!-- END OF EXPRESSIOn COLUMN -->
+
+	<div class="clear"></div>
 	<div class = "main"> <!-- Main window-->
 	<div class="leftColumn"> <!--Left Column-->
 
@@ -83,58 +113,17 @@
 					</div>
 					</div>
 					<div class="table">						
-						<form>
-							<input type="text" name="expression" id ="txtExpr" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="txtExpr" data-toggle="tooltip" title="Expression Entry"> 
-							</form>						
+										
 					</div>
-					<div class= "cell2" id = "cell9">
-							<button onclick="add($('#txtExpr').val()); button('clear');"  type="button" id="addExpr" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
+
 					</div>
 					<div class= "cell2" id = "cell10">
 							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
 					</div>
 					
 				</div>
-				<div class = "symbolsBox">
-					<div class="row">
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('and')" data-toggle="tooltip" title="Logical And. ^ and & are keyboard shortcuts"><img class="autoResizeImage" src="static/img/and.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('or')" data-toggle="tooltip" title="Logical Or. | is the keyboard shortcut"><img class="autoResizeImage" src="static/img/or.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('iff')" data-toggle="tooltip" title="Iff. <-> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/iff.png" align="middle"></button>
-						</div>
-					</div>
-					<div class="row">
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('not')" data-toggle="tooltip" title="Not. ~ is the keyboard shortcut"><img class="autoResizeImage" src="static/img/notsymbol.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('dot')" data-toggle="tooltip" title="Seperator. : is the keyboard shortcut"><img class="autoResizeImage" src="static/img/dot.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('xor')" data-toggle="tooltip" title="Exclusive Or. \x is the keyboard shortcut"><img class="autoResizeImage" src="static/img/xor.png" align="middle"></button>
-						</div>
-					</div>
-					<div class="row">
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('for all')" data-toggle="tooltip" title="For All. \a is the keyboard shortcut"><img class="autoResizeImage" src="static/img/all.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('there exists')" data-toggle="tooltip" title="There Exists. \e is the keyboard shortcut"><img class="autoResizeImage" src="static/img/thereexists.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('implies')" data-toggle="tooltip" title="Implies. -> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/implies.png" align="middle"></button>
-						</div>
-					</div>
 
-					<input type="file" id="files" name="files[]" multiple style="display:none;"/>
-                                                <output id="list"></output>
-                                                <script>
-						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
-                                                </script>
+
 					  
 			<!--Top box-->
 
@@ -187,6 +176,10 @@ $(document).ready(function () {
     });
 	console.log('done'); 
 });
+
+//Adds a listener to the hidden file load button.
+document.getElementById('files').addEventListener('change', handleFileLoad, false);
+
 </script>
 </html> 
 

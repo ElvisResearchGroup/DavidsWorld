@@ -12,12 +12,12 @@
       "width":192,
       "height":96
     },
-        {"type":"Dolphin",
+    {"type":"Dolphin",
       "image_path":"/lib/ocean/dolphin.png",
       "width":256,
       "height":164
     },
-        {"type":"Whale",
+    {"type":"Whale",
       "image_path":"/lib/ocean/whale.png",
       "width":640,
       "height":350
@@ -37,8 +37,7 @@
       "width":100,
       "height":100
     },
-
-        {"type":"Sword_Fish",
+    {"type":"Sword_Fish",
       "image_path":"/lib/ocean/swordfish.png",
       "width":384,
       "height":160

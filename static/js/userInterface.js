@@ -7,46 +7,32 @@ var expArray = [];
 /**
  * on click on add expression button, adds the written expression to list of expressions
  */
-function add(ex){
-	//create a new element
-	var word = $('#txtExpr').val();
-	//var element = document.createElement("input");
+function add(expr){
 
 	//Create Labels
 	var id =  count++;
 	var expressionDiv = $('<div/>', {'id': id, 'class': 'expression'})
 		.append($('<p/>', {'onclick': 'update(' + id + ')'})
-			.text(word));
-	var resultDiv = $('<div/>', {'id': id + 'b', 'class':'result'})
-		.append($('<p/>'));
-	var deleteDiv = $('<div/>', {'id': id + 'c', 'class':'delexpr'})
-		.append($('<p/>', {'onclick': 'deleteExp(' + id + ')'})
-			.text('X'));
-
-	var lineBreak = $('<br/>', {'id': id + 'd'});
+			.text(expr));
+	var resultDiv = $('<div/>', {'class':'result'});
+	var deleteDiv = $('<div/>', {'class':'delexpr', 'onclick': 'deleteExp(' + id + ')'})
+		.text('X');
 
 
 	//Append the element in page
-	if(word !="Input expression" && word.length > 0){
+	if(expr !="Input expression" && expr.length > 0){
 		exprIdArray.push(id);
 
-		$('#outputDiv').append(expressionDiv)
-			.append(resultDiv)
+		$('#outputDiv').append(expressionDiv
 			.append(deleteDiv)
-			.append(lineBreak);
+			.append(resultDiv));
 	}
 
 }
 
-function deleteExp(divId){ //MIGHT NOT WORK
-	var expressionDiv = document.getElementById(divId);
-	expressionDiv.parentNode.removeChild(expressionDiv);
-	var resultDiv = document.getElementById(divId+'b');
-	resultDiv.parentNode.removeChild(resultDiv);
-	var deleteDiv = document.getElementById(divId+'c');
-	deleteDiv.parentNode.removeChild(deleteDiv);
-	var lineBreak = document.getElementById(divId+'d');
-	lineBreak.parentNode.removeChild(lineBreak);
+function deleteExp(divId){
+	$('#' + divId).remove();
+
 	var index = -1;
 	for (i = 0; i < exprIdArray.length; i++) {
 		if (exprIdArray[i] == divId) index = i;
@@ -72,13 +58,10 @@ function setupListeners(){
 		for (var i = 0; i < exprIdArray.length; i++){
 			var id = exprIdArray[i];
 
-			var expressionDiv = $('#' + id + ' p');
+			var expressionDiv = $('#' + id);
 
-
-			var expr = expressionDiv.text();
-
+			var expr = expressionDiv.find('p').text();
 			var parsedTree = parseExpr(expr);
-
 
 			var eval = false;
 			try { 
@@ -89,12 +72,11 @@ function setupListeners(){
 
 			console.log('eval', eval);
 			console.log('world', world);
-			var resultDiv = document.getElementById(id+'b');
 
-			$('#' + id + 'b')
+			expressionDiv.find('.result')
 				.toggleClass('fail', !eval)
 				.toggleClass('pass', eval)
-				.find('p').text(eval);
+				.text(eval);
 		}
 
 	});
@@ -145,7 +127,7 @@ function setupListeners(){
 	$('body').on('change', '#liblist', function(){
 		var library_name = $('#liblist').val();
 		$.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
-			worldstage.sendMessage('setlibrary', data.library);
+			worldstage.sendMessage('setlibrary', data);
 			
 			worldstage.sendMessage('clearworld');
 
@@ -168,7 +150,11 @@ function setupListeners(){
             event.preventDefault();
          }
     });
-
+    
+	$('#fileSelect').click(function (e){
+			$('#files').click();
+   		e.preventDefault();
+	});
 }
 
 function replaceString(regex, string, replacement){
@@ -273,7 +259,7 @@ function populateObjectSelect(data){
 }
 
 function populateColourSelect(){
-  var colours = getColours();
+  var colours = Colour;
   var elem = $('#colourList');
   Object.keys(colours).forEach(function (c){
     elem.append($('<option/>', {value: c}).text(c));
@@ -291,25 +277,18 @@ function addObjectFromUI(){
 	  addObject(obj_index, default_x, default_y, width, height);  
 }
 
-/**
- * Loads file
- */
-
-function fileLoader(){
- var fileSelect = document.getElementById('fileSelect'),
-  fileElem = document.getElementById('files');
- fileSelect.addEventListener("click", function(e){
-   if(fileElem){
-     fileElem.click();
-   }
-   e.preventDefault();
- }, false);
+function update(id){
+	$('#txtExpr').val($('#' +id + ' p').text());
 }
 
-function update(id){
-	var expr = document.getElementById(id).innerText;
-	console.log("expr = " + expr);
-	console.log("id = " + id);
-	var textbox = document.getElementById('txtExpr');
-	textbox.value = expr;
+function setExpressionList(exprs){
+	//TODO remove br after it is removed from index.
+	$('#outputDiv').empty().append($('<br/>'));
+	exprIdArray = [];
+	count = 0;
+	console.log("EXPRESSIONS", exprs);
+	exprs.forEach(function(d){
+		console.log('d', d);
+		add(d);
+	});
 }

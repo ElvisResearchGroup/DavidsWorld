@@ -11,7 +11,6 @@
 		<script type="text/javascript" src="static/js/parser.js" ></script>
 		<script type="text/javascript" src="static/js/evaluation.js" ></script>
 		<script type="text/javascript" src="static/js/world.js"></script>
-		<script type="text/javascript" src="static/js/grid.js"></script>
 		<!--[if IE 6]>
 		<link rel="stylesheet" type="tex/css" href="iespecific.css" />
 		<![endif]-->
@@ -67,21 +66,17 @@ $(document).ready(function () {
 		  		console.log('data');
 
 				console.log(data);
-				setLibrary(data.library);
+				setLibrary(data);
 				worldstage = bonsai.run(document.getElementById('world'),{
 				  url: 'static/js/world.js',
 				  world: data,
 				  code: function(err, data) {
-				    library = stage.options.world.library;
-				    library_name = stage.options.world.library_name;
-				    bg_colour = stage.options.world.bg_colour;
-
-	    
-
+				    library = stage.options.world;
 				    buildWorld();
-
 				  }
 				});
+				//worldstage.renderer.height = 655;
+				//console.log("test", worldstage.renderer.svg[0].height = 655);
 				setupListeners();
 				populateObjectSelect(data);
 				populateColourSelect();
@@ -129,7 +124,6 @@ $(document).ready(function () {
 						</div>
 						<div  class= "cell2" id = "cell6">
 							<select id="colourList" data-toggle="tooltip" title="Select By Colour">
-								  <option selected disabled>Colour</option>
 							</select> 
 						</div>
 						<div  class= "cell2" id = "cell7">
@@ -143,7 +137,7 @@ $(document).ready(function () {
 							</form>						
 					</div>
 					<div class= "cell2" id = "cell9">
-							<button onclick="add(document.getElementById('txtExpr').value); button('clear');"  type="button" id="addExpr" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
+							<button onclick="add($('#txtExpr').val()); button('clear');"  type="button" id="addExpr" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
 					</div>
 					<div class= "cell2" id = "cell10">
 							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
@@ -199,7 +193,7 @@ $(document).ready(function () {
                                                 <script>
 						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
                                                 </script>
-					  <button type="button" id="fileSelect" class="btn" onclick="fileLoader()" data-toggle="tooltip" title="Select a file to load." >Load File</button>
+					  <button type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." >Load File</button>
 			<!--Top box-->
 
 				</div>

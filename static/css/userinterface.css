@@ -8,13 +8,21 @@ svg
   width:100%;
   height:100%;
   float:left;
-  
 }
 
-div{
+#world{
+  border-width: 5px;
+  width:70%;
+}
+
+#world > div{
  height:100%; 
  width:100%;
+ float:left;
+ border-style: outset; 
+ border-color: #FF9F48;
 }
+
 .main{
 overflow:hidden;
 margin:0;
@@ -313,14 +321,6 @@ select{
  
 }
 
-#world{
-  border-style: outset;
-  border-width: 5px;
-  height:655px;
-  width: 96%;
-  border-color: #FF9F48;
-}
-
 #outputDiv {
   width: 100%;
   height: 500px;
@@ -329,42 +329,68 @@ select{
 }
 
 .expression {
+  height: 50px;
+  width: 100%;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: normal;
-  padding: 0.5%;
-  margin: 0.5%;
   background: #0390B2;
   color: white;
-  width: 100%;
   font-size: large;
-  display: table-cell;
+  float:left;
+  margin-bottom: 5px;
 }
 
+.expression p {
+  margin: 0px;
+  padding-top: 15px;
+  padding-left: 10px;
+  height: 35px;
+  float:left;
+}
+
+.expression p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
 .result {
-  width: 18%;
-  background: #0390B2;
+  height: 50px;
+  width: 60px;
+  background: gray;
   color: white;
-  display: table-cell;
-  font-size: large;
+  float: right;
 }
 
 .result.pass {
   background: #009933;
-  padding-left: 10px;
-  padding-right: 10px;
+  width: 45px;
+  height: 35px;
+  padding-top: 15px;
+  padding-left: 15px;
 }
 
 .result.fail {
   background: #FF5C5C;
-  padding-left: 7px;
-  padding-right: 7px;
+  width: 48px;
+  height: 35px;
+  padding-top: 15px;
+  padding-left: 12px;
 }
 
 .delexpr {
-  width: 40px;
+  padding-top: 15px;
+  padding-left: 10px;
+  height: 35px;
+  width: 25px;
   background: #0390B2;
   color: white;
   font-size: large;
-  display: table-cell;
+  float: right;
+}
+
+.delexpr:hover {
+  background: #115b6d;
+  cursor: pointer;
 }
 

@@ -32,10 +32,13 @@ stage.on('message', handleMessage);
 
 //block dealing with loading from JSON
 function buildWorld(){
-    if(!library.grid_width & !library.grid_height)
+    console.log("building world...");
+    console.log(library);
+    if(library.grid_width != undefined && library.grid_height != undefined)
         drawGrid(library.grid_width, library.grid_height);
     if(!library.bg_colour){
-	//TODO set background colour
+    	console.log(library.background);
+	stage.setBackgroundColor(getColour(library.background));
     }
       
 }
@@ -45,16 +48,20 @@ function handleMessage(message) {
     console.log('message', message);
     if (message === 'getworldforeval'){
         stage.sendMessage('evalworld', getWorld());
-    }    
+    } 
+    else if(message === 'clearworld'){
+      console.log("TIME TO CLEAN UP");
+      clearWorld();
+      buildWorld();
+    }
+    else if(message === 'buildworld'){
+      buildWorld();
+    }
 
 }
 
 stage.on('message:generateWorld', function(data){
   generateWorldFromFile(data);
-});
-
-stage.on('message:clearworld', function(){
-    clearWorld();
 });
 
 stage.on('message:setlibrary', function(data){
@@ -129,6 +136,14 @@ function getWorld(){
     return world;
 }
 
+function getColour(col){
+	if (!col) return Colour['white'];
+  	if(Colour[col.toString().toLowerCase()]){
+		col = Colour[col.toString().toLowerCase()];
+  	}
+  	return col;
+}
+
 //----------------------------------------------------
 //World Handling
 //----------------------------------------------------
@@ -144,6 +159,10 @@ function clearWorld(){
 	stage.removeChild(grid_lines[i][j]);
       }
     }
+    
+    stage_obj_map = [];
+    stage_obj_types = [];
+    
 }
 
 function getGridCoord(bonsai_obj){
@@ -168,26 +187,29 @@ function getGridCoord(bonsai_obj){
 
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
-function generateWorldFromFile(worldTree){
+function generateWorldFromFile(worldJSON){
 
   clearWorld();
-  
-  loadedLibrary = null;
+  buildWorld();
   var worldObjects = [];
   var obj_list = []; //List of objects to draw to screen
   var ind_list = []; //List of indexes mapped to same position as obj_list
-   if(loadedLibrary == null){
-    loadedLibrary = worldTree[0]; //The library should be the only file in the buffer
-    }
-  
+
+  console.log("loaded", worldJSON);
   //Make sure to Change background colour
-  for(var i = 0; i<loadedLibrary.library.length; i++){
-  worldObjects[i] = loadedLibrary.library[i];//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
+  for(var i = 0; i< worldJSON.world.length; i++){
+  worldObjects.push(worldJSON.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
   var obj = worldObjects[i];
   var lib_index = null;
-  for(var index = 0; index < library.length;index++){
-    if(library[i].type == obj.type){
-      lib_index = i;
+  for(var index = 0; index < library.library.length;index++){
+    if(library.library[index].type == obj.type){
+    		var keys = Object.keys(library.library[index]).forEach(function(key){
+	  	  if(Object.keys(obj).indexOf(key) >= 0 && obj[key] != undefined){
+	 	   }
+	 	   else
+			obj[key] = library.library[index][key];
+		});
+      lib_index = index;
     }
   }
   if(lib_index == null){
@@ -213,7 +235,6 @@ ind_list.push(lib_index);
   createBonsaiShape(obj_list[i]);
   }
   }
-  generateWorld();  
 }  
 
 //----------------------------------------------------
@@ -225,17 +246,16 @@ function addObject(obj_type, data){
 
     //Cloning the object from the library.
 
-    for(var i = 0; i < library.length; i++){
+    for(var i = 0; i < library.library.length; i++){
 	//If we find the correct object to create from.
-      if(library[i].type == obj_type){
-	var keys = Object.keys(library[i]).forEach(function(key){
+      if(library.library[i].type == obj_type){
+	var keys = Object.keys(library.library[i]).forEach(function(key){
 	    if(data != null && Object.keys(data).indexOf(key) >= 0 && data[key] != undefined){
 		lib_obj[key] = data[key];
 	    }
 	    else
-		lib_obj[key] = library[i][key];
+		lib_obj[key] = library.library[i][key];
 	});
-	//lib_obj = Object.clone(library[i].prototype);
 
       }
     }
@@ -246,9 +266,8 @@ function addObject(obj_type, data){
 
 function createBonsaiShape(obj){
   var bonsaiObj;
-  console.log("obj test",obj)
   
-  if(obj.poly >= 0)
+  if(obj.image_path == undefined)
       bonsaiObj = bonsaiPoly(obj);
   else
       bonsaiObj = bonsaiImage(obj);//TODO!!!!
@@ -293,8 +312,6 @@ function bonsaiImage(obj){
     console.log(obj);
     stage.addChild(this);
   });
-
-	//TODO!!!
 }
 
 function bonsaiPoly(obj){ //What does this method do?
@@ -312,10 +329,10 @@ function bonsaiPoly(obj){ //What does this method do?
   }
 	  
   myPoly.addTo(stage);
-  var colour = obj.def_col;
-  if(Object.getOwnPropertyNames(Colour).indexOf(colour.toString().toLowerCase()) > -1){
-	colour = Colour[colour.toLowerCase()];
-  }
+  
+  var colour = getColour(obj.def_col);
+  console.log(colour);
+  
   myPoly.fill(colour)
   .stroke('#000', 2)
   .on('multi:pointerdown', function(e){
@@ -363,9 +380,9 @@ function getValue(obj, key){ //What value is this referring to?
 
 //draws grid on screen
 function drawGrid(x, y){ 
+  console.log("Drawing Grid:", x, y);
   var cell_width = stage.width/x;
   var cell_height = stage.height/y;
-  console.log(cell_width, cell_height);
 
   //vertical
  for(var i=0; i<=y;i++){
@@ -384,4 +401,8 @@ function drawGrid(x, y){
    .addTo(stage);   
  }
   
+}
+
+function getColours(){
+  return ['white'];
 }

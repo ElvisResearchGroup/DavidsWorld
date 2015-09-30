@@ -61,10 +61,10 @@ function handleMessage(message) {
     else if(message === 'buildworld'){
       buildWorld();
     }
-    else if(message === 'removeobject'){
+    else if(message === 'removeObj'){
 	removeSelectedObject();
     }
-    else if(message === 'cloneobject'){
+    else if(message === 'cloneObj'){
 	cloneSelectedObject();
     }
 
@@ -309,7 +309,7 @@ function addObject(obj_type, data){
     var lib_obj = new Object();
 
     //Cloning the object from the library.
-
+    console.log(data);
     for(var i = 0; i < library.library.length; i++){
 	//If we find the correct object to create from.
       if(library.library[i].type == obj_type){
@@ -325,6 +325,7 @@ function addObject(obj_type, data){
     }
     lib_obj["x"] = DEFAULT_X;
     lib_obj["y"] = DEFAULT_Y; 
+   console.log(lib_obj);
     createBonsaiShape(lib_obj);
 }
 
@@ -377,7 +378,7 @@ function createBonsaiShape(obj){
 	  //selected_object.attr('filters', new filter.Saturate(1));
 	}
 	selected_object = this;
-	this.attr('filters', new filter.Opacity());
+	this.attr('filters', new filter.Opacity(.8));
 	//selected_object.stroke("#FFF", 2); 
     }); 
       
@@ -394,11 +395,9 @@ function createBonsaiShape(obj){
  * @param {obj} Object passed from json tree structure - contains an image path for this function to deal with
  */
 function bonsaiImage(obj){
-  console.log('exception', library, obj.image_path);
+  console.log('exception', library, obj);
   
-  var f = new filter.Saturate();
-  
-  var obj =  new Bitmap(obj.image_path, function(err) {
+  var image =  new Bitmap(obj.image_path, function(err) {
     if (err){
       console.log(err);
       return;
@@ -414,9 +413,9 @@ function bonsaiImage(obj){
     stage.addChild(this);
   });
   
-  //obj.attr('filters', new filter.DropShadow(10,10,2,'#000'));
   
-  return obj;
+  
+  return image;
 }
 
 

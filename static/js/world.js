@@ -30,14 +30,14 @@ var Colour = {
 //----------------------------------------------------
 stage.on('message', handleMessage);
 
-//block dealing with loading from JSON
+/**
+ * Populates the world initially.
+ *Draws the Grid and Sets the background colour, based on library specifications. 
+ */
 function buildWorld(){
-    console.log("building world...");
-    console.log(library);
     if(library.grid_width != undefined && library.grid_height != undefined)
         drawGrid(library.grid_width, library.grid_height);
     if(!library.bg_colour){
-    	console.log(library.background);
 	stage.setBackgroundColor(getColour(library.background));
     }
       
@@ -61,26 +61,44 @@ function handleMessage(message) {
     else if(message === 'buildworld'){
       buildWorld();
     }
+    else if(message === 'removeobject'){
+	removeSelectedObject();
+    }
+    else if(message === 'cloneobject'){
+	cloneSelectedObject();
+    }
 
 }
-
+/**
+ * Handles the message to take a given world from a file.
+ * @param {data}  The world information to generate from.
+ */
 stage.on('message:generateWorld', function(data){
   generateWorldFromFile(data);
 });
 
+/**
+ * Sets the current library
+ * @param {data} The library data to change the world to operate off.
+ */
 stage.on('message:setlibrary', function(data){
     setLibrary(data);
 });
 
-
+/**
+ * Adds a specified object to the world
+ * 
+ */
 stage.on('message:addobject', function(data){
   addObject(data.type, {x: data.x, y: data.y, width: data.width, height: data.height, def_col: data.colour});
 });
 
+/**
+ * Changes the size of the selected object, if the data is +1, increase in size.
+ * Otherwise it decreases in size.
+ */
 stage.on('message:changeSize', function(data){
   var scale = (data == 1) ? 1.4 : (1/1.4); 
-  
-  console.log(Object.getOwnPropertyNames(selected_object));
   selected_object.animate(10, {
       radius: selected_object._attributes.radius*scale,
       width: selected_object._attributes.width*scale,
@@ -110,7 +128,7 @@ function getWorld(){
     var item;
     
     for(var i = 0; i < stage_obj_map.length; i++){
-
+	console.log(stage_obj_map[i]);
       	item = new Object();
       	item.x = stage_obj_map[i]._attributes.x;
       	item.y = stage_obj_map[i]._attributes.y;
@@ -255,6 +273,37 @@ ind_list.push(lib_index);
 //----------------------------------------------------
 //Object Handling
 //----------------------------------------------------
+
+/**
+ * Removes the selected object from the bonsai object list, and its entry from the type list.
+ */
+function removeSelectedObject(){
+    if(!selected_object)
+      return;
+    var index = stage_obj_map.indexOf(selected_object);
+    if(index == -1)
+      return;
+    stage_obj_map.splice(index, 1);
+    stage_obj_types.splice(index, 1);
+    selected_object = null;
+}
+
+/**
+ * Copies the object and places the copy at its location.
+ */
+function cloneSelectedObject(){
+  if(!selected_object)
+    return;
+  var index = stage_object_map.indexOf(selected_object);
+  
+  var attributes = getWorld()[index];
+  
+  attributes.x = attributes.x+5;
+  attributes.y = attributes.y+5;
+  
+  addObject(stage_obj_types[index], attributes);
+}
+
 //Passing null for x->height will make it use the default values.
 function addObject(obj_type, data){
     var lib_obj = new Object();
@@ -291,7 +340,7 @@ function createBonsaiShape(obj){
   if(obj.image_path == undefined)
       bonsaiObj = bonsaiPoly(obj);
   else
-      bonsaiObj = bonsaiImage(obj);//TODO!!!!
+      bonsaiObj = bonsaiImage(obj);
       
   var x_offset = 0, y_offset = 0;
   //If it is an image or a square
@@ -322,9 +371,13 @@ function createBonsaiShape(obj){
 	});
       })
       .on("pointerdown", function(e){
-      if(!(selected_object === undefined) && selected_object.stroke !== undefined)
-        selected_object.stroke("#FFF", 2);
+	//Dehighlight the previous selected object.
+	if(!(selected_object === undefined)){
+	  selected_object.attr('filters', new filter.Opacity(1));
+	}
 	selected_object = this;
+	this.attr('filters', new filter.Opacity());
+	//selected_object.stroke("#FFF", 2); 
     }); 
       
   stage_obj_types.push(obj.type);
@@ -341,7 +394,10 @@ function createBonsaiShape(obj){
  */
 function bonsaiImage(obj){
   console.log('exception', library, obj.image_path);
-  return new Bitmap(obj.image_path, function(err) {
+  
+  var f = new filter.Saturate();
+  
+  var obj =  new Bitmap(obj.image_path, function(err) {
     if (err){
       console.log(err);
       return;
@@ -356,6 +412,10 @@ function bonsaiImage(obj){
     console.log(obj);
     stage.addChild(this);
   });
+  
+  //obj.attr('filters', new filter.DropShadow(10,10,2,'#000'));
+  
+  return obj;
 }
 
 

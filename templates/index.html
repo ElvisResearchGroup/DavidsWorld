@@ -1,218 +1,131 @@
 <!DOCTYPE html>
 <html>
-	<head>
- 		<title>Davids World</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<script type="text/javascript" src="static/js/jquery-1.11.3.js"></script>
-		<script type="text/javascript" src="static/js/buttons.js"></script>
-		<script type="text/javascript" src="static/js/bonsai-0.4.1.min.js"></script>
-		<script type="text/javascript" src="static/js/saveload.js"></script>
-		<script type="text/javascript" src="static/js/userInterface.js" ></script>
-		<script type="text/javascript" src="static/js/parser.js" ></script>
-		<script type="text/javascript" src="static/js/evaluation.js" ></script>
-		<script type="text/javascript" src="static/js/world.js"></script>
-		<!--[if IE 6]>
-		<link rel="stylesheet" type="tex/css" href="iespecific.css" />
-		<![endif]-->
-		<link rel="stylesheet" type="text/css" href="static/css/userinterface.css">
-	</head>
-	<body bgcolor="#9EE4F5">
+<head>
+	<title>Davids World</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script type="text/javascript" src="static/js/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="static/js/buttons.js"></script>
+	<script type="text/javascript" src="static/js/bonsai-0.4.1.min.js"></script>
+	<script type="text/javascript" src="static/js/saveload.js"></script>
+	<script type="text/javascript" src="static/js/userInterface.js" ></script>
+	<script type="text/javascript" src="static/js/parser.js" ></script>
+	<script type="text/javascript" src="static/js/evaluation.js" ></script>
+	<script type="text/javascript" src="static/js/world.js"></script>
+	<!--[if IE 6]>
+	<link rel="stylesheet" type="tex/css" href="iespecific.css" />
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="static/css/userinterface.css">
+</head>
+<body>
+	<div id="titleBar"> <!-- START OF TITLE BAR -->
+		<img src="static/img/davidsworld2.png" align="center">
+		<button class="nav-item">Load Exercise</button>
+		<button class="nav-item">Save File</button>
+		<button class="nav-item" type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." >Load File</button>
+		<input type="file" id="files" name="files[]" multiple style="display:none;"/>
+        <output id="list"></output>
+		<div class="nav-item">Current Library
+			<select id='liblist' data-toggle="tooltip" title="Library Selection">
+			{% for library in libraries %}
+				<option {% if loop.first %}selected{% endif %} 
+					value="{{ library }}">{{ library.capitalize() }}</option>
+			{% endfor %}
+			</select> 
+		</div>
+	</div> <!-- END OF TITLE BAR -->
 
-<div class = "main"> <!-- Main window-->
+	<div id="world-column"> <!-- START OF WORLD COLUMN -->
+		<div class="button-box">
+			<button type="button" class="btn" id="addObj">Add Object</button>
+			<div class="left-mod">Type</div>
+			<select class="left-box" data-toggle="tooltip" title="Object Selection" id="objList"></select>
+			<div class="left-mod">Colour</div>
+			<select class="left-box" id="colourList" data-toggle="tooltip" title="Select By Colour"></select>
+			
+		</div>
+		<div class="button-box">
+				<div class="left-mod">Size</div> 
+				<button type="button" class="btn left-mod" data-toggle="tooltip" title="ObjectBigger" id="sizeInc">Bigger</button>
+				<button type="button" class="btn left-mod" data-toggle="tooltip" title="ObjectSmaller" id="sizeDec">Smaller</button>
+			<button type="button" class="btn" data-toggle="tooltip" title="ObjectCopy" id="copyObj">Copy</button>
+			<div class="clear"></div>
+			<div class="left-mod">Name</div> 
+			<div class="left-mod2"><input type="text" name="objNamer" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;"></div>
+			<button type="button" class="btn " data-toggle="tooltip" title="ObjectRemove" id="removeObj">Remove</button>
+		</div>
+		<div id ="world"></div>
+	</div> <!-- END OF WORLD COLUMN -->
 
-	<div class="leftColumn"> <!--Left Column-->
+	<div id="expression-column"> <!-- START OF EXPRESSIOn COLUMN -->
+		<div id="expr-box">
+			<form>
+				<input type="text" name="expression" id ="txtExpr" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="txtExpr" data-toggle="tooltip" title="Expression Entry"> 
+			</form>
+			<button onclick="add($('#txtExpr').val()); button('clear');"  type="button" id="addExpr" class="btn press" data-toggle="tooltip" title="Adds the Current Expression">Add Expression</button>
+			<div class="clear"></div>
+			<button type="button" class="btn symbol" onclick="button('not')" data-toggle="tooltip" title="Not. ~ is the keyboard shortcut"><img class="autoResizeImage" src="static/img/notsymbol.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('and')" data-toggle="tooltip" title="Logical And. ^ and & are keyboard shortcuts"><img class="autoResizeImage" src="static/img/and.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('or')" data-toggle="tooltip" title="Logical Or. | is the keyboard shortcut"><img class="autoResizeImage" src="static/img/or.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('xor')" data-toggle="tooltip" title="Exclusive Or. \x is the keyboard shortcut"><img class="autoResizeImage" src="static/img/xor.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('implies')" data-toggle="tooltip" title="Implies. -> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/implies.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('iff')" data-toggle="tooltip" title="Iff. <-> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/iff.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('for all')" data-toggle="tooltip" title="For All. \a is the keyboard shortcut"><img class="autoResizeImage" src="static/img/all.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('there exists')" data-toggle="tooltip" title="There Exists. \e is the keyboard shortcut"><img class="autoResizeImage" src="static/img/thereexists.png" align="middle"></button>
+			<button type="button" class="btn symbol" onclick="button('dot')" data-toggle="tooltip" title="Seperator. : is the keyboard shortcut"><img class="autoResizeImage" src="static/img/dot.png" align="middle"></button>
 
-		<div class="top">
-			<div class="programHeading"><!--program heading= 'David's World'-->
-				<img src="static/img/davidsworld2.png" align="center">
-			</div>
-			<!--LEAVE THIS IN FOR NOW - LOADING CUBE FOR LOADING BAR
-			<div class="loadingBar" >
-				<div class="sk-cube-grid">
-					<div class="sk-cube sk-cube1"></div>
-					<div class="sk-cube sk-cube2"></div>
-					<div class="sk-cube sk-cube3"></div>
-					<div class="sk-cube sk-cube4"></div>
-					<div class="sk-cube sk-cube5"></div>
-					<div class="sk-cube sk-cube6"></div>
-					<div class="sk-cube sk-cube7"></div>
-					<div class="sk-cube sk-cube8"></div>
-					<div class="sk-cube sk-cube9"></div>
-				</div> 
+			<button type="button"class="btn press" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expression</button>
+			<div class="clear"></div>
 
-				<div class="loadingDialog title" >
-					<p id="loading"></p> 
-				</div> 
-			</div> -->
+		</div>
+		<div id="outputDiv">
+		</div>
+		<div class = "goButtonDiv">
+			<a href="#" class="goButton" onclick= "go()">Go!</a>
+		</div>
+	</div> <!-- END OF EXPRESSIOn COLUMN -->
 
-		</div><!--Top box-->
-		<div class = "bottomLeft">
-			<div id = "world"> </div>
-
-
-			<script>
-      //loadLibrary("geometry");
+	<div class="clear"></div>
+</div>
+</body>
+<script>
 
 var worldstage;
 
 $(document).ready(function () {
-		  console.log('ready');
+	console.log('ready');
 
-		  //$('[data-toggle="tooltip"]').tooltip();
-		  var library_name = $('#liblist').val();
+	//$('[data-toggle="tooltip"]').tooltip();
+	var library_name = $('#liblist').val();
 
-		  console.log('almost data');
-		  $.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
-		  		console.log('data');
+	console.log('almost data');
+	$.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
+  		console.log('data');
 
-				console.log(data);
-				setLibrary(data);
-				worldstage = bonsai.run(document.getElementById('world'),{
-				  url: 'static/js/world.js',
-				  world: data,
-				  code: function(err, data) {
-				    library = stage.options.world;
-				    buildWorld();
-				  }
-				});
-				//worldstage.renderer.height = 655;
-				//console.log("test", worldstage.renderer.svg[0].height = 655);
-				setupListeners();
-				populateObjectSelect(data);
-				populateColourSelect();
-				
-			 }).error(function(xhr) {
-                    console.log('error', xhr)
-                });
-			 console.log('done'); 
+		console.log(data);
+		setLibrary(data);
+		worldstage = bonsai.run(document.getElementById('world'),{
+			url: 'static/js/world.js',
+		  	world: data,
+		  	code: function(err, data) {
+		    	library = stage.options.world;
+		    	buildWorld();
+		  	}
 		});
-		</script>
+		//worldstage.renderer.height = 655;
+		//console.log("test", worldstage.renderer.svg[0].height = 655);
+		setupListeners();
+		populateObjectSelect(data);
+		populateColourSelect();
+				
+	}).error(function(xhr) {
+        console.log('error', xhr)
+    });
+	console.log('done'); 
+});
 
-		</div><!--Bottom box-->
-	</div>
+//Adds a listener to the hidden file load button.
+document.getElementById('files').addEventListener('change', handleFileLoad, false);
 
-	<div class="rightColumn"><!--Right Column-->
-			<div class="top">
-				<div class = "dropdownBox"> <!--Div holding buttons in the right hand corner-->
-					<div class="table">
-						<div class="row">
-						<div class= "cell2" id = "cell1">
-							<select id='liblist' data-toggle="tooltip" title="Library Selection">
-							{% for library in libraries %}
-								<option {% if loop.first %}selected{% endif %} 
-									value="{{ library }}">{{ library.capitalize() }}</option>
-							{% endfor %}
-							</select> 
-						</div>
-						<div class= "cell2" id = "cell2">
-							<select data-toggle="tooltip" title="Object Selection" id="objList">ss
-								  
-							</select> 
-						</div>
-						<div class= "cell2" id = "cell3">
-							<button type="button" class="btn" id="addObj">Add Object</button>
-						</div>
-					</div>
-					</div>
-					<div class="table">
-						<div class="row">
-						<div class= "cell2" id = "cell4">
-							<button type="button" class="btn" data-toggle="tooltip" title="ObjectBigger" id="sizeInc">Bigger</button>
-						</div>
-						<div class= "cell2" id = "cell5">
-							<button type="button" class="btn" data-toggle="tooltip" title="ObjectSmaller" id="sizeDec">Smaller</button>
-						</div>
-						<div  class= "cell2" id = "cell6">
-							<select id="colourList" data-toggle="tooltip" title="Select By Colour">
-							</select> 
-						</div>
-						<div  class= "cell2" id = "cell7">
-							<input type="text" name="objNamer" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;">
-						</div>
-					</div>
-					</div>
-					<div class="table">						
-						<form>
-							<input type="text" name="expression" id ="txtExpr" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="txtExpr" data-toggle="tooltip" title="Expression Entry"> 
-							</form>						
-					</div>
-					<div class= "cell2" id = "cell9">
-							<button onclick="add($('#txtExpr').val()); button('clear');"  type="button" id="addExpr" class="btn" data-toggle="tooltip" title="Adds the Current Expression">Add Expr</button>
-					</div>
-					<div class= "cell2" id = "cell10">
-							<button type="button"class="btn" onclick="button('clear')" data-toggle="tooltip" title="Clears the Current Expression">Clear Expr</button>
-					</div>
-					<!--<div class="table">
-					
-					<input type="file" id="files" name="files[]" multiple style="display:none;"/>
-                                                <output id="list"></output>
-                                                <script>
-						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
-                                                </script>
-					  <button type="button" id="fileSelect" class="btn" onclick="fileLoader()" data-toggle="tooltip" title="Select a file to load." >Load File</button>
-					</div>-->
-					
-				</div>
-				<div class = "symbolsBox">
-					<div class="row">
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('and')" data-toggle="tooltip" title="Logical And. ^ and & are keyboard shortcuts"><img class="autoResizeImage" src="static/img/and.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('or')" data-toggle="tooltip" title="Logical Or. | is the keyboard shortcut"><img class="autoResizeImage" src="static/img/or.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('iff')" data-toggle="tooltip" title="Iff. <-> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/iff.png" align="middle"></button>
-						</div>
-					</div>
-					<div class="row">
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('not')" data-toggle="tooltip" title="Not. ~ is the keyboard shortcut"><img class="autoResizeImage" src="static/img/notsymbol.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('dot')" data-toggle="tooltip" title="Seperator. : is the keyboard shortcut"><img class="autoResizeImage" src="static/img/dot.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('xor')" data-toggle="tooltip" title="Exclusive Or. \x is the keyboard shortcut"><img class="autoResizeImage" src="static/img/xor.png" align="middle"></button>
-						</div>
-					</div>
-					<div class="row">
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('for all')" data-toggle="tooltip" title="For All. \a is the keyboard shortcut"><img class="autoResizeImage" src="static/img/all.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('there exists')" data-toggle="tooltip" title="There Exists. \e is the keyboard shortcut"><img class="autoResizeImage" src="static/img/thereexists.png" align="middle"></button>
-						</div>
-						<div class ="cell">
-							<button type="button" class="btn symbol" onclick="button('implies')" data-toggle="tooltip" title="Implies. -> is the keyboard shortcut"><img class="autoResizeImage" src="static/img/implies.png" align="middle"></button>
-						</div>
-					</div>
-
-					<input type="file" id="files" name="files[]" multiple style="display:none;"/>
-                                                <output id="list"></output>
-                                                <script>
-						  document.getElementById('files').addEventListener('change', handleFileLoad, false);
-                                                </script>
-					  <button type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." >Load File</button>
-			<!--Top box-->
-
-				</div>
-
-		</div>
-		<div class = "bottomRight, bottom">
-			<div id="outputDiv">
-				<br>
-			</div>
-			<div class = "goButtonDiv">
-				<a href="#" class="goButton" onclick= "go()">Go!</a>
-			</div>
-		</div><!--Bottom box-->
-	</div>
-</div>
-<!--<script type ="text/javascript" src="js/userInterface.js" ></script>
-<script type ="text/javascript" src="world.js" ></script>
--->
-</body>
-
+</script>
 </html> 
 

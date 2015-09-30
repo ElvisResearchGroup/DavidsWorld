@@ -1,147 +1,157 @@
 body{
-margin: 0px;
-overflow-y:scroll;
+  margin: 0px;
+  overflow-y:scroll;
+  background-color: #9EE4F5;
+  font-family: Arial;
+
 }
 
-svg 
-{
-  width:100%;
-  height:100%;
-  float:left;
+#titleBar {
+  height: 100px;
+  background-color: #72BFD3;
+}
+
+#titleBar > div {
+  padding-left: 5px;
+}
+
+.nav-item {
+  background-color: #FF9F48;
+  height: 35px;
+  float: right;
+  margin-right: 5px;
+  margin-top: 65px;
+}
+
+select {
+  color: #ffffff;
+  font-size: 13.3px;
+  font-weight: bold;
+  background: #1495b7;
+  text-decoration: none;
+  border:solid;
+  border-color: #FF9F48;
+}
+
+#liblist {
+  height: 100%;
+}
+
+#world-column {
+  float: left;
+  width: 50%;
+}
+
+#expression-column {
+  float: right;
+  width: 50%;
+}
+
+.clear {
+  clear: both;
+}
+
+button.symbol {
+  width:8.88888%;
+  height: 50px;
+  float: left;
+}
+
+#expr-box {
+  margin: 5px;
+  height: 100px;
+  background-color: #FF9F48;
+}
+
+#expr-box form {
+  height: 45px;
+  margin: 0px;
+  float: left;
+  width: 80%;
+}
+
+#expr-box input {
+  height: 35px;
+}
+
+#expr-box button.press {
+  width: 20%;
+  height: 50%;
+  float: right;
+}
+
+.button-box {
+  background-color: #FF9F48;
+  width: 49%;
+  margin: 0.5%;
+  margin-top: 5px;
+  height: 100px;
+  float: left;
+}
+
+.left-box, .left-mod {
+  float: left;
+  height: 50px;
+}
+
+select.left-box {
+  width: 50%;
+}
+
+.left-mod {
+  width: 25%;
+}
+
+div.left-mod {
+  padding-left: 3%;
+  padding-top: 15px;
+  height: 35px;
+  width: 22%;
+  font-size: 20px;
+}
+.left-mod2 input {
+  width: 97%;
+  padding-left: 3%;
+  height: 40px;
+}
+
+.left-mod2 {
+  float: left;
+  height: 50px;
+  width: 50%;
+
+}
+
+#addObj {
+  height: 100px;
+  width: 25%;
+  float: right;
+}
+
+#copyObj, #removeObj {
+  float: right;
+  width: 25%;
+  height: 50px;
 }
 
 #world{
   border-width: 5px;
-  width:75%;
+  width:70%;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 #world > div{
  height:100%; 
  width:100%;
  float:left;
- margin-left:10%;
  border-style: outset; 
  border-color: #FF9F48;
-}
-
-.main{
-overflow:hidden;
-margin:0;
-}
-
-
-.leftColumn{
-float:left;
-
-width:50%;
-
-display: block;
-/*background:#FFDFBB;*/
-height:100%;
-}
-
-.rightColumn{
-float: right;
-padding-top: 4%;
-padding-right: 5.5%;
-width:44.5%;
-
-display: block;
-/*background:#FFDFBB;*/
-height:100%;
-}
-
-.top{
-float:left;
-border: none;
-width:100%;
-background: #FF9F48;
-
-}
-.bottom{
-float:left;
-/*border: 1px solid;*/
-width:100%;
-font-family: Arial, Helvetica, sans-serif;
-
 }
 
 img {
     max-width: 100%;
     max-height: 100%;
-}
-
-.sk-cube-grid {
-  width: 40px;
-  height: 40px;
-  /*margin-left: 11%;*/
-  /*margin-right:0%;*/
-  padding-left: 11%;
-  float: left;
-  
-}
-
-.sk-cube-grid .sk-cube {
-  width: 33%;
-  height: 33%;
-  background-color: #FF9F48;
-  float: left;
-  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-          animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
-}
-.sk-cube-grid .sk-cube1 {
-  -webkit-animation-delay: 0.2s;
-          animation-delay: 0.2s; }
-.sk-cube-grid .sk-cube2 {
-  -webkit-animation-delay: 0.3s;
-          animation-delay: 0.3s; }
-.sk-cube-grid .sk-cube3 {
-  -webkit-animation-delay: 0.4s;
-          animation-delay: 0.4s; }
-.sk-cube-grid .sk-cube4 {
-  -webkit-animation-delay: 0.1s;
-          animation-delay: 0.1s; }
-.sk-cube-grid .sk-cube5 {
-  -webkit-animation-delay: 0.2s;
-          animation-delay: 0.2s; }
-.sk-cube-grid .sk-cube6 {
-  -webkit-animation-delay: 0.3s;
-          animation-delay: 0.3s; }
-.sk-cube-grid .sk-cube7 {
-  -webkit-animation-delay: 0s;
-          animation-delay: 0s; }
-.sk-cube-grid .sk-cube8 {
-  -webkit-animation-delay: 0.1s;
-          animation-delay: 0.1s; }
-.sk-cube-grid .sk-cube9 {
-  -webkit-animation-delay: 0.2s;
-          animation-delay: 0.2s; }
-
-@-webkit-keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
-    -webkit-transform: scale3D(1, 1, 1);
-            transform: scale3D(1, 1, 1);
-  } 35% {
-    -webkit-transform: scale3D(0, 0, 1);
-            transform: scale3D(0, 0, 1); 
-  }
-}
-
-@keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
-    -webkit-transform: scale3D(1, 1, 1);
-            transform: scale3D(1, 1, 1);
-  } 35% {
-    -webkit-transform: scale3D(0, 0, 1);
-            transform: scale3D(0, 0, 1);
-  } 
-
-	
-}
-
-.loadingDialog {
-	padding-left: 20%;
-	height: 50%;
 }
 
 .title
@@ -157,85 +167,6 @@ img {
 	line-height:1;
 }
 
-.dropdownBox{
-	float: left;
-	width: 75%;
-	background-color: #FF9F48;
-  height:100%;
-}
-
-.symbolsBox{
-	width: 25%;
-	background-color: #ffa048;
-	float: left;
-  height:100%;
-}
-
-.table{
-  display: table;
-  width: 100%;
-
-}
-
-.row{
-  width: 100%;
-  height: 30%;
-  border: 1px solid;
-  border: 1px solid;
-  border-color: #000000;
-  display: table-row;
-}
-
-.cell{
-  width: 25%;
-  height: 100%;
-  display: table-cell;
-  padding: 1%;
-  border: black;
-
-}
-
-.cell2{
-  display: table-cell;
-  width: 100%;
-   /*border: 1px solid;
-border-color: #000000;*/
-}
-
-#cell1, #cell2{
-  width: 40%;
-}
-
-#cell3{
-  width: 20%;
-}
-
-#cell4, #cell5{
-  width: 15%;
-}
-
-#cell6, #cell7{
-  width: 35%;
-}
-
-#cell8{
-  width:80%;
-}
-#cell9{
-  width:10%;
-}
-
-#cell10{
-  width:10%;
-}
-
-table{
-  width:100%;
-}
-
-td{
-  height: 60%;
-}
 .autoResizeImage{
   max-width: 100%;
   height: auto;
@@ -246,6 +177,8 @@ td{
   float: right;
 }
 .goButton {
+  margin: 5px;
+  width: 80px;
   background-color:#ffa048;
   display:inline-block;
   cursor:pointer;
@@ -253,7 +186,9 @@ td{
   font-family:Arial;
   font-size:20px;
   font-weight:bold;
-  padding:18px 12px;
+  height: 40px;
+  padding-top:18px;
+  padding-left: 40px;
   text-decoration:none;
 }
 .goButton:hover {
@@ -284,7 +219,6 @@ td{
   font-weight: bold;
   background: #1495b7;
   padding: 1% 1% 1% 1%;
-  width:100%;
   text-decoration: none;
   border:solid;
   border-color: #FF9F48;
@@ -297,10 +231,7 @@ td{
 
   }
 
-#addExpr {
-  height: ;
-}
-select{
+.main select{
     font-family: Arial;
   color: #ffffff;
   font-size: 13.3px;
@@ -326,6 +257,7 @@ select{
   width: 100%;
   height: 500px;
   border: 10px;
+  background-color: #b6e3ec;
   overflow-y: scroll;
 }
 

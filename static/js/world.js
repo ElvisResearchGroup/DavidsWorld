@@ -374,6 +374,7 @@ function createBonsaiShape(obj){
 	//Dehighlight the previous selected object.
 	if(!(selected_object === undefined)){
 	  selected_object.attr('filters', new filter.Opacity(1));
+	  //selected_object.attr('filters', new filter.Saturate(1));
 	}
 	selected_object = this;
 	this.attr('filters', new filter.Opacity());

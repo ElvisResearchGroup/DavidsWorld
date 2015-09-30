@@ -35,7 +35,25 @@
 	</div> <!-- END OF TITLE BAR -->
 
 	<div id="world-column"> <!-- START OF WORLD COLUMN -->
-
+		<div class="button-box">
+			<button type="button" class="btn" id="addObj">Add Object</button>
+			<div class="left-mod">Type</div>
+			<select class="left-box" data-toggle="tooltip" title="Object Selection" id="objList"></select>
+			<div class="left-mod">Colour</div>
+			<select class="left-box" id="colourList" data-toggle="tooltip" title="Select By Colour"></select>
+			
+		</div>
+		<div class="button-box">
+				<div class="left-mod">Size</div> 
+				<button type="button" class="btn left-mod" data-toggle="tooltip" title="ObjectBigger" id="sizeInc">Bigger</button>
+				<button type="button" class="btn left-mod" data-toggle="tooltip" title="ObjectSmaller" id="sizeDec">Smaller</button>
+			<button type="button" class="btn" data-toggle="tooltip" title="ObjectCopy" id="copyObj">Copy</button>
+			<div class="clear"></div>
+			<div class="left-mod">Name</div> 
+			<div class="left-mod2"><input type="text" name="objNamer" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;"></div>
+			<button type="button" class="btn " data-toggle="tooltip" title="ObjectRemove" id="removeObj">Remove</button>
+		</div>
+		<div id ="world"></div>
 	</div> <!-- END OF WORLD COLUMN -->
 
 	<div id="expression-column"> <!-- START OF EXPRESSIOn COLUMN -->
@@ -67,66 +85,6 @@
 	</div> <!-- END OF EXPRESSIOn COLUMN -->
 
 	<div class="clear"></div>
-	<div class = "main"> <!-- Main window-->
-	<div class="leftColumn"> <!--Left Column-->
-
-		<div class="top">
-			<div class="programHeading"><!--program heading= 'David's World'-->
-				<img src="static/img/davidsworld2.png" align="center">
-			</div>
-
-		</div><!--Top box-->
-		<div class = "bottomLeft">
-			<div id = "world"> </div>
-
-		</div><!--Bottom box-->
-	</div>
-
-	<div class="rightColumn"><!--Right Column-->
-			<div class="top">
-				<div class = "dropdownBox"> <!--Div holding buttons in the right hand corner-->
-					<div class="table">
-						<div class="row">
-						<div class= "cell2" id = "cell1">
-							
-						</div>
-						<div class= "cell2" id = "cell2">
-							<select data-toggle="tooltip" title="Object Selection" id="objList">ss
-								  
-							</select> 
-						</div>
-						<div class= "cell2" id = "cell3">
-							<button type="button" class="btn" id="addObj">Add Object</button>
-						</div>
-					</div>
-					</div>
-					<div class="table">
-						<div class="row">
-						<div class= "cell2" id = "cell4">
-							<button type="button" class="btn" data-toggle="tooltip" title="ObjectBigger" id="sizeInc">Bigger</button>
-						</div>
-						<div class= "cell2" id = "cell5">
-							<button type="button" class="btn" data-toggle="tooltip" title="ObjectSmaller" id="sizeDec">Smaller</button>
-						</div>
-						<div  class= "cell2" id = "cell6">
-							<select id="colourList" data-toggle="tooltip" title="Select By Colour">
-							</select> 
-						</div>
-						<div  class= "cell2" id = "cell7">
-							<input type="text" name="objNamer" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;">
-						</div>
-					</div>
-					
-					</div>
-
-
-					  
-			<!--Top box-->
-
-				</div>
-
-		</div>
-	</div>
 </div>
 </body>
 <script>

@@ -18,20 +18,22 @@
 </head>
 <body>
 	<div id="titleBar"> <!-- START OF TITLE BAR -->
-		<img src="static/img/davidsworld2.png" align="center">
-		<button class="nav-item">Load Exercise</button>
-		<button class="nav-item">Save File</button>
-		<button class="nav-item" type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." >Load File</button>
+		<img src="static/img/davidsworldcrop.png" align="center">
+		<button class="nav-item" style="width:10%;">Load Exercise</button>
+		<button class="nav-item" style="width:10%;">Save File</button>
+		<button class="nav-item" type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." style="width:10%;">Load File</button>
 		<input type="file" id="files" name="files[]" multiple style="display:none;"/>
         <output id="list"></output>
-		<div class="nav-item">Current Library
-			<select id='liblist' data-toggle="tooltip" title="Library Selection">
+		<div class="nav-item" style="width:18.5%;">
+			<p style="float:left; margin-top: 9px">Current Library</p>
+			<select id='liblist' data-toggle="tooltip" title="Library Selection" style="float: right;">
 			{% for library in libraries %}
 				<option {% if loop.first %}selected{% endif %} 
 					value="{{ library }}">{{ library.capitalize() }}</option>
 			{% endfor %}
 			</select> 
 		</div>
+
 	</div> <!-- END OF TITLE BAR -->
 
 	<div id="world-column"> <!-- START OF WORLD COLUMN -->

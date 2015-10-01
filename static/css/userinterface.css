@@ -10,7 +10,7 @@ body{
   height: 100px;
   background-color: #9EE4F5;
   color: #FFF;
-  font-weight: bold;
+
 }
 
 #titleBar > div {
@@ -20,7 +20,7 @@ body{
 
   #titleBar > button{
     color: #FFF;
-    font-weight: bold;
+
     font-size:14px;
     font-family: Arial;
   }
@@ -32,6 +32,10 @@ body{
   float: right;
   margin-right: 5px;
   margin-top: 65px;
+}
+
+.nav-item > p {
+  vertical-align: middle;
 }
 
 select {

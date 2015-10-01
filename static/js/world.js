@@ -3,7 +3,7 @@
 //----------------------------------------------------
 //Global Variables
 //----------------------------------------------------
-var DEFAULT_X = 10, DEFAULT_Y = 10;
+var DEFAULT_X = 50, DEFAULT_Y = 50;
 var bg_colour;
 var library;
 var stage_obj_types = [];
@@ -83,6 +83,29 @@ function handleMessage(message) {
 
 }
 
+stage.on('message:needWorldJSON', function(data){
+   stage.sendMessage('getExpr');
+   setTimeout(function(){
+     timerRanOut = true;
+   },5000);
+   while(gotExpr == false){
+     if(timerRanOut == true){
+       throw "List of Expressions could not be found";
+       return;
+     }
+   }
+   timerRanOut = false;
+   gotExpr = false;
+   saveSend(data);
+  
+});
+
+
+stage.on('message:saveClicked', function(data){
+   hrefLink = data
+   stage.sendMessage('');
+  
+});
 
 stage.on('message:exprArray', function(data){
   console.log("World: Received Expr Array");
@@ -141,15 +164,6 @@ function getSelectedObject(){
 function setLibrary(lib){
     library = lib;
 }
-
-
-
-
-
-
-
-
-
 
 /**
  * Gets the state of the world and expressions and sends it out as a message for anything that needs the data. This function is called on reception of needWorldJSON message
@@ -363,10 +377,10 @@ function cloneSelectedObject(){
   attributes.height = stage_obj_map[index]._attributes.height;
   attributes.width = stage_obj_map[index]._attributes.width;
   
-
   
-  attributes.x = stage_obj_map[index]._attributes.x + attributes.height/2;
-  attributes.y = stage_obj_map[index]._attributes.y + attributes.width/2;
+  
+  attributes.x = stage_obj_map[index]._attributes.x + ((attributes.height) ? attributes.height/2 : 5);
+  attributes.y = stage_obj_map[index]._attributes.y + ((attributes.width) ? attributes.width/2 : 5);
   
   attributes.def_col = attributes.colour;
   console.log("ATTRIBUTES:", attributes);
@@ -466,7 +480,7 @@ function createBonsaiShape(obj){
 	  //selected_object.stroke('#000',2);
 	}
 	selected_object = this;
-	this.attr('filters', new filter.Opacity(.8));
+	this.attr('filters', new filter.Opacity(.5));
 	//selected_object.stroke("#FFF", 2); 
     }); 
       
@@ -501,7 +515,7 @@ function bonsaiImage(obj){
     stage.addChild(this);
   });
   
-  
+  //stage.addChild(this);
   
   return image;
 }

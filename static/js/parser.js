@@ -298,7 +298,12 @@ function parseValue(input, scope){
             }
             //Return the constant
             return {type: expressionTypes.CONST, val: cons}
-        } else {
+        }
+        // Repeating ANDS in the string.
+        else if (/(\u2227+(\.|$))+/.exec(input)) {
+            throw {message:"AND: " + input};
+        }
+        else {
             throw {message:"Invalid value type: " + input};
         }
     }

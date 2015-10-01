@@ -4,6 +4,23 @@ var count = 0; //used to count expression divs
 var pressedGo = false;
 var expArray = [];
 
+
+
+
+
+worldstage.on('message:getExpr'){
+  worldstage.sendMessage('exprArray', getExpr());
+}
+
+
+function getExpr(){
+  return expArray;
+}
+
+
+
+
+
 /**
  * on click on add expression button, adds the written expression to list of expressions
  */
@@ -22,6 +39,7 @@ function add(expr){
 	//Append the element in page
 	if(expr !="Input expression" && expr.length > 0){
 		exprIdArray.push(id);
+		expArray.push(expr);
 
 		$('#outputDiv').append(expressionDiv
 			.append(deleteDiv)
@@ -42,6 +60,7 @@ function deleteExp(divId){
 	}
 	if (index > -1){
 		exprIdArray.splice(index, 1);
+		expArray.splice(index, 1);//Could be the cause of errors
 	}
 }
 

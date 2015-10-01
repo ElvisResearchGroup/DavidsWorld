@@ -1,3 +1,9 @@
+worldstage.on('message:saveData', function(data,link){
+   saveAsFile(link, data, "File_Name_Goes_Here");
+});
+
+
+
 //Main function for local load - is triggered by event listener on file load
 function handleFileLoad(event){
   var files = event.target.files; //List of files loaded 
@@ -13,44 +19,8 @@ function handleFileLoad(event){
     });
     reader.readAsText(f);
   }
-  console.log("hi");
   
 }
-
-
-//Function that checks whether the browser is capable of HTML5 local storage - Returns true if it is, or false if it isn't
-function supportsLocalStorage()
-{
-      try
-      {
-        return 'localStorage' in window && window['localStorage'] !== null;
-      }
-      catch (e)
-      {
-        return false; //Browser does not support local storage
-      }
-}
-
-//Local Save - Handled with HTML5 - 
-function saveLocal(){
-  if(supportsLocalStorage == true){
-    
- //TODO?? 
-    
-  }
-  else{
-    //Browser does not support HTML5 Localstorage. Either: Throw an error or deal with save/load in a different way (Not supported yet)
-    console.log("Browser does not support HTML5 Local Storage - Please update your browser to the latest version and try again");
-    return false;
-    
-  }
-  
-  
-  
-  
-  
-}
-
 
 
 //Local Load - is called by handleFileLoad
@@ -78,3 +48,22 @@ function validateJSON(file) {
   }
 }
 
+
+
+//link = button (i.e call saveOutput(this) onclick for download button)
+//Content = text to save
+//file name = name of file that will be downloaded
+function saveAsFile(link, content, filename) {
+    var blob = new Blob([content], {type: "text/text"});
+    var url  = URL.createObjectURL(blob);
+
+    // update link to new 'url'
+    link.download    = filename + ".json";
+    link.href        = url;
+}
+
+//call this on save file button click
+function saveOutput(link){
+    console.log("saveOutput clicked");
+   worldstage.sendMessage('needWorldJSON',link);
+}

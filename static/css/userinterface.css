@@ -9,11 +9,22 @@ body{
 #titleBar {
   height: 100px;
   background-color: #9EE4F5;
+  color: #FFF;
+  font-weight: bold;
 }
 
 #titleBar > div {
+  font-size:15.5px;
   padding-left: 5px;
-}
+  }
+
+  #titleBar > button{
+    color: #FFF;
+    font-weight: bold;
+    font-size:14px;
+    font-family: Arial;
+  }
+
 
 .nav-item {
   background-color: #FF9F48;
@@ -87,6 +98,9 @@ button.symbol {
   margin-top: 5px;
   height: 100px;
   float: left;
+  color: #FFF;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .left-box, .left-mod {
@@ -107,7 +121,7 @@ div.left-mod {
   padding-top: 15px;
   height: 35px;
   width: 22%;
-  font-size: 20px;
+  font-size: 17px;
 }
 .left-mod2 input {
   width: 97%;

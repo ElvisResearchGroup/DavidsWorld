@@ -8,6 +8,11 @@ function parseExpr(input){
     
     //If not 'all' or 'some' then continue parsing
     if (groups === null){
+        groups = /^\s*(\u2200|\u2203)/.exec(input); 
+        if (groups !== null){
+            throw {message: "Missing or invalid variable list for " + input};
+        }
+
         return parseExpr2(input.trim());
     //If 'all' or 'some' record the type as such
     } else if (groups[1] === '\u2200'){
@@ -43,6 +48,7 @@ function parseVarList(input){
         return list;
     //No last variable
     } else {
+        throw {message: "Invalid variable identifier " + input};
         //TODO improve error handling
     }
 }
@@ -251,9 +257,10 @@ function parseComparisons(input) {
  */
 function parseValue(input){
     //Try to match field accesses
-    var groups = /^([a-zA-Z][0-9a-zA-Z]*).([a-zA-Z][0-9a-zA-Z]*)$/.exec(input);
+    var groups = /^([a-zA-Z][0-9a-zA-Z]*)\.([a-zA-Z][0-9a-zA-Z]*)$/.exec(input);
     var cons;
 
+    console.log("value input: ", input);
     //If it was a field access, return it
     if (groups) {
         return {type: expressionTypes.VAR_ACCESS, 
@@ -281,7 +288,7 @@ function parseValue(input){
             //Return the constant
             return {type: expressionTypes.CONST, val: cons}
         } else {
-            //FUTURE ERROR
+            throw {message:"Invalid value type: " + input};
         }
     }
 }

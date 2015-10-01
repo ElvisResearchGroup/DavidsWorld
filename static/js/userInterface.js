@@ -21,13 +21,23 @@ function add(expr){
 
 	//Append the element in page
 	if(expr !="Input expression" && expr.length > 0){
-		exprIdArray.push(id);
+		try { 
+			parseExpr(expr);
 
-		$('#outputDiv').append(expressionDiv
-			.append(deleteDiv)
-			.append(resultDiv));
+			exprIdArray.push(id);
+
+			$('#outputDiv').append(expressionDiv
+				.append(deleteDiv)
+				.append(resultDiv));
+
+			$('#parserError').toggleClass('show', false);
+			return true;
+		} catch(error){
+			$('#parserError').toggleClass('show', true).text(error.message);
+			return false;
+		}
 	}
-
+	return false;
 }
 
 /**
@@ -67,7 +77,11 @@ function setupListeners(){
 			var expressionDiv = $('#' + id);
 
 			var expr = expressionDiv.find('p').text();
-			var parsedTree = parseExpr(expr);
+			try { 
+				var parsedTree = parseExpr(expr);
+			} catch(error){
+				console.error(error);
+			}
 
 			var eval = false;
 			try { 

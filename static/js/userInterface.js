@@ -169,16 +169,26 @@ function setupListeners(){
 	  worldstage.sendMessage('changeSize', -1);
 	});
 
-	 $('#txtExpr').keydown(function(event) {
+	$('#txtExpr').keydown(function(event) {
         if (event.keyCode == 13) {
             $('#addExpr').click();
             event.preventDefault();
          }
-    });
+	});
     
 	$('#fileSelect').click(function (e){
 			$('#files').click();
    		e.preventDefault();
+	});
+	
+	$('#removeObj').click(function (e){
+	  worldstage.sendMessage('removeObj');
+	  console.log("removing object");
+	});
+	
+	$('#copyObj').click(function (e){
+	  worldstage.sendMessage("cloneObj");
+	  console.log("copying object");
 	});
 }
 

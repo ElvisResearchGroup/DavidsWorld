@@ -358,6 +358,7 @@ function removeSelectedObject(){
       return;
     stage_obj_map.splice(index, 1);
     stage_obj_types.splice(index, 1);
+    stage.removeChild(selected_object);
     selected_object = null;
 }
 
@@ -367,13 +368,17 @@ function removeSelectedObject(){
 function cloneSelectedObject(){
   if(!selected_object)
     return;
-  var index = stage_object_map.indexOf(selected_object);
+  var index = stage_obj_map.indexOf(selected_object);
   
   var attributes = getWorld()[index];
   
+  attributes.height = stage_obj_map[index]._attributes.height;
+  attributes.width = stage_obj_map[index]._attributes.width;
+  
+  
   attributes.x = attributes.x+5;
   attributes.y = attributes.y+5;
-  
+  console.log("ATTRIBUTES:", attributes);
   addObject(stage_obj_types[index], attributes);
 }
 
@@ -446,7 +451,7 @@ function createBonsaiShape(obj){
       })
       .on("pointerdown", function(e){
 	//Dehighlight the previous selected object.
-	if(!(selected_object === undefined)){
+	if(selected_object != null && selected_object != undefined){
 	  selected_object.attr('filters', new filter.Opacity(1));
 	  //selected_object.attr('filters', new filter.Saturate(1));
 	}

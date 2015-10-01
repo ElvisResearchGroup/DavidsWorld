@@ -128,8 +128,14 @@ function getWorld(){
     var item;
     
     for(var i = 0; i < stage_obj_map.length; i++){
-	console.log(stage_obj_map[i]);
-      	item = new Object();
+	world.push(getWorldObject(i));
+    }
+    console.log("World", world);
+    return world;
+}
+
+function getWorldObject(i){    
+      	var item = new Object();
       	item.x = stage_obj_map[i]._attributes.x;
       	item.y = stage_obj_map[i]._attributes.y;
 
@@ -156,11 +162,7 @@ function getWorld(){
           item.height = stage_obj_map[i]._attributes.height;
           item.width = stage_obj_map[i]._attributes.width; 
         }
-        //Add the object
-	world.push(item);
-    }
-    console.log("World", world);
-    return world;
+        return item;
 }
 
 function getColour(col){
@@ -297,14 +299,17 @@ function cloneSelectedObject(){
     return;
   var index = stage_obj_map.indexOf(selected_object);
   
-  var attributes = getWorld()[index];
+  var attributes = getWorldObject(index);
   
   attributes.height = stage_obj_map[index]._attributes.height;
   attributes.width = stage_obj_map[index]._attributes.width;
   
+
   
-  attributes.x = attributes.x+5;
-  attributes.y = attributes.y+5;
+  attributes.x = stage_obj_map[index]._attributes.x + attributes.height/2;
+  attributes.y = stage_obj_map[index]._attributes.y + attributes.width/2;
+  
+  attributes.def_col = attributes.colour;
   console.log("ATTRIBUTES:", attributes);
   addObject(stage_obj_types[index], attributes);
 }
@@ -312,25 +317,44 @@ function cloneSelectedObject(){
 //Passing null for x->height will make it use the default values.
 function addObject(obj_type, data){
     var lib_obj = new Object();
-
+    if(data.size)
+      data.size = data.size/2;
     //Cloning the object from the library.
-    console.log(data);
+    console.log("DATA", data);
     for(var i = 0; i < library.library.length; i++){
 	//If we find the correct object to create from.
       if(library.library[i].type == obj_type){
 	var keys = Object.keys(library.library[i]).forEach(function(key){
-	    if(data != null && Object.keys(data).indexOf(key) >= 0 && data[key] != undefined){
+	    console.log(key)
+	    if(data && Object.keys(data).indexOf(key) >= 0 && data[key]){
 		lib_obj[key] = data[key];
 	    }
 	    else
 		lib_obj[key] = library.library[i][key];
 	});
+	console.log("KEYS", keys);
 
       }
     }
-    lib_obj["x"] = DEFAULT_X;
-    lib_obj["y"] = DEFAULT_Y; 
-   console.log(lib_obj);
+    
+    console.log()
+    
+    if(lib_obj.poly <= 2 && data.size){
+	lib_obj.radius = data.size;
+    }
+    if(!lib_obj.x && data.x)
+      lib_obj.x = data.x;
+    else
+      lib_obj.x = DEFAULT_X;
+    
+    if(!lib_obj.y && data.y)
+      lib_obj.y = data.y;
+    else
+      lib_obj.y = DEFAULT_Y;
+    
+    console.log("X AND Y", lib_obj);
+    
+    console.log(lib_obj);
     createBonsaiShape(lib_obj);
 }
 
@@ -380,7 +404,7 @@ function createBonsaiShape(obj){
 	//Dehighlight the previous selected object.
 	if(selected_object != null && selected_object != undefined){
 	  selected_object.attr('filters', new filter.Opacity(1));
-	  //selected_object.attr('filters', new filter.Saturate(1));
+	  //selected_object.stroke('#000',2);
 	}
 	selected_object = this;
 	this.attr('filters', new filter.Opacity(.8));
@@ -433,13 +457,16 @@ function bonsaiPoly(obj){ //What does this method do?
   var myPoly;
   if(sides <= 2){
     //We assume that the circle has a radius, and do not account for the case where the lib specifies size instead.
-    myPoly = new Circle(obj.x, obj.y, obj.radius);
+    var radius = obj.radius;
+    if(!radius && obj.size)
+      radius = obj.size;
+    myPoly = new Circle(obj.x, obj.y, radius);
   }else if(sides == 4){
     //We handle an edge case for rectangles, as the Polygon method would create a diamond shape.
-    myPoly = new Rect(DEFAULT_X, DEFAULT_Y, obj.width, obj.height);
+    myPoly = new Rect(obj.x, obj.y, obj.width, obj.height);
   }else{
     //We make the inverse assumtion to the Circle.
-    myPoly = new Polygon(DEFAULT_X,DEFAULT_Y,obj.size,obj.poly);
+    myPoly = new Polygon(obj.x,obj.y,obj.size,obj.poly);
   }
 	  
   myPoly.addTo(stage);

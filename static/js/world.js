@@ -96,7 +96,7 @@ stage.on('message:saveClicked', function(data){
    hrefLink = data
    stage.sendMessage('');
   
-}
+});
 
 
 stage.on('message:exprArray', function(data){
@@ -515,7 +515,7 @@ function bonsaiImage(obj){
     stage.addChild(this);
   });
   
-  
+  //stage.addChild(this);
   
   return image;
 }

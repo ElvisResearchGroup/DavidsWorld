@@ -79,8 +79,6 @@ function handleMessage(message) {
 
 }
 
-
-<<<<<<< HEAD
 stage.on('message:needWorldJSON', function(data){
    stage.sendMessage('getExpr');
    setTimeout(function(){
@@ -105,9 +103,6 @@ stage.on('message:saveClicked', function(data){
   
 });
 
-
-=======
->>>>>>> 64d12d150ce6bf8fa1bf55720e5bf4f9ff79338a
 stage.on('message:exprArray', function(data){
   expressionArray = data;
   gotExpr = true;

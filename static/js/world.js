@@ -71,9 +71,13 @@ function handleMessage(message) {
 	cloneSelectedObject();
     }
     else if(message === 'needWorldJSON'){
-      
+      var hackyFix = []; //For some reason we need to pass some kind of data in the message to make the handler receive it on the other side. This array doesnt matter, it will always be blank
       console.log("need world JSON clicked");
-      stage.sendMessage('getExpr');
+      stage.sendMessage('saveData', {
+	library_name: library.library_name,
+	world: getWorld()
+      });
+      console.log("Message Sent");
       
     }
 
@@ -81,8 +85,10 @@ function handleMessage(message) {
 
 
 stage.on('message:exprArray', function(data){
+  console.log("World: Received Expr Array");
   expressionArray = data;
   gotExpr = true;
+  saveSend(data);
 });
 
 
@@ -149,18 +155,18 @@ function setLibrary(lib){
  * Gets the state of the world and expressions and sends it out as a message for anything that needs the data. This function is called on reception of needWorldJSON message
  * @param {bonsai_obj} Bonsai object to find coordinates for
  */
-function saveSend(){
+function saveSend(expressions){
   var tempWorld = getWorld();
-  var tempExpressions = expressionArray;
-  var JSONString;
+  var tempExpressions = expressions;
+  var JSONString = "{\"library_name\":\"" + library.library_name + "\",\n"//{"library_name":"Noughts and Crosses",;
   
   for(var i =0; i< tempWorld.length;i++){
-    JSONString.append(JSON.stringify(tempWorld[i]));
+    
     
     
   }
   
-  stage.sendMessage("saveData",JSONString, link);
+  stage.sendMessage("saveData",JSONString);
   
 }
 

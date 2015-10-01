@@ -62,10 +62,28 @@ function go(){
 	worldstage.sendMessage('getworldforeval')
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 * 
 */
 function setupListeners(){
+	worldstage.on('message:getExpr', function(data){   
+	    console.log("getExpr Recieved");
+	    worldstage.sendMessage('exprArray', expArray);    
+	});
+   
 	worldstage.on('message:evalworld', function(data){
 		world = data;
 
@@ -96,14 +114,14 @@ function setupListeners(){
 	});
 	
 	
-	worldstage.on('message:saveData', function(data,link){
-	  saveAsFile(link, data, "File_Name_Goes_Here");
+	worldstage.on('message:saveData', function(data){
+		data.expressions = expArray;
+		saveAsFile(JSON.stringify(data), "save");
 	});
 	
-	worldstage.on('message:getExpr', function(){
-             console.log("getExpr Recieved");
-             worldstage.sendMessage('exprArray', expArray);
-        });
+	$("#performSave").bind('click', function() {
+ 		window.open($(this).attr('href'), '_blank');
+	});
 	
 	
 	

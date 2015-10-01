@@ -50,19 +50,22 @@ function validateJSON(file) {
 //link = button (i.e call saveOutput(this) onclick for download button)
 //Content = text to save
 //file name = name of file that will be downloaded
-function saveAsFile(link, content, filename) {
+function saveAsFile(content, filename) {
     var blob = new Blob([content], {type: "text/text"});
     var url  = URL.createObjectURL(blob);
 
     // update link to new 'url'
-    link.download    = filename + ".json";
-    link.href        = url;
+    console.log("about to attempt download");
+    var a = $('#performSave')[0];
+    a.download    = filename + ".json";
+    a.href        = url;
+	$("#performSave").trigger('click');
+
 }
 
 //call this on save file button click
-function saveOutput(link){
-    savedLink = link;
+function saveOutput(){
     console.log("saveOutput clicked");
-    worldstage.sendMessage('needWorldJSON');
+   worldstage.sendMessage('needWorldJSON');
    
 }

@@ -330,3 +330,7 @@ img {
   cursor: pointer;
 }
 
+#performSave {
+  visibility: hidden;
+}
+

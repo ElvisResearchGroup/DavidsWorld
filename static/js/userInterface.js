@@ -22,7 +22,7 @@ function add(expr){
 	//Append the element in page
 	if(expr !="Input expression" && expr.length > 0){
 		try { 
-			parseExpr(expr);
+			parseExpr(expr, ['Colour']);
 
 			exprIdArray.push(id);
 
@@ -78,7 +78,7 @@ function setupListeners(){
 
 			var expr = expressionDiv.find('p').text();
 			try { 
-				var parsedTree = parseExpr(expr);
+				var parsedTree = parseExpr(expr, ['Colour']);
 			} catch(error){
 				console.error(error);
 			}

@@ -68,8 +68,8 @@ function performLogicTest(message, expr, expected, scope, succ) {
 
 function performLogicAndParserTest(input, expected, scope, succ) {
     total++;
-    var expr = parseExpr(input);
-
+    console.log(Object.keys(scope));
+    var expr = parseExpr(input, Object.keys(scope));
     var eval = evaluate(expr, scope);
     var pass = (eval === expected) === succ;
     if (pass) passed++;
@@ -81,7 +81,11 @@ function performLogicAndParserTest(input, expected, scope, succ) {
 
 function performParserTest(input, expected, succ){
     total++;
-    var tree = parseExpr(input);
+    try {
+    var tree = parseExpr(input, ['x','y', 'p', 'q', 'a', 'b', 'c', 'd']);
+    } catch (error){
+        tree = undefined;
+    }
     var pass = compareTree(tree, expected) === succ;
     if(pass){
         passed++;

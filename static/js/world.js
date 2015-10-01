@@ -3,7 +3,7 @@
 //----------------------------------------------------
 //Global Variables
 //----------------------------------------------------
-var DEFAULT_X = 10, DEFAULT_Y = 10;
+var DEFAULT_X = 50, DEFAULT_Y = 50;
 var bg_colour;
 var library;
 var stage_obj_types = [];

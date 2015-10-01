@@ -70,32 +70,13 @@ function handleMessage(message) {
     else if(message === 'cloneObj'){
 	cloneSelectedObject();
     }
+    else if(message === 'needWorldJSON'){
+      
+      console.log("need world JSON clicked");
+      stage.sendMessage('getExpr');
+      
+    }
 
-}
-
-
-stage.on('message:needWorldJSON', function(data){
-   stage.sendMessage('getExpr');
-   setTimeout(function(){
-     timerRanOut = true;
-   },5000);
-   while(gotExpr == false){
-     if(timerRanOut == true){
-       throw "List of Expressions could not be found";
-       return;
-     }
-   }
-   timerRanOut = false;
-   gotExpr = false;
-   saveSend(data);
-  
-});
-
-
-stage.on('message:saveClicked', function(data){
-   hrefLink = data
-   stage.sendMessage('');
-  
 }
 
 
@@ -168,10 +149,9 @@ function setLibrary(lib){
  * Gets the state of the world and expressions and sends it out as a message for anything that needs the data. This function is called on reception of needWorldJSON message
  * @param {bonsai_obj} Bonsai object to find coordinates for
  */
-function saveSend(data){
+function saveSend(){
   var tempWorld = getWorld();
   var tempExpressions = expressionArray;
-  var link = data;
   var JSONString;
   
   for(var i =0; i< tempWorld.length;i++){

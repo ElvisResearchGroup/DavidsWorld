@@ -1,7 +1,4 @@
-worldstage.on('message:saveData', function(data,link){
-   saveAsFile(link, data, "File_Name_Goes_Here");
-});
-
+var savedLink;
 
 
 //Main function for local load - is triggered by event listener on file load
@@ -64,6 +61,8 @@ function saveAsFile(link, content, filename) {
 
 //call this on save file button click
 function saveOutput(link){
+    savedLink = link;
     console.log("saveOutput clicked");
-   worldstage.sendMessage('needWorldJSON',link);
+    worldstage.sendMessage('needWorldJSON');
+   
 }

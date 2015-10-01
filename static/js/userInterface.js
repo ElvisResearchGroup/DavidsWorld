@@ -8,17 +8,6 @@ var expArray = [];
 
 
 
-worldstage.on('message:getExpr'){
-  worldstage.sendMessage('exprArray', getExpr());
-}
-
-
-function getExpr(){
-  return expArray;
-}
-
-
-
 
 
 /**
@@ -105,6 +94,19 @@ function setupListeners(){
 		}
 
 	});
+	
+	
+	worldstage.on('message:saveData', function(data,link){
+	  saveAsFile(link, data, "File_Name_Goes_Here");
+	});
+	
+	worldstage.on('message:getExpr', function(){
+             console.log("getExpr Recieved");
+             worldstage.sendMessage('exprArray', expArray);
+        });
+	
+	
+	
 	
 	$('#addObj').click(function(){
 		var name = "";

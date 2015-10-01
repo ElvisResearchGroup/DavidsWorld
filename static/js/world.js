@@ -159,15 +159,6 @@ function setLibrary(lib){
     library = lib;
 }
 
-
-
-
-
-
-
-
-
-
 /**
  * Gets the state of the world and expressions and sends it out as a message for anything that needs the data. This function is called on reception of needWorldJSON message
  * @param {bonsai_obj} Bonsai object to find coordinates for
@@ -380,10 +371,10 @@ function cloneSelectedObject(){
   attributes.height = stage_obj_map[index]._attributes.height;
   attributes.width = stage_obj_map[index]._attributes.width;
   
-
   
-  attributes.x = stage_obj_map[index]._attributes.x + attributes.height/2;
-  attributes.y = stage_obj_map[index]._attributes.y + attributes.width/2;
+  
+  attributes.x = stage_obj_map[index]._attributes.x + ((attributes.height) ? attributes.height/2 : 5);
+  attributes.y = stage_obj_map[index]._attributes.y + ((attributes.width) ? attributes.width/2 : 5);
   
   attributes.def_col = attributes.colour;
   console.log("ATTRIBUTES:", attributes);
@@ -483,7 +474,7 @@ function createBonsaiShape(obj){
 	  //selected_object.stroke('#000',2);
 	}
 	selected_object = this;
-	this.attr('filters', new filter.Opacity(.8));
+	this.attr('filters', new filter.Opacity(.5));
 	//selected_object.stroke("#FFF", 2); 
     }); 
       

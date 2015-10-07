@@ -60,6 +60,7 @@ function saveAsFile(content, filename) {
     a.download    = filename + ".json";
     a.href        = url;
 	$("#performSave").trigger('click');
+ 
 
 }
 
@@ -69,3 +70,4 @@ function saveOutput(){
    worldstage.sendMessage('needWorldJSON');
    
 }
+

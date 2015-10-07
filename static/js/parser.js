@@ -278,6 +278,7 @@ function parseValue(input, scope){
     } else {
         //Check it is a variable or a constant
         groups = /^([0-9]+|'[^']*'|"[^"]*"|[a-zA-Z][0-9a-zA-Z]*)$/.exec(input);
+        var result = null;
         if (groups) {
             //If a string constant, keep it as one
             if (groups[1].charAt(0) === "'" || groups[1].charAt(0) === '"') {
@@ -299,12 +300,64 @@ function parseValue(input, scope){
             //Return the constant
             return {type: expressionTypes.CONST, val: cons}
         }
-        // Repeating ANDS in the string.
-        else if (/(\u2227+(\.|$))+/.exec(input)) {
-            throw {message:"AND: " + input};
+        //Empty statement
+         else if (result = /^(\s*)$/.exec(input)) {
+            throw {message:"Empty expression (could be empty brackets)"};
         }
-        else {
-            throw {message:"Invalid value type: " + input};
+        //Broken brackets
+        else if (result = /\(|\)/.exec(input)) {
+            throw {message:"Unbalanced brackets: " + input};
         }
+        //Where not associated with existential quantification
+        else if (result = /\u22C5/.exec(input)) {
+            throw {message:"WHERE not associated with existential quantifier: " + input};
+        }
+        // AND missing side
+        checkBinaryOperation(input, '\u2227', 'AND');
+        // IFF missing side
+        checkBinaryOperation(input, '\u2194', 'IFF');
+        // IMPLIES missing side
+        checkBinaryOperation(input, '\u2192', 'IMPLIES');
+        // OR missing side
+        checkBinaryOperation(input, '\u2228', 'OR');
+        // XOR missing side
+        checkBinaryOperation(input, '\u22BB', 'XOR');
+
+        // NOT missing operand
+        checkUnaryOperation(input, '\u00AC', 'NOT');
+        // FOR ALL missing operand
+        checkUnaryOperation(input, '\u2200', 'FOR ALL');
+        // THERE EXISTS missing operand
+        checkUnaryOperation(input, '\u2203', 'THERE EXISTS');
+        
+        throw {message:"Invalid value type: " + input};
+    }
+}
+
+/*
+ * Checks that a binary operation has both sides, otherwise it throws an error.
+ */
+function checkBinaryOperation(input, cha, name){
+    var result = new RegExp('^(.*)' + cha + '(.*)$').exec(input);
+    if (!result) return;
+    if (!result[1] && !result[2]){
+        throw {message: name + ' operation missing both sides from: ' + input};
+    } else if (!result[1]){
+        throw {message: name + ' operation missing left side from: ' + input};
+    } else {
+        throw {message: name + ' operation missing right side from: ' + input};
+    }
+}
+
+/*
+ * Checks that a unary operation is correct, otherwise it throws an error
+ */
+function checkUnaryOperation(input, cha, name){
+    var result = new RegExp('^(.*)' + cha + '(.*)$').exec(input);
+    if (!result) return;
+    if (result[1]){
+        throw {message: name + ' operation cannot have leading value: ' + input};
+    } else if (!result[2]){
+        throw {message: name + ' operation has no operand: ' + input};
     }
 }

@@ -1,14 +1,17 @@
 body{
   margin: 0px;
   overflow-y:scroll;
-  background-color: #9EE4F5;
+  /*background-color: #9EE4F5;*/
   font-family: Arial;
+  background-image: URL('tilebackground.png');
+  background-size: 50%;
+  background-repeat: repeat;
 
 }
 
 #titleBar {
-  height: 100px;
-  background-color: #9EE4F5;
+  height: 50%;
+  background-color: transparent;
   color: #FFF;
 
 }
@@ -31,7 +34,7 @@ body{
   height: 35px;
   float: right;
   margin-right: 5px;
-  margin-top: 65px;
+  margin-top: 5px;
 }
 
 .nav-item > p {

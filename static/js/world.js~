@@ -721,6 +721,8 @@ function updateLabelPos(obj){
 		if (obj._attributes.radius){
 				yOffset += obj._attributes.radius;
 				xOffset += obj._attributes.radius;
+		}else{
+					
 		}
       
 		txt.attr({

@@ -1,26 +1,44 @@
 body{
   margin: 0px;
   overflow-y:scroll;
-  background-color: #9EE4F5;
+  /*background-color: #9EE4F5;*/
   font-family: Arial;
+  background-image: URL('tilebackground.png');
+  background-size: 50%;
+  background-repeat: repeat;
 
 }
 
 #titleBar {
-  height: 100px;
-  background-color: #72BFD3;
+  height: 50%;
+  background-color: transparent;
+  color: #FFF;
+
 }
 
 #titleBar > div {
+  font-size:15.5px;
   padding-left: 5px;
-}
+  }
+
+  #titleBar > button{
+    color: #FFF;
+
+    font-size:14px;
+    font-family: Arial;
+  }
+
 
 .nav-item {
   background-color: #FF9F48;
   height: 35px;
   float: right;
   margin-right: 5px;
-  margin-top: 65px;
+  margin-top: 5px;
+}
+
+.nav-item > p {
+  vertical-align: middle;
 }
 
 select {
@@ -87,6 +105,9 @@ button.symbol {
   margin-top: 5px;
   height: 100px;
   float: left;
+  color: #FFF;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .left-box, .left-mod {
@@ -107,7 +128,7 @@ div.left-mod {
   padding-top: 15px;
   height: 35px;
   width: 22%;
-  font-size: 20px;
+  font-size: 17px;
 }
 .left-mod2 input {
   width: 97%;
@@ -257,7 +278,7 @@ img {
   width: 100%;
   height: 500px;
   border: 10px;
-  background-color: #b6e3ec;
+  background-color: #9EE4F5;
   overflow-y: scroll;
 }
 
@@ -379,3 +400,15 @@ img {
 }	
 
 
+#parserError {
+  margin: 5px;
+  color: firebrick;
+  font-weight: bolder;
+  background: #72BFD3;
+  padding: 10px;
+  display: none;
+}
+
+#parserError.show {
+  display: block;
+}

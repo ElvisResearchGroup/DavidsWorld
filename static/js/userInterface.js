@@ -119,13 +119,6 @@ function setupListeners(){
 		saveAsFile(JSON.stringify(data), "save");
 	});
 	
-	$("#performSave").bind('click', function() {
- 		window.open($(this).attr('href'), '_blank');
-	});
-	
-	
-	
-	
 	$('#addObj').click(function(){
 		var name = "";
 		if($('#objNamer').val() != "Object Name"){
@@ -209,6 +202,15 @@ function setupListeners(){
 	$('#copyObj').click(function (e){
 	  worldstage.sendMessage("cloneObj");
 	  console.log("copying object");
+	});
+	
+	 $('#performSave').click(function (e){
+	  $('#cover').toggle(0);
+	  $('#saveprompt').toggle(0);
+	});
+	 $('#saveprompt > #close').click(function (e){
+	  $('#cover').toggle(0);
+	  $('#saveprompt').toggle(0);
 	});
 }
 

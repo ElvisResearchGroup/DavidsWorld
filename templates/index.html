@@ -16,12 +16,17 @@
 	<![endif]-->
 	<link rel="stylesheet" type="text/css" href="static/css/userinterface.css">
 </head>
-<body>
+<body>	
+	<div id="cover"></div>
+	<div id="saveprompt">
+	        <div class="boxtitle">Enter file name</div>
+	        <a id="performSave" class="btn" onclick="" href="#">Accept</a>
+	        <a id="close" class="btn">Cancel</a>
+	</div>
 	<div id="titleBar"> <!-- START OF TITLE BAR -->
 		<img src="static/img/davidsworld2.png" align="center">
 		<button class="nav-item">Load Exercise</button>
 		<button class="nav-item" type="button" id="saveOutput" href="#" onclick = "saveOutput()">Save File</button>
-		<a id="performSave" onclick="" href="#">Save File</a>
 		<button class="nav-item" type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." >Load File</button>
 		<input type="file" id="files" name="files[]" multiple style="display:none;"/>
         <output id="list"></output>

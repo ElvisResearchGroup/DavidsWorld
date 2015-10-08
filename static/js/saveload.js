@@ -53,13 +53,14 @@ function validateJSON(file) {
 function saveAsFile(content, filename) {
     var blob = new Blob([content], {type: "text/text"});
     var url  = URL.createObjectURL(blob);
-
+    $('#cover').toggle(0);
+    $('#saveprompt').toggle(0);
     // update link to new 'url'
     console.log("about to attempt download");
     var a = $('#performSave')[0];
     a.download    = filename + ".json";
     a.href        = url;
-	$("#performSave").trigger('click');
+ 
 
 }
 
@@ -69,3 +70,4 @@ function saveOutput(){
    worldstage.sendMessage('needWorldJSON');
    
 }
+

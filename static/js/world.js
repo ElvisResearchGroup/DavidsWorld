@@ -314,7 +314,6 @@ function clearWorld(){
     stage_obj_types = [];
     stage_obj_nameplate = [];
     stage_obj_title = [];
-    console.log('cleared grid',grid_lines);
     
 }
 
@@ -324,20 +323,19 @@ function clearWorld(){
  */
 function getGridCoord(bonsai_obj){
     var x, y;
+    var sw = stage.width/library.grid_width;
+    var sh = stage.height/library.grid_height;
     
-    for(y = 0; y < grid_lines[0].length; y++){
-	var temp = grid_lines[0][y]._segments[0][1];
-	if(temp > bonsai_obj._attributes.y){
-	  break;
-	}
+    var bx = bonsai_obj._attributes.x;
+    var by = bonsai_obj._attributes.y;
+    if (bonsai_obj._attributes.width){
+		bx -= bonsai_obj._attributes.width/2;
+		by -= bonsai_obj._attributes.height/2;
     }
     
-    for(x = 0; x < grid_lines[1].length;x++){
-	var temp = grid_lines[1][x]._segments[1][2];
-	if(temp > bonsai_obj._attributes.x){
-	  break;
-	}
-    }
+    x = Math.ceil(bx/sw+0.5);
+    y = Math.ceil(by/sh+0.5);
+    
     return {x: x, y: y};
 }
 
@@ -391,7 +389,6 @@ function generateWorldFromFile(worldJSON){
       lib_index = index;
     }
   }
-  console.log("CURRENT OBJ", obj);
   if (obj.sides == 4 || obj.image_path){
   		obj.x -= obj.width/2;
   		obj.y -= obj.height/2;
@@ -589,15 +586,17 @@ function createBonsaiShape(obj){
       })
       .on('multi:drag', function(e){
         this.attr({
-          x: objMove(x, 1, e.diffX, this),
-          y: objMove(y, 2, e.diffY, this)
+          x: x + e.diffX,
+          y: y + e.diffY
         });
+        updateLabelPos(this);
       })
       .on('multi:pointerup', function(e){
-	this.attr({
-	  x: gridSnap(x, 1, this, e.diffX, this._attributes.width/2),
-	  y: gridSnap(y, 2, this, e.diffY, this._attributes.height/2)
-	});
+			this.attr({
+	  			x: gridSnap(x, 1, this, e.diffX, this._attributes),
+	  			y: gridSnap(y, 2, this, e.diffY, this._attributes)
+			});
+			updateLabelPos(this);
       })
       .on("pointerdown", function(e){
 	//Dehighlight the previous selected object.
@@ -680,12 +679,33 @@ function bonsaiPoly(obj){ //What does this method do?
   return myPoly;
 }
 
-//i = 1, for x.
-//i = 2, for y.
-function objMove(x, i, diff, obj){
+function gridSnap(coord, i, obj, diff, attr){
+	if (!library.grid_width || !library.grid_height){
+		return coord + diff;
+	}	
+	
+  var grid_location = getGridCoord(obj);
+  grid_location = gridToCoord(grid_location.x, grid_location.y);
+  
+  if(i == 1) 
+		grid_location = grid_location.x;
+  else
+		grid_location = grid_location.y;
   
   
-  var new_co = x + diff;
+  if (attr.width){
+		if (i==1){
+			return grid_location-attr.width/2;
+		} else {
+			return grid_location-attr.height/2;
+		}  
+  } else {
+  		return grid_location-attr.radius;
+  }
+}
+
+function updateLabelPos(obj){
+			
   var name = stage_obj_nameplate[stage_obj_map.indexOf(obj)];
   var index = stage_obj_map.indexOf(obj);
   if(name){
@@ -694,52 +714,15 @@ function objMove(x, i, diff, obj){
       //console.log("TITLE & NAME", title, name);
       var txt = new Text(title);
       stage.removeChild(name);
-      if(i == 1)
-	txt.attr({
-	  x:new_co,
-	  y:obj._attributes.y-20,
-	  selectable:false
-	});
-      else
-	txt.attr({
-	   x:obj._attributes.x,
-	   y:new_co-20,
-	  selectable:false
-	});
+		txt.attr({
+	  			x:obj._attributes.x,
+	  			y:obj._attributes.y-20,
+	  			selectable:false
+		});
       stage_obj_nameplate[stage_obj_map.indexOf(obj)] = txt;
       stage.addChild(txt);
   }
   
-  return new_co;
-}
-
-function gridSnap(coord, i, obj, diff, offset){
-  //If there is a grid
-  if(grid_lines[i%2].length > 0){
-      var grid_location = getGridCoord(obj);
-      if(i == 1) 
-	grid_location = grid_location.x;
-      else
-	grid_location = grid_location.y;
-      
-      //If it is outside the grid
-      if(grid_location == 0 || grid_location == grid_lines[i%2].length){
-	console.log('why am I here?');
-      }
-      else{
-	//The Line before the object
-	var first_line = grid_lines[i%2][grid_location-1]._segments[2-i][3-i];
-	//Line after the object
-	var second_line = grid_lines[i%2][grid_location]._segments[2-i][3-i];
-	//Return the mid point of the two lines.
-	return (first_line+second_line)/2 - offset;
-      }
-      
-  }
-  //If there is no grid, dont snap to grid.
-  else{
-    return coord + diff;
-  }
 }
 
 function getValue(obj, key){ //What value is this referring to?
@@ -752,7 +735,7 @@ function getValue(obj, key){ //What value is this referring to?
 /**
  * Draws grid on the screen - this function is called on load if a grid is defined in a library or saved world.
  */
-function drawGrid(x, y){ 
+function drawGrid(y, x){ 
   var cell_width = stage.width/x;
   var cell_height = stage.height/y;
 

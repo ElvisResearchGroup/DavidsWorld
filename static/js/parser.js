@@ -1,3 +1,18 @@
+var ERROR_CODE = {
+    NO_SUCH_VAR: 1,
+    EMPTY_EXPRESSION: 2,
+    UNBALANCED_BRACKETS: 3,
+    WHERE_NOT_ASSOCIATED: 4,
+    MISSING_BOTH_SIDES: 5,
+    MISSING_LEFT_SIDE: 6,
+    MISSING_RIGHT_SIDE: 7,
+    LEADING_ERROR: 8,
+    NO_OPERAND_ERROR: 9,
+    BROKEN_VAR_LIST: 10,
+    INVALID_ID: 11 
+}
+
+
 /*
  * Parses an expression string to an expression tree. 
  */
@@ -8,9 +23,14 @@ function parseExpr(input, scope){
     
     //If not 'all' or 'some' then continue parsing
     if (groups === null){
+        groups =  /^\s*(\u2200|\u2203)\s*([a-zA-Z0-9,\s]+)\u22C5\s*$/.exec(input);
+        if (groups){
+            console.log(groups);
+            throw {code: ERROR_CODE.NO_OPERAND_ERROR, message: "Missing right side of existential quantifier:" + input};
+        }
         groups = /^\s*(\u2200|\u2203)/.exec(input); 
         if (groups !== null){
-            throw {message: "Missing or invalid variable list for " + input};
+            throw {code: ERROR_CODE.BROKEN_VAR_LIST, message: "Missing or invalid variable list for " + input};
         }
 
         return parseExpr2(input.trim(), scope);
@@ -52,7 +72,7 @@ function parseVarList(input, scope){
         return list;
     //No last variable
     } else {
-        throw {message: "Invalid variable identifier " + input};
+        throw {code: ERROR_CODE.INVALID_ID, message: "Invalid variable identifier " + input};
         //TODO improve error handling
     }
 }
@@ -286,7 +306,8 @@ function parseValue(input, scope){
             //If it's a variable, then return a null field access (so just access the variable)
             } else if (/^[^0-9]/.exec(groups[1])){
                 if (scope.indexOf(groups[1]) === -1){
-                    throw {message: "Variable '" + groups[1] + "' does not exist"};
+                    throw {code: ERROR_CODE.NO_SUCH_VAR, 
+                        message: "Variable '" + groups[1] + "' does not exist"};
                 }
 
                 return {type: expressionTypes.VAR_ACCESS, 
@@ -302,15 +323,15 @@ function parseValue(input, scope){
         }
         //Empty statement
          else if (result = /^(\s*)$/.exec(input)) {
-            throw {message:"Empty expression (could be empty brackets)"};
+            throw {code: ERROR_CODE.EMPTY_EXPRESSION, message:"Empty expression (could be empty brackets)"};
         }
         //Broken brackets
         else if (result = /\(|\)/.exec(input)) {
-            throw {message:"Unbalanced brackets: " + input};
+            throw {code: ERROR_CODE.UNBALANCED_BRACKETS, message:"Unbalanced brackets: " + input};
         }
         //Where not associated with existential quantification
         else if (result = /\u22C5/.exec(input)) {
-            throw {message:"WHERE not associated with existential quantifier: " + input};
+            throw {code: ERROR_CODE.WHERE_NOT_ASSOCIATED, message:"WHERE not associated with existential quantifier: " + input};
         }
         // AND missing side
         checkBinaryOperation(input, '\u2227', 'AND');
@@ -330,7 +351,7 @@ function parseValue(input, scope){
         // THERE EXISTS missing operand
         checkUnaryOperation(input, '\u2203', 'THERE EXISTS');
         
-        throw {message:"Invalid value type: " + input};
+        throw {code: ERROR_CODE.INVALID_ID, message:"Invalid value type: " + input};
     }
 }
 
@@ -341,11 +362,11 @@ function checkBinaryOperation(input, cha, name){
     var result = new RegExp('^(.*)' + cha + '(.*)$').exec(input);
     if (!result) return;
     if (!result[1] && !result[2]){
-        throw {message: name + ' operation missing both sides from: ' + input};
+        throw {code: ERROR_CODE.MISSING_BOTH_SIDES, message: name + ' operation missing both sides from: ' + input};
     } else if (!result[1]){
-        throw {message: name + ' operation missing left side from: ' + input};
+        throw {code: ERROR_CODE.MISSING_LEFT_SIDE, message: name + ' operation missing left side from: ' + input};
     } else {
-        throw {message: name + ' operation missing right side from: ' + input};
+        throw {code: ERROR_CODE.MISSING_RIGHT_SIDE, message: name + ' operation missing right side from: ' + input};
     }
 }
 
@@ -356,8 +377,8 @@ function checkUnaryOperation(input, cha, name){
     var result = new RegExp('^(.*)' + cha + '(.*)$').exec(input);
     if (!result) return;
     if (result[1]){
-        throw {message: name + ' operation cannot have leading value: ' + input};
+        throw {code: ERROR_CODE.LEADING_ERROR, message: name + ' operation cannot have leading value: ' + input};
     } else if (!result[2]){
-        throw {message: name + ' operation has no operand: ' + input};
+        throw {code: ERROR_CODE.NO_OPERAND_ERROR, message: name + ' operation has no operand: ' + input};
     }
 }

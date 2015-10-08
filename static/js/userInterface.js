@@ -208,9 +208,20 @@ function setupListeners(){
 	  $('#cover').toggle(0);
 	  $('#saveprompt').toggle(0);
 	});
+
 	 $('#saveprompt > #close').click(function (e){
 	  $('#cover').toggle(0);
 	  $('#saveprompt').toggle(0);
+	});
+
+	$('#fileName').on('input', function(){
+		var a = $('#performSave')[0];
+		if ($('#fileName').val()){
+    		a.download = $('#fileName').val() + ".json";
+		} else {
+			a.download = "save.json";
+		}
+		console.log('filename', a.download);
 	});
 }
 

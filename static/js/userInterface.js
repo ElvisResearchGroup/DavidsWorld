@@ -62,19 +62,6 @@ function go(){
 	worldstage.sendMessage('getworldforeval')
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
 * 
 */
@@ -82,6 +69,12 @@ function setupListeners(){
 	worldstage.on('message:getExpr', function(data){   
 	    console.log("getExpr Recieved");
 	    worldstage.sendMessage('exprArray', expArray);    
+	});
+	
+	worldstage.on('message:objectSelected', function(data){
+	  console.log(data);
+	  $('#objNamer').val(data);
+	  
 	});
    
 	worldstage.on('message:evalworld', function(data){
@@ -120,16 +113,23 @@ function setupListeners(){
 	});
 	
 	$('#addObj').click(function(){
-		var name = "";
+		var temp = {type: $('#objList').val(), name: "", colour: $('#colourList').val()};
 		if($('#objNamer').val() != "Object Name"){
-			console.log("test2", $('#objNamer').val());
-			var temp = {type: $('#objList').val(), name: $('#objNamer').val(), colour: $('#colourList').val()};
-			worldstage.sendMessage('addobject', temp);
+			//temp.name = $('#objNamer').val();
+			
 		}
-		else{
-	  		worldstage.sendMessage('addobject', {type: $('#objList').val(), width:50, height: 50, colour: $('#colourList').val()});
-	  	}
+	  	
+	  	worldstage.sendMessage('addobject', temp);
 	});
+	
+	$('#objNamer').keyup(function(){
+		console.log("key pressed");
+		var field = $('#objNamer');
+		var text = field.val();
+		
+		worldstage.sendMessage('setSelectedObjectTitle', text);
+	});
+	
 
 	$('#txtExpr').keypress(function(){
 		var field = $('#txtExpr');

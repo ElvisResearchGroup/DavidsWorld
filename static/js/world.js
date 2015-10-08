@@ -9,6 +9,13 @@ var library;
 
 //Stage Objects Map
 //TODO Change this into a single object.
+var world_obj = [];
+/**
+ * type:
+ * bonsai:
+ * nameplate:
+ * name:
+ */
 var stage_obj_types = [];
 var stage_obj_map = [];
 var stage_obj_nameplate = [];
@@ -139,6 +146,32 @@ stage.on('message:setlibrary', function(data){
     setLibrary(data);
 });
 
+stage.on('message:setSelectedObjectTitle', function(data){
+  console.log("Setting Title");
+  if(!selected_object)
+    return;
+  var index = stage_obj_map.indexOf(selected_object);
+  stage_obj_title[index] = data;
+  updateTitles(selected_object);
+});
+
+function updateTitles(obj){
+  
+  var index = stage_obj_map.indexOf(obj);
+  //Remove the existing nameplate
+  
+  
+  var txt = new Text(stage_obj_title[index]);
+  txt.attr({
+    x:stage_obj_nameplate[index]._attributes.x,
+    y:stage_obj_nameplate[index]._attributes.y,
+    selectable:false
+  });
+  stage.addChild(txt);
+  stage.removeChild(stage_obj_nameplate[index]);
+  stage_obj_nameplate[index] = txt;
+}
+
 /**
  * Adds a specified object to the world
  * 
@@ -197,15 +230,6 @@ function saveSend(expressions){
   stage.sendMessage("saveData",JSONString);
   
 }
-
-
-
-
-
-
-
-
-
 
 /**
  * Deals with creating the world object, and then returns it.
@@ -276,6 +300,10 @@ function clearWorld(){
 	stage.removeChild(entry);
     });
     
+    stage_obj_nameplate.forEach(function(entry){
+	stage.removeChild(entry);
+    });
+    
     for(var i = 0; i < 2; i++){
       for(var j = 0; j < grid_lines[i].length; j++){
 	stage.removeChild(grid_lines[i][j]);
@@ -284,7 +312,8 @@ function clearWorld(){
     grid_lines = [[],[]];
     stage_obj_map = [];
     stage_obj_types = [];
-    
+    stage_obj_nameplate = [];
+    stage_obj_title = [];
     console.log('cleared grid',grid_lines);
     
 }
@@ -415,6 +444,8 @@ function cloneSelectedObject(){
 
 //Passing null for x->height will make it use the default values.
 function addObject(obj_type, data){
+    if(!data.name)
+      data.name = "";
     console.log("DATA TEST:", data);
     var lib_obj = new Object();
     if(data.size)
@@ -459,7 +490,7 @@ function addObject(obj_type, data){
     
     //If the object had a value for its name.
     
-    if(data.name){
+    //if(data.name){
 	//Create new nameplate.
 	var txt = new Text(data.name);//data.name);
 	//The bonsai object we just created is the last in the list.
@@ -490,7 +521,7 @@ function addObject(obj_type, data){
 	stage_obj_nameplate[stage_obj_map.indexOf(bonsai)] = txt;
 	stage_obj_title[stage_obj_map.indexOf(bonsai)] = data.name;
 	
-    }
+   // }
 }
 
 
@@ -542,6 +573,7 @@ function createBonsaiShape(obj){
 	  //selected_object.stroke('#000',2);
 	}
 	selected_object = this;
+	stage.sendMessage('objectSelected', stage_obj_title[stage_obj_map.indexOf(selected_object)]);
 	this.attr('filters', new filter.Opacity(.5));
 	//selected_object.stroke("#FFF", 2); 
     }); 

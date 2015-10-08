@@ -122,7 +122,7 @@ function setupListeners(){
 	$('#addObj').click(function(){
 		var name = "";
 		if($('#objNamer').val() != "Object Name"){
-			console.log("test2");
+			console.log("test2", $('#objNamer').val());
 			var temp = {type: $('#objList').val(), name: $('#objNamer').val(), colour: $('#colourList').val()};
 			worldstage.sendMessage('addobject', temp);
 		}

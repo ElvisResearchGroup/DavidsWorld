@@ -156,7 +156,6 @@ div.left-mod {
 }
 
 #world{
-  border-width: 5px;
   width:80%;
   margin-right: auto;
   margin-left: auto;
@@ -166,8 +165,9 @@ div.left-mod {
  height:100%; 
  width:100%;
  float:left;
- border-style: outset; 
+ border-style: solid; 
  border-color: #FF9F48;
+   border-width: 5px;
 }
 
 img {

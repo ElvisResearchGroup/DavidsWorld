@@ -116,7 +116,51 @@ function setupListeners(){
 	
 	worldstage.on('message:saveData', function(data){
 		data.expressions = expArray;
-		saveAsFile(JSON.stringify(data), "save");
+		var dataToParse = JSON.stringify(data);
+		var depth = 0;
+		var tabWidth = 2;
+		var j = 0;
+		var output = "";
+		var ignoreUntil = '';
+		for(var i=0; i<dataToParse.length;i++){
+			var temp = dataToParse.charAt(i);
+			if (ignoreUntil){
+				output += temp;
+				if (ignoreUntil == temp){
+					 ignoreUntil = '';
+				}
+			} else {
+				if(temp == ','){
+					output += temp;
+					output += '\n';
+					for (j=0; j<depth; j++) output += ' ';
+				}
+				else if((temp == '{') || (temp == '[')){	
+					output += temp;			
+					output += '\n';
+					depth += tabWidth;
+					for (j=0; j<depth; j++) output += ' ';
+				} else if (temp == '}' || temp == ']'){		
+					output += '\n';
+					depth -= tabWidth;
+					for (j=0; j<depth; j++) output += ' ';
+					output += temp;	
+				} else if (temp == '"' || temp == "'"){
+					output += temp;	
+					ignoreUntil = temp;
+				} else if (temp == ':'){
+					output += temp + ' ';
+				} else {
+					output += temp;				
+				}
+			}
+		}
+
+
+
+
+
+		saveAsFile(output, "save");
 	});
 	
 	$('#addObj').click(function(){

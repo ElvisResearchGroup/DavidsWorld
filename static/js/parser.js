@@ -343,6 +343,18 @@ function parseValue(input, scope){
         checkBinaryOperation(input, '\u2228', 'OR');
         // XOR missing side
         checkBinaryOperation(input, '\u22BB', 'XOR');
+        // = missing side
+        checkBinaryOperation(input, '=', 'EQUALS');
+        // != missing side
+        checkBinaryOperation(input, '!=', 'NOT EQUALS');
+        // < missing side
+        checkBinaryOperation(input, '<', 'LESS THAN');
+        // <= missing side
+        checkBinaryOperation(input, '<=', 'LESS THAN OR EQUAL');
+        // > missing side
+        checkBinaryOperation(input, '>', 'GREATER THAN');
+        // >= missing side
+        checkBinaryOperation(input, '>=', 'GREATER THAN OR EQUAL');
 
         // NOT missing operand
         checkUnaryOperation(input, '\u00AC', 'NOT');

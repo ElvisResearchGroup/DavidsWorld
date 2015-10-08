@@ -379,3 +379,15 @@ img {
 }	
 
 
+#parserError {
+  margin: 5px;
+  color: firebrick;
+  font-weight: bolder;
+  background: #72BFD3;
+  padding: 10px;
+  display: none;
+}
+
+#parserError.show {
+  display: block;
+}

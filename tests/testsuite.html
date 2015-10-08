@@ -50,6 +50,8 @@
     </div>
     <div id="evalparse" class="test-group">
     </div>
+    <div id="parseerror" class="test-group">
+    </div>
   </body>
 <script type="text/javascript">
 var total = 0;
@@ -68,8 +70,8 @@ function performLogicTest(message, expr, expected, scope, succ) {
 
 function performLogicAndParserTest(input, expected, scope, succ) {
     total++;
-    var expr = parseExpr(input);
-
+    console.log(Object.keys(scope));
+    var expr = parseExpr(input, Object.keys(scope));
     var eval = evaluate(expr, scope);
     var pass = (eval === expected) === succ;
     if (pass) passed++;
@@ -81,13 +83,34 @@ function performLogicAndParserTest(input, expected, scope, succ) {
 
 function performParserTest(input, expected, succ){
     total++;
-    var tree = parseExpr(input);
+    try {
+    var tree = parseExpr(input, ['x','y', 'p', 'q', 'a', 'b', 'c', 'd', 'ab']);
+    } catch (error){
+        tree = undefined;
+    }
     var pass = compareTree(tree, expected) === succ;
     if(pass){
         passed++;
     }
     $('#parse').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
         .text('Test ' + total + ': ').append($('<span/>', {'class':'expr'}).text(input)));
+}
+
+function performErrorTest(input, vars, errcode){
+    total++;
+    var pass = false;
+    var code = -1;
+    try {
+        parseExpr(input, vars);
+    } catch (error){
+        code = error.code;
+        if (error.code === errcode){
+            passed++;
+            pass = true;
+        }
+    }
+    $('#parseerror').append($('<div/>', {'class':'result ' + ((pass) ? 'pass' : 'fail') })
+        .text('Test ' + total + ': ').append($('<span/>', {'class':'expr'}).text(code + ":" + errcode + " " + input)));
 }
  var first = true;
 
@@ -314,6 +337,33 @@ performLogicAndParserTest('\u2203 p \u22C5 p.x = 8 \u2227 (\u2200 q \u22C5 p.y >
 performLogicAndParserTest('\u2203 p \u22C5 p.x = 8 \u2227 (\u2200 q \u22C5 p.y >= q.y)', true, {}, true);
 
 concludeTests('#evalparse', 'Parser feeding the evaluator');
+
+
+
+//Missing var
+performErrorTest('a', [], ERROR_CODE.NO_SUCH_VAR);
+
+// Missing var a in this expression
+performErrorTest('\u2200 x \u22C5 x = a', ['b','c'], ERROR_CODE.NO_SUCH_VAR);
+
+// Empty expression
+performErrorTest('', [], ERROR_CODE.EMPTY_EXPRESSION);
+
+// Empty expression
+performErrorTest('()', [], ERROR_CODE.EMPTY_EXPRESSION);
+
+// Unbalanced brackets error gets priority over the fact that the variable x is missing
+performErrorTest('(x)(', [], ERROR_CODE.UNBALANCED_BRACKETS);
+
+// Where not associated with any quantifier
+performErrorTest('a \u22C5', [], ERROR_CODE.WHERE_NOT_ASSOCIATED);
+
+// No right side for the Where operator
+performErrorTest('\u2200 p, q \u22C5', ['p','q'], ERROR_CODE.NO_OPERAND_ERROR);
+
+performErrorTest('\u22C5', ['p','q'], ERROR_CODE.WHERE_NOT_ASSOCIATED);
+
+concludeTests('#parseerror', 'Parser error handling');
 
 //tests line \u2203x.x=1
 //performParserTest('Parser: Input line \u2203x.x=1', "\u2203x.x=1", {type:"ALL", first:"x", second:{type: "EQUALSS", first:{type:"VAR_ACCESS, val: "x", field: null}, second:{type:"CONST", val:"x"}}}, true);

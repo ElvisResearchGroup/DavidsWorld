@@ -279,7 +279,6 @@ function setupListeners(){
 		} else {
 			a.download = "save.json";
 		}
-		console.log('filename', a.download);
 	});
 }
 
@@ -387,9 +386,8 @@ function populateObjectSelect(data){
 	//What does this do??
 	var list = $('#objList');
 	list.empty();
-  	console.log("Populate", data);
+
   	data.library.forEach(function(e){
-   		console.log(e);
    		list.append($('<option/>', {value: e.type}).text(e.type));
 	});
 }

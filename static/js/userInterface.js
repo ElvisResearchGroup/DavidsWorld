@@ -27,14 +27,24 @@ function add(expr){
 
 	//Append the element in page
 	if(expr !="Input expression" && expr.length > 0){
-		exprIdArray.push(id);
-		expArray.push(expr);
+		try { 
+			parseExpr(expr, ['Colour']);
 
-		$('#outputDiv').append(expressionDiv
-			.append(deleteDiv)
-			.append(resultDiv));
+			exprIdArray.push(id);
+			expArray.push(expr);
+
+			$('#outputDiv').append(expressionDiv
+				.append(deleteDiv)
+				.append(resultDiv));
+
+			$('#parserError').toggleClass('show', false);
+			return true;
+		} catch(error){
+			$('#parserError').toggleClass('show', true).text(error.message);
+			return false;
+		}
 	}
-
+	return false;
 }
 
 /**
@@ -86,7 +96,11 @@ function setupListeners(){
 			var expressionDiv = $('#' + id);
 
 			var expr = expressionDiv.find('p').text();
-			var parsedTree = parseExpr(expr);
+			try { 
+				var parsedTree = parseExpr(expr, ['Colour']);
+			} catch(error){
+				console.error(error);
+			}
 
 			var eval = false;
 			try { 
@@ -208,9 +222,20 @@ function setupListeners(){
 	  $('#cover').toggle(0);
 	  $('#saveprompt').toggle(0);
 	});
+
 	 $('#saveprompt > #close').click(function (e){
 	  $('#cover').toggle(0);
 	  $('#saveprompt').toggle(0);
+	});
+
+	$('#fileName').on('input', function(){
+		var a = $('#performSave')[0];
+		if ($('#fileName').val()){
+    		a.download = $('#fileName').val() + ".json";
+		} else {
+			a.download = "save.json";
+		}
+		console.log('filename', a.download);
 	});
 }
 

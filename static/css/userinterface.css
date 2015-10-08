@@ -343,33 +343,51 @@ img {
 }
 
 .boxtitle {
-padding-left: 5px;
-  padding-top: 5px;
-  font-size: 20px;
+	text-align: center;
+	padding-left: 5px;
+	padding-top: 5px;
+	font-size: 20px;
 }
 
 #saveprompt{
-display: none;
-position: absolute;
-opacity: 1.0;
-z-index: 51;
-width: 240px;
-height: 115px;
-background-color: #FF9F48;
-margin: auto;
-left: 50%;
-top: 50%;
-margin-top: -57px;
-margin-left: -120px;
+	display: none;
+	position: absolute;
+	opacity: 1.0;
+	z-index: 51;
+	width: 240px;
+	height: 115px;
+	background-color: #FF9F48;
+	margin: auto;
+	left: 50%;
+	top: 50%;
+	margin-top: -57px;
+	margin-left: -120px;
 }
 #saveprompt .btn {
 	float: left;
-	width:70px;
-	height: 50px;
 	display: block;
-	padding: 10px 5px;
-	width:55px;
-	height: 30px;
+	padding: 13px 27px;
+	margin: 5px 5px;
+	width:50px;
+	height: 18px;
+}
+
+#saveprompt input {
+	margin-left: 5px;
+	width: 226px;
+	height: 20px;
 }	
 
 
+#parserError {
+  margin: 5px;
+  color: firebrick;
+  font-weight: bolder;
+  background: #72BFD3;
+  padding: 10px;
+  display: none;
+}
+
+#parserError.show {
+  display: block;
+}

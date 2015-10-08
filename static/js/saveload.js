@@ -22,7 +22,10 @@ function handleFileLoad(event){
 
 //Local Load - is called by handleFileLoad
 function loadLocal(json){
-  var library_name = json.library_name.toLowerCase();
+  	var library_name = json.library_name.toLowerCase();
+	while(library_name.indexOf(' ') != -1){
+		library_name = library_name.replace(' ', '_');
+	}
 	$('#liblist').val(library_name);
 		$.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data){
 			worldstage.sendMessage('setlibrary', data);

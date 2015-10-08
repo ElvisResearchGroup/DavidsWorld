@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-16" />
+    <script type="text/javascript" src="../static/js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="../static/js/evaluation.js"></script>
+    <script type="text/javascript" src="../static/js/bonsai-0.4.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/parser.js"></script>
+    <script type="text/javascript" src="../static/js/world.js"></script>
+    <style>
+     .result {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2px;
+        width: 350px;
+        height: 18px;
+        padding: 5px;
+    }
+    .summary {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2px;
+        width: 360px;
+        height: 23px;
+        padding: 8px;
+    }
+    .expr {
+        font-style: italic;
+    }
+    .pass {
+        background-color: #69B288;
+    }
+    .fail {
+        background-color: #B25E57;
+    }
+
+    .test-group {
+        float: left;
+        display: hidden;
+        margin-left: 5px;
+    }
+
+    .title {
+        font-weight: bold;
+    }
+    </style>
+  </head>
+  <body>
+  	<div id="world" class="test-group">
+    </div>
+  </body>
+  <script type="text/javascript">
+
+  buildWorld();
+
+	/*worldstage = bonsai.run(document.getElementById('world'),{
+	  url: 'static/js/world.js',
+	  worldstage.sendMessage('addobject', {
+      "type":"Rectangle",
+      "poly":4,
+      "def_col":"Black",
+      "width":10,
+      "height":10
+    });
+	  world: data,
+	  code: function(err, data) {
+	    library = stage.options.world;
+	    buildWorld();
+	  }
+	});
+	setupListeners();
+	populateObjectSelect(data);
+	populateColourSelect();*/
+
+  </script>
+</html>

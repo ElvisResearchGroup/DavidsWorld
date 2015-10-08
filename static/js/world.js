@@ -6,8 +6,14 @@
 var DEFAULT_X = 50, DEFAULT_Y = 50;
 var bg_colour;
 var library;
+
+//Stage Objects Map
+//TODO Change this into a single object.
 var stage_obj_types = [];
 var stage_obj_map = [];
+var stage_obj_nameplate = [];
+var stage_obj_title = [];
+
 var grid_lines = [[],[]];
 var selected_object;
 var expressionArray = [];
@@ -138,7 +144,8 @@ stage.on('message:setlibrary', function(data){
  * 
  */
 stage.on('message:addobject', function(data){
-  addObject(data.type, {x: data.x, y: data.y, width: data.width, height: data.height, def_col: data.colour});
+  console.log("DATA MESSAGE", data);
+  addObject(data.type, {x: data.x, y: data.y, width: data.width, height: data.height, def_col: data.colour, name:data.name});
 });
 
 /**
@@ -152,6 +159,13 @@ stage.on('message:changeSize', function(data){
       width: selected_object._attributes.width*scale,
       height: selected_object._attributes.height*scale
   });
+});
+
+stage.on('message:addName', function(data){
+  var index = stage_obj_map.indexOf(selected_object);
+  if(index >= 0){
+     stage_obj_nameplate = "data";
+  }
 });
 
 //----------------------------------------------------
@@ -202,6 +216,9 @@ function getWorld(){
     
     for(var i = 0; i < stage_obj_map.length; i++){
 	world.push(getWorldObject(i));
+	console.log("TESTESTET", stage_obj_nameplate);
+	if(stage_obj_nameplate[i])
+	  world[i].name = stage_obj_title[i];
     }
     console.log("World", world);
     return world;
@@ -360,7 +377,13 @@ function removeSelectedObject(){
       return;
     stage_obj_map.splice(index, 1);
     stage_obj_types.splice(index, 1);
+    var np = stage_obj_nameplate[index];
+    stage_obj_nameplate.splice(index, 1);
+    stage_obj_title.splice(index, 1);
+    
+    
     stage.removeChild(selected_object);
+    stage.removeChild(np);
     selected_object = null;
 }
 
@@ -383,12 +406,16 @@ function cloneSelectedObject(){
   attributes.y = stage_obj_map[index]._attributes.y + ((attributes.width) ? attributes.width/2 : 5);
   
   attributes.def_col = attributes.colour;
+  
+  attributes.name = stage_obj_title[index];
+  
   console.log("ATTRIBUTES:", attributes);
   addObject(stage_obj_types[index], attributes);
 }
 
 //Passing null for x->height will make it use the default values.
 function addObject(obj_type, data){
+    console.log("DATA TEST:", data);
     var lib_obj = new Object();
     if(data.size)
       data.size = data.size/2;
@@ -429,6 +456,41 @@ function addObject(obj_type, data){
     
     console.log(lib_obj);
     createBonsaiShape(lib_obj);
+    
+    //If the object had a value for its name.
+    
+    if(data.name){
+	//Create new nameplate.
+	var txt = new Text(data.name);//data.name);
+	//The bonsai object we just created is the last in the list.
+	var bonsai = stage_obj_map[stage_obj_map.length-1];
+	
+	var displacement = bonsai._attributes.radius;
+	//If the bonsai object does not have a radius.
+	if(!displacement){
+	  //Get half its height for the vertical displacement for the nameplate.
+	  displacement = lib_obj.height;
+	}
+	//Add 5 units of displacement.
+	displacement += 5;
+	console.log("TESTING:", displacement);
+	var x = lib_obj.x;
+	var y = lib_obj.y-20;
+	console.log(x, y);
+	txt.attr({
+	  x: x,
+	  y: y,
+	  selectable:false
+	});
+	
+	console.log("width", txt);
+	stage.addChild(txt);
+	
+	//Add it to the map.
+	stage_obj_nameplate[stage_obj_map.indexOf(bonsai)] = txt;
+	stage_obj_title[stage_obj_map.indexOf(bonsai)] = data.name;
+	
+    }
 }
 
 
@@ -463,8 +525,8 @@ function createBonsaiShape(obj){
       })
       .on('multi:drag', function(e){
         this.attr({
-          x: objMove(x, 1, e.diffX),
-          y: objMove(y, 2, e.diffY)
+          x: objMove(x, 1, e.diffX, this),
+          y: objMove(y, 2, e.diffY, this)
         });
       })
       .on('multi:pointerup', function(e){
@@ -555,21 +617,35 @@ function bonsaiPoly(obj){ //What does this method do?
 
 //i = 1, for x.
 //i = 2, for y.
-function objMove(x, i, diff){
+function objMove(x, i, diff, obj){
+  
+  
   var new_co = x + diff;
-  //If there is a grid.
-  if(grid_lines[i%2].length > 0){  
-    
-    //Minimum value inside the grid.
-    var min = grid_lines[i%2][0]._segments[0][2];
-    //Maximum value inside the grid.
-    var max = grid_lines[i%2][grid_lines[i%2].length - 1]._segments[1][1];
-    return Math.max(min, Math.min(new_co, max));
-
-  }else{
-    //If there is not a grid, just return the changed value.
-    return new_co;
+  var name = stage_obj_nameplate[stage_obj_map.indexOf(obj)];
+  var index = stage_obj_map.indexOf(obj);
+  if(name){
+      //console.log('?',name);
+      var title = stage_obj_title[index];
+      //console.log("TITLE & NAME", title, name);
+      var txt = new Text(title);
+      stage.removeChild(name);
+      if(i == 1)
+	txt.attr({
+	  x:new_co,
+	  y:obj._attributes.y-20,
+	  selectable:false
+	});
+      else
+	txt.attr({
+	   x:obj._attributes.x,
+	   y:new_co-20,
+	  selectable:false
+	});
+      stage_obj_nameplate[stage_obj_map.indexOf(obj)] = txt;
+      stage.addChild(txt);
   }
+  
+  return new_co;
 }
 
 function gridSnap(coord, i, obj, diff, offset){

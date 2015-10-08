@@ -341,6 +341,26 @@ function getGridCoord(bonsai_obj){
     return {x: x, y: y};
 }
 
+function gridToCoord(gridX,gridY){	
+	var gridWidth = library.grid_width;
+   var gridHeight = library.grid_height;	
+   
+	if (gridX < 1) gridX = 1;
+   if (gridY < 1) gridY = 1;
+   if (gridX > gridWidth) gridX = gridWidth;
+   if (gridY > gridHeight) gridY = gridHeight;
+	
+	var newX = (gridX-0.5)*(stage.width/gridWidth);
+   var newY = (gridY-0.5)*(stage.height/gridHeight);
+   return {x: newX, y: newY};	
+	
+}
+
+
+
+
+
+
 //THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
 //gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
 function generateWorldFromFile(worldJSON){
@@ -354,6 +374,11 @@ function generateWorldFromFile(worldJSON){
   for(var i = 0; i< worldJSON.world.length; i++){
   worldObjects.push(worldJSON.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
   var obj = worldObjects[i];
+  if (library.grid_width && library.grid_height){
+		var newCoord = gridToCoord(obj.x, obj.y);
+		obj.x = newCoord.x;
+		obj.y = newCoord.y;  
+  }
   var lib_index = null;
   for(var index = 0; index < library.library.length;index++){
     if(library.library[index].type == obj.type){
@@ -365,6 +390,14 @@ function generateWorldFromFile(worldJSON){
 		});
       lib_index = index;
     }
+  }
+  console.log("CURRENT OBJ", obj);
+  if (obj.sides == 4 || obj.image_path){
+  		obj.x -= obj.width/2;
+  		obj.y -= obj.height/2;
+  } else {
+		obj.x -= obj.radius;
+		obj.y -= obj.radius;  
   }
   if(lib_index == null){
     alert("Your loaded world has an object not supported in the current library");

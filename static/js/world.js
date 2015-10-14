@@ -87,8 +87,9 @@ function handleMessage(message) {
 	library_name: library.library_name,
 	world: getWorld()
       });
-      console.log("Need World: " + library.library_name);
-      console.log("Message Sent");  
+      console.log("Message Sent");
+    } else if (message === "getworldforadd"){
+      stage.sendMessage('addexpr', getWorld());
     }
 
 }

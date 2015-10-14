@@ -31,7 +31,7 @@
 		<input type="file" id="files" name="files[]" multiple style="display:none;"/>
         <output id="list"></output>
 		<div class="nav-item" style="width:18.5%;">
-			<p style="float:left; margin-top: ;">Current Library </p>
+			<p style="float:left;">Current Library </p>
 			<select id='liblist' data-toggle="tooltip" title="Library Selection" style="float: right; width:50% ">
 			{% for library in libraries %}
 				<option {% if loop.first %}selected{% endif %} 

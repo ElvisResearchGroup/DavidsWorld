@@ -91,7 +91,8 @@ function handleMessage(message) {
 	world: getWorld()
       });
       console.log("Message Sent");
-      
+    } else if (message === "getworldforadd"){
+      stage.sendMessage('addexpr', getWorld());
     }
 
 }

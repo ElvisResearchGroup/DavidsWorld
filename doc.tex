@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb} 
+
+\title{Documentation For Logic Factory}
+\date{ }
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\newpage
+	
+	\section{Syntax}
+	
+	This is the first section.
+	
+	Lorem  ipsum  dolor  sit  amet,  consectetuer  adipiscing  
+	elit.   Etiam  lobortisfacilisis sem.  Nullam nec mi et 
+	neque pharetra sollicitudin.  Praesent imperdietmi nec ante. 
+	Donec ullamcorper, felis non sodales...
+
+	\subsection{String and Constants}
+	
+	\subsection{Equals (=)}
+	Examples of Equals Methods:
+	
+	\subsubsection*{Object Comparison}
+	X = Y
+	
+	\subsubsection*{String Comparison}
+	X.name = "Bob"
+	
+	\subsubsection*{Numerical Comparison}
+	1 = 1 \\
+	X.size = 3
+	
+	\subsection {Less Than and Greater Than($<$ and $>$)}
+	Examples of Less Than and Greater Than Methods:
+	
+	\subsubsection*{Less Than($<$)}
+	1 $<$ 4
+	
+	\subsubsection*{Greater Than($>$)}
+	5 $>$ 3
+	
+	\subsection{AND ($\land$)}
+	1 = 1 $\land$ 2 = 3 \\
+	p $\land$ q
+	
+	\subsection{OR ($\lor$)}
+	1 = 1 $\land$ 2 = 3 \\
+	p $\land$ q
+	
+	\subsection{NOT ($\lnot$)}
+	$\lnot$x \\
+	$\lnot$(p $\land$ q) 
+	
+	\subsection{Not Equals (!=)}
+	
+	\subsubsection*{Object Comparison}
+	X != Y
+	
+	\subsubsection*{String Comparison}
+	X.name != "Bob"
+	
+	\subsubsection*{Numerical Comparison}
+	1 != 2 \\
+	X.size != 3
+	
+	\subsection{XOR}
+	
+	\subsection{Implies ($\rightarrow$)}
+	p $\rightarrow$ q \\
+	p $\land$ q $\rightarrow$ x $\lor$ y
+	
+	\subsection{If and only If ($\leftrightarrow$)}
+	p $\leftrightarrow$ q \\
+	p.x $>$ 6 $\leftrightarrow$ p.y $>$ 2
+	
+	\subsection{For All and There Exists ($\forall$ and $\exists$)}
+	For all allows you to specify a variable name to identify objects. Variable names have to start with an alphabetic character and can contain any alphabetical or numerical characters. Terminating at any character that is not alphabetical or numerical.\\ \\
+	Multiple variables can be specified in the same construction with the separation of the ',' character. Variable assignment terminates with the '$\cdot$' character. \\
+	$\forall$ p $\cdot$ p $>$ 10 \\
+	$\exists$ p, q $\cdot$ p.x $>$ q.x
+		
+	\phantom
+	\\	
+	\section{User Interface}
+	
+	\subsection{World View}
+	
+	\subsection{Adding Objects}
+	
+	\subsection{Modifying Objects}
+	
+	\subsection{Adding Expressions}
+	
+	\subsubsection{Shortcuts}
+	
+	The following keyboard shortcuts can be used for each of these logic symbols in the program: \\ \\
+	
+		\begin{tabular}{ |c|c| } 
+			\hline
+			\textbf{Logic Symbol} & \textbf{Keyboard Shortcut} \\ 
+			\hline
+			$\exists$ & \textbackslash e \\
+			\hline 
+			$\forall$ & \textbackslash a \\ 
+			\hline		
+			$\bullet$ & : \\ 
+			\hline	
+			$\land$ & \& or $\hat{}$ \\ 
+			\hline	
+			$\rightarrow$ & $->$ \\ 
+			\hline	
+			$\lnot$ & \textasciitilde \\ 
+			\hline	
+			$\lor$ & $|$ \\ 
+			\hline
+			 & \textbackslash x \\ 
+			\hline
+			$\leftrightarrow$ & $<->$ \\ 
+			\hline
+		\end{tabular}
+		
+	\subsection{Expression Log}
+	
+	\subsection{Loading and Saving}
+	
+	
+	
+	
+\end{document}

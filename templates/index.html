@@ -16,7 +16,7 @@
 	<![endif]-->
 	<link rel="stylesheet" type="text/css" href="static/css/userinterface.css">
 </head>
-<body>	
+<body onload = "setSize()">	
 	<div id="cover"></div>
 	<div id="saveprompt">
 	        <div class="boxtitle">Enter Filename</div>
@@ -26,7 +26,6 @@
 	</div>
 	<div id="titleBar"> <!-- START OF TITLE BAR -->
 		<img src="static/img/logicfactorynobg.png" align="center" style="padding-left:2%; background-size: cover; width: 45%; height: 60%">
-		<button class="nav-item" style="width:10%;">Load Exercise</button>
 		<button class="nav-item" onclick="saveOutput()" style="width:10%;">Save File</button>
 		<button class="nav-item" type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." style="width:10%;">Load File</button>
 		<input type="file" id="files" name="files[]" multiple style="display:none;"/>
@@ -58,7 +57,7 @@
 				<button type="button" class="btn left-mod" data-toggle="tooltip" title="ObjectSmaller" id="sizeDec">Smaller</button>
 			<button type="button" class="btn" data-toggle="tooltip" title="ObjectCopy" id="copyObj">Copy</button>
 			<div class="clear"></div>
-			<div class="left-mod">Name: </div> 
+			<div class="left-mod">NAME: </div> 
 			<div class="left-mod2"><input type="text" id="objNamer" name="objNamer" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;"></div>
 			<button type="button" class="btn " data-toggle="tooltip" title="ObjectRemove" id="removeObj">Remove</button>
 		</div>

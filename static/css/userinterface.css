@@ -282,6 +282,7 @@ img {
   border: 10px;
   background-color: transparent;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .expression {
@@ -304,9 +305,11 @@ img {
   padding-bottom: 8px;
   padding-left: 10px;
   float:left;
-  width:87%;
+  width:65%;
   height:100%;
 }
+
+.expression 
 
 .expression p:hover {
   text-decoration: underline;
@@ -316,7 +319,7 @@ img {
 
 .result {
   height: 50px;
-  width: 60px;
+  width: 10%;
   background: gray;
   color: white;
   float: right;
@@ -324,7 +327,7 @@ img {
 
 .result.pass {
   background: #009933;
-  width: 45px;
+  width: 10%;
   height: 35px;
   padding-top: 15px;
   padding-left: 15px;
@@ -332,7 +335,7 @@ img {
 
 .result.fail {
   background: #FF5C5C;
-  width: 48px;
+  width: 10%;
   height: 35px;
   padding-top: 15px;
   padding-left: 12px;
@@ -342,7 +345,7 @@ img {
   padding-top: 15px;
   padding-left: 10px;
   height: 35px;
-  width: 25px;
+  width: 5%;
   background: #0390B2;
   color: white;
   font-size: large;

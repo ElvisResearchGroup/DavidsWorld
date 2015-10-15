@@ -90,35 +90,35 @@ function evaluateAll(all, scope){
 }
 
 function evaulateAnd(expr1, expr2, scope){
-	return evaluate(expr1, scope) && evaluate(expr2, scope);
+	return !!(evaluate(expr1, scope) && evaluate(expr2, scope));
 }
 
 function evaulateOr(expr1, expr2, scope){
-	return evaluate(expr1, scope) || evaluate(expr2, scope);
+	return !!(evaluate(expr1, scope) || evaluate(expr2, scope));
 }
 
 function evaulateEqual(expr1, expr2, scope){
-	return evaluate(expr1, scope) === evaluate(expr2, scope);
+	return !!(evaluate(expr1, scope) === evaluate(expr2, scope));
 }
 
 function evaulateInequal(expr1, expr2, scope){
-	return evaluate(expr1, scope) !== evaluate(expr2, scope);
+	return !!(evaluate(expr1, scope) !== evaluate(expr2, scope));
 }
 
 function evaulateLessThan(expr1, expr2, scope){
-	return evaluate(expr1, scope) < evaluate(expr2, scope);
+	return !!(evaluate(expr1, scope) < evaluate(expr2, scope));
 }
 
 function evaulateGreaterThan(expr1, expr2, scope){
-	return evaluate(expr1, scope) > evaluate(expr2, scope);
+	return !!(evaluate(expr1, scope) > evaluate(expr2, scope));
 }
 
 function evaulateLessThanEqual(expr1, expr2, scope){
-	return evaluate(expr1, scope) <= evaluate(expr2, scope);
+	return !!(evaluate(expr1, scope) <= evaluate(expr2, scope));
 }
 
 function evaulateGreaterThanEqual(expr1, expr2, scope){
-	return evaluate(expr1, scope) >= evaluate(expr2, scope);
+	return !!(evaluate(expr1, scope) >= evaluate(expr2, scope));
 }
 
 function evaulateImplies(expr1, expr2, scope){
@@ -126,7 +126,7 @@ function evaulateImplies(expr1, expr2, scope){
 	if (!x) return true;
 	var y = evaluate(expr2, scope);
 
-	return  ((!x) || (x && y));
+	return  !!((!x) || (x && y));
 }
 
 function evaulateVarAccess(vari, field, scope){

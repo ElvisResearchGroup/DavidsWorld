@@ -283,8 +283,6 @@ function parseValue(input, scope){
     //Try to match field accesses
     var groups = /^([a-zA-Z][0-9a-zA-Z]*)\.([a-zA-Z][0-9a-zA-Z]*)$/.exec(input);
     var cons;
-
-    console.log("value input: ", input);
     //If it was a field access, return it
     if (groups) {
         if (scope.indexOf(groups[1]) === -1){

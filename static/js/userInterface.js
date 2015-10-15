@@ -3,49 +3,8 @@ var exprIdArray = [];//holds ids of expression divs
 var count = 0; //used to count expression divs
 var pressedGo = false;
 var expArray = [];
-
-
-
-
-
-
-
-/**
- * on click on add expression button, adds the written expression to list of expressions
- */
-function add(expr){
-
-	//Create Labels
-	var id =  count++;
-	var expressionDiv = $('<div/>', {'id': id, 'class': 'expression'})
-		.append($('<p/>', {'onclick': 'update(' + id + ')'})
-			.text(expr));
-	var resultDiv = $('<div/>', {'class':'result'});
-	var deleteDiv = $('<div/>', {'class':'delexpr', 'onclick': 'deleteExp(' + id + ')'})
-		.text('X');
-
-
-	//Append the element in page
-	if(expr !="Input expression" && expr.length > 0){
-		try { 
-			parseExpr(expr, ['Colour']);
-
-			exprIdArray.push(id);
-			expArray.push(expr);
-
-			$('#outputDiv').append(expressionDiv
-				.append(deleteDiv)
-				.append(resultDiv));
-
-			$('#parserError').toggleClass('show', false);
-			return true;
-		} catch(error){
-			$('#parserError').toggleClass('show', true).text(error.message);
-			return false;
-		}
-	}
-	return false;
-}
+var toAdd = [];
+var allowInvalid = false;
 
 /**
 * This function deletes an expression when the user clicks the "X" button next to the expression.
@@ -89,6 +48,13 @@ function setupListeners(){
    
 	worldstage.on('message:evalworld', function(data){
 		world = data;
+		var scope = {Color: getColour()};
+		for (var w = 0; w < world.length; w++){
+			var obj = world[w];
+			if (obj.name){
+				scope[obj.name] = obj;
+			}
+		}
 
 		for (var i = 0; i < exprIdArray.length; i++){
 			var id = exprIdArray[i];
@@ -96,17 +62,26 @@ function setupListeners(){
 			var expressionDiv = $('#' + id);
 
 			var expr = expressionDiv.find('p').text();
+			var parsedTree = null;
+			var errormessage = null;
 			try { 
-				var parsedTree = parseExpr(expr, ['Colour']);
+				parsedTree = parseExpr(expr, Object.keys(scope));
 			} catch(error){
+				errormessage = error.message;
 				console.error(error);
 			}
 
 			var eval = false;
-			try { 
-				eval = evaluate(parsedTree, {Colour: getColour()});
-			} catch(error){
-				console.error(error);
+			if (parsedTree){
+				try { 
+					eval = evaluate(parsedTree, scope);
+				} catch(error){
+					eval = null;
+					errormessage = "Evaluation error"
+					console.error(error);
+				}
+			} else {
+				eval = null;
 			}
 
 			console.log('eval', eval);
@@ -115,7 +90,8 @@ function setupListeners(){
 			expressionDiv.find('.result')
 				.toggleClass('fail', !eval)
 				.toggleClass('pass', eval)
-				.text(eval);
+				.attr("title", errormessage)
+				.text((eval == null) ? "Error" : (eval) ? "True" : "False");
 		}
 
 	});
@@ -169,6 +145,56 @@ function setupListeners(){
 
 		saveAsFile(output, "save");
 	});
+
+	/**
+	 * on click on add expression button, adds the written expression to list of expressions
+	 */
+	 worldstage.on('message:addexpr', function(data){
+	 	world = data;
+	 	toAdd.forEach(function(expr){
+
+			//Create Labels
+			var id =  count++;
+			var expressionDiv = $('<div/>', {'id': id, 'class': 'expression'})
+				.append($('<p/>', {'onclick': 'update(' + id + ')'})
+					.text(expr));
+			var resultDiv = $('<div/>', {'class':'result'});
+			var deleteDiv = $('<div/>', {'class':'delexpr', 'onclick': 'deleteExp(' + id + ')'})
+				.text('X');
+
+			//Append the element in page
+			if(expr !="Input expression" && expr.length > 0){
+				var scope = ["Colour"];
+				for (var w = 0; w < world.length; w++){
+					var obj = world[w];
+					if (obj.name){
+						scope.push(obj.name);
+					}
+				}
+				try { 
+					if (!allowInvalid){
+						parseExpr(expr, scope);
+					}
+
+					exprIdArray.push(id);
+					expArray.push(expr);
+
+					$('#outputDiv').append(expressionDiv
+						.append(deleteDiv)
+						.append(resultDiv));
+
+					$('#parserError').toggleClass('show', false);
+
+					console.log("testtestsetset");
+
+					button('clear');
+				} catch(error){
+					$('#parserError').toggleClass('show', true).text(error.message);
+				}
+			}
+		});
+	});
+
 	
 	$('#addObj').click(function(){
 		var temp = {type: $('#objList').val(), name: "", colour: $('#colourList').val()};
@@ -421,8 +447,14 @@ function setExpressionList(exprs){
 	exprIdArray = [];
 	count = 0;
 	console.log("EXPRESSIONS", exprs);
-	exprs.forEach(function(d){
-		console.log('d', d);
-		add(d);
-	});
+	toAdd = exprs;
+	allowInvalid = true;
+	worldstage.sendMessage("getworldforadd");
+}
+
+function setSize(){
+	var height = $('#world').width();
+	console.log("HEIGHT " + height);
+	//var right = document.getElementById('expression-column').style.height;
+	document.getElementById('outputDiv').style.height = (height-50) + 'px';
 }

@@ -70,7 +70,6 @@ function handleMessage(message) {
         stage.sendMessage('evalworld', getWorld());
     } 
     else if(message === 'clearworld'){
-      console.log("TIME TO CLEAN UP");
       clearWorld();
       buildWorld();
     }
@@ -84,49 +83,16 @@ function handleMessage(message) {
 	cloneSelectedObject();
     }
     else if(message === 'needWorldJSON'){
-      var hackyFix = []; //For some reason we need to pass some kind of data in the message to make the handler receive it on the other side. This array doesnt matter, it will always be blank
-      console.log("need world JSON clicked");
       stage.sendMessage('saveData', {
 	library_name: library.library_name,
 	world: getWorld()
       });
       console.log("Message Sent");
-      
+    } else if (message === "getworldforadd"){
+      stage.sendMessage('addexpr', getWorld());
     }
 
 }
-
-stage.on('message:needWorldJSON', function(data){
-   stage.sendMessage('getExpr');
-   setTimeout(function(){
-     timerRanOut = true;
-   },5000);
-   while(gotExpr == false){
-     if(timerRanOut == true){
-       throw "List of Expressions could not be found";
-       return;
-     }
-   }
-   timerRanOut = false;
-   gotExpr = false;
-   saveSend(data);
-  
-});
-
-
-stage.on('message:saveClicked', function(data){
-   hrefLink = data
-   stage.sendMessage('');
-  
-});
-
-stage.on('message:exprArray', function(data){
-  console.log("World: Received Expr Array");
-  expressionArray = data;
-  gotExpr = true;
-  saveSend(data);
-});
-
 
 
 /**
@@ -213,25 +179,6 @@ function setLibrary(lib){
 }
 
 /**
- * Gets the state of the world and expressions and sends it out as a message for anything that needs the data. This function is called on reception of needWorldJSON message
- * @param {bonsai_obj} Bonsai object to find coordinates for
- */
-function saveSend(expressions){
-  var tempWorld = getWorld();
-  var tempExpressions = expressions;
-  var JSONString = "{\"library_name\":\"" + library.library_name + "\",\n"//{"library_name":"Noughts and Crosses",;
-  
-  for(var i =0; i< tempWorld.length;i++){
-    
-    
-    
-  }
-  
-  stage.sendMessage("saveData",JSONString);
-  
-}
-
-/**
  * Deals with creating the world object, and then returns it.
  */
 function getWorld(){
@@ -272,7 +219,10 @@ function getWorldObject(i){
         /**else if(!item.size){
 	    item.size = stage_obj_map[i]._attribute.radius;
 	}*/
-        else if(item.width !== undefined && item.height !== undefined){
+	if(stage_obj_map[i]._attributes.radius !== undefined){
+          item.radius = stage_obj_map[i]._attributes.radius;
+        }
+        if(stage_obj_map[i]._attributes.width !== undefined && stage_obj_map[i]._attributes.height !== undefined){
           item.height = stage_obj_map[i]._attributes.height;
           item.width = stage_obj_map[i]._attributes.width; 
         }
@@ -373,9 +323,13 @@ function generateWorldFromFile(worldJSON){
   worldObjects.push(worldJSON.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
   var obj = worldObjects[i];
   if (library.grid_width && library.grid_height){
-		var newCoord = gridToCoord(obj.x, obj.y);
-		obj.x = newCoord.x;
-		obj.y = newCoord.y;  
+	var newCoord = gridToCoord(obj.x, obj.y);
+	obj.x = newCoord.x;
+	obj.y = newCoord.y;  
+	if (obj.width){
+		obj.x -= obj.width/2;
+		obj.y -= obj.height/2;	
+	}
   }
   var lib_index = null;
   for(var index = 0; index < library.library.length;index++){
@@ -389,35 +343,26 @@ function generateWorldFromFile(worldJSON){
       lib_index = index;
     }
   }
-  if (obj.sides == 4 || obj.image_path){
-  		obj.x -= obj.width/2;
-  		obj.y -= obj.height/2;
-  } else {
-		obj.x -= obj.radius;
-		obj.y -= obj.radius;  
+
+  if (obj.colour) {
+    obj.def_col = obj.colour;	
   }
+
   if(lib_index == null){
     alert("Your loaded world has an object not supported in the current library");
     return false;
   }
-  
+  console.log("Adding object", obj);
   
   obj_list.push(obj);
   
-
+  createBonsaiShape(obj);
+  createNamePlate(obj, obj);
 ind_list.push(lib_index);
   //TODO: nullchecking for above vars
   
   
   
-  }
-  
-  for(var i = 0; i<obj_list.length;i++){
-    
-  if(obj_list[i] != null && ind_list[i] != null){
- 
-  createBonsaiShape(obj_list[i]);
-  }
   }
 }  
 
@@ -478,15 +423,13 @@ function addObject(obj_type, data){
       data.name = "";
     console.log("DATA TEST:", data);
     var lib_obj = new Object();
-    if(data.size)
-      data.size = data.size/2;
     //Cloning the object from the library.
     console.log("DATA", data);
     for(var i = 0; i < library.library.length; i++){
 	//If we find the correct object to create from.
       if(library.library[i].type == obj_type){
 	var keys = Object.keys(library.library[i]).forEach(function(key){
-	    console.log(key)
+	    console.log(key);
 	    if(data && Object.keys(data).indexOf(key) >= 0 && data[key]){
 		lib_obj[key] = data[key];
 	    }
@@ -501,7 +444,9 @@ function addObject(obj_type, data){
     console.log()
     
     if(lib_obj.poly <= 2 && data.size){
-	lib_obj.radius = data.size;
+      lib_obj.radius = data.size;
+    } else if (lib_obj.size) {
+      lib_obj.radius = lib_obj.size/2;
     }
     if(!lib_obj.x && data.x)
       lib_obj.x = data.x;
@@ -521,7 +466,11 @@ function addObject(obj_type, data){
     //If the object had a value for its name.
     
     //if(data.name){
-	//Create new nameplate.
+	createNamePlate(data, lib_obj);
+   // }
+}
+
+function createNamePlate(data, lib_obj){
 	var txt = new Text(data.name);//data.name);
 	//The bonsai object we just created is the last in the list.
 	var bonsai = stage_obj_map[stage_obj_map.length-1];
@@ -550,8 +499,6 @@ function addObject(obj_type, data){
 	//Add it to the map.
 	stage_obj_nameplate[stage_obj_map.indexOf(bonsai)] = txt;
 	stage_obj_title[stage_obj_map.indexOf(bonsai)] = data.name;
-	
-   // }
 }
 
 
@@ -665,7 +612,7 @@ function bonsaiPoly(obj){ //What does this method do?
     myPoly = new Rect(obj.x, obj.y, obj.width, obj.height);
   }else{
     //We make the inverse assumtion to the Circle.
-    myPoly = new Polygon(obj.x,obj.y,obj.size,obj.poly);
+    myPoly = new Polygon(obj.x,obj.y,obj.radius,obj.poly);
   }
 	  
   myPoly.addTo(stage);

@@ -26,9 +26,12 @@ var expressionTypes = {
 /*
  * Evaulates the given expression with existing scope. 
  * Scope is a map of variables to objects.
+ *
+ * @param {Expression} expr - expression to evaluate
+ * @param {object} scope - maps variables to values 
  */
 function evaluate(expr, scope){
-	//Calls the correct
+	//Calls the correct function to evaluate the expression
 	if (expr.type === expressionTypes.SOME) { 
 		return evaluateSome(expr, scope);
 	} else if (expr.type === expressionTypes.ALL) {
@@ -56,15 +59,20 @@ function evaluate(expr, scope){
 	} else if(expr.type == expressionTypes.VAR_ACCESS){
 		return evaulateVarAccess(expr.vari, expr.field, scope);
 	} else if(expr.type == expressionTypes.CONST){
-		return expr.val;
+		return expr.val; //Return the constants value
 	} else if(expr.type == expressionTypes.IFF){
 		return evaulateEqual(expr.first, expr.second, scope);
 	} else if (expr.type == expressionTypes.XOR){
 		return evaulateInequal(expr.first, expr.second, scope);
 	}
-
 }
 
+/*
+ * Evaluate there exists.
+ *
+ * @param {Expression} some - the there exists expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaluateSome(some, scope){
 	var v = some.first;
 	if (scope[v]) {
@@ -81,6 +89,12 @@ function evaluateSome(some, scope){
 	}
 }
 
+/*
+ * Evaluate for all.
+ *
+ * @param {Expression} all - the for all expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaluateAll(all, scope){
 	var v = all.first;
 	if (scope[v]) {
@@ -97,38 +111,101 @@ function evaluateAll(all, scope){
 	}
 }
 
+/*
+ * Evaluate and expressions.
+ *
+ * @param {Expression} expr1 - the left expression to evaluate
+ * @param {Expression} expr2 - the right expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateAnd(expr1, expr2, scope){
 	return !!(evaluate(expr1, scope) && evaluate(expr2, scope));
 }
 
+/*
+ * Evaluate or expressions.
+ *
+ * @param {Expression} expr1 - the left expression to evaluate
+ * @param {Expression} expr2 - the right expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateOr(expr1, expr2, scope){
 	return !!(evaluate(expr1, scope) || evaluate(expr2, scope));
 }
 
+/*
+ * Evaluate equals expressions.
+ *
+ * @param {Expression} expr1 - the left expression to evaluate
+ * @param {Expression} expr2 - the right expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateEqual(expr1, expr2, scope){
 	return !!(evaluate(expr1, scope) === evaluate(expr2, scope));
 }
 
+/*
+ * Evaluate inequal expressions.
+ *
+ * @param {Expression} expr1 - the left expression to evaluate
+ * @param {Expression} expr2 - the right expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateInequal(expr1, expr2, scope){
 	return !!(evaluate(expr1, scope) !== evaluate(expr2, scope));
 }
 
+/*
+ * Evaluate less than expressions.
+ *
+ * @param {Expression} expr1 - the left expression to evaluate
+ * @param {Expression} expr2 - the right expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateLessThan(expr1, expr2, scope){
 	return !!(evaluate(expr1, scope) < evaluate(expr2, scope));
 }
 
+/*
+ * Evaluate greater than expressions.
+ *
+ * @param {Expression} expr1 - the left expression to evaluate
+ * @param {Expression} expr2 - the right expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateGreaterThan(expr1, expr2, scope){
 	return !!(evaluate(expr1, scope) > evaluate(expr2, scope));
 }
 
+/*
+ * Evaluate less than or equals expressions.
+ *
+ * @param {Expression} expr1 - the left expression to evaluate
+ * @param {Expression} expr2 - the right expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateLessThanEqual(expr1, expr2, scope){
 	return !!(evaluate(expr1, scope) <= evaluate(expr2, scope));
 }
 
+/*
+ * Evaluate greater than or equals expressions.
+ *
+ * @param {Expression} expr1 - the left expression to evaluate
+ * @param {Expression} expr2 - the right expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateGreaterThanEqual(expr1, expr2, scope){
 	return !!(evaluate(expr1, scope) >= evaluate(expr2, scope));
 }
 
+/*
+ * Evaluate implies expressions.
+ *
+ * @param {Expression} expr1 - the left expression to evaluate
+ * @param {Expression} expr2 - the right expression to evaluate
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateImplies(expr1, expr2, scope){
 	var x = evaluate(expr1, scope);
 	if (!x) return true;
@@ -137,31 +214,19 @@ function evaulateImplies(expr1, expr2, scope){
 	return  !!((!x) || (x && y));
 }
 
+/*
+ * Evaluate a variable access.
+ *
+ * @param {string} vari - the variable name
+ * @param {string} field - the field name (can be null)
+ * @param {object} scope - maps variables to values 
+ */
 function evaulateVarAccess(vari, field, scope){
+	//If field is null then return the variable object
 	if (field === null) {
 		return scope[vari];
 	}
 	
-	console.log('access', vari, field, scope[vari][field]);
-
+	//Otherwise return the field value of the variable
 	return scope[vari][field]
-}
-
-//TODO Fix
-/**
-* Returns a string representation of the expression.
-*/
-function toString(expr){
-	if (expr.type === expressionTypes.SOME 
-		|| expr.type === expressionTypes.ALL 
-		|| expr.type === expressionTypes.NOT) {
-		var sum = "";
-		expr.children.forEach(function (child) {
-			sum += ' ' + toString(child);
-		});
-		var x = expr.type + sum;
-	}
-	else{
-		return toString(expr.children[0]) + ' ' + expr.type + ' ' + toString(expr.children[1]);
-	}
 }

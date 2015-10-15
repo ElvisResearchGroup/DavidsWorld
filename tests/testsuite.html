@@ -373,8 +373,6 @@ performErrorTest('\u2227 p > q', [], ERROR_CODE.MISSING_LEFT_SIDE);
 // Missing right ride of AND operator
 performErrorTest('\u2200 p, q \u22C5 p < q \u2227', [], ERROR_CODE.MISSING_RIGHT_SIDE);
 
-performErrorTest('\u2200 p, q \u22C5 p < q \u2227', [], ERROR_CODE.LEADING_ERROR);
-
 concludeTests('#parseerror', 'Parser error handling');
 
 //tests line \u2203x.x=1

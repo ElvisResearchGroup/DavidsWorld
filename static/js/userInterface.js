@@ -447,3 +447,10 @@ function setExpressionList(exprs){
 	toAdd = exprs;
 	worldstage.sendMessage("getworldforadd");
 }
+
+function setSize(){
+	var height = $('#world').width();
+	console.log("HEIGHT " + height);
+	//var right = document.getElementById('expression-column').style.height;
+	document.getElementById('outputDiv').style.height = (height-50) + 'px';
+}

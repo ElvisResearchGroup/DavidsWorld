@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Davids World</title>
+	<title>Logic Factory</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="static/js/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="static/js/buttons.js"></script>
@@ -15,8 +15,9 @@
 	<link rel="stylesheet" type="tex/css" href="iespecific.css" />
 	<![endif]-->
 	<link rel="stylesheet" type="text/css" href="static/css/userinterface.css">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
-<body>	
+<body onload = "setSize()">	
 	<div id="cover"></div>
 	<div id="saveprompt">
 	        <div class="boxtitle">Enter Filename</div>
@@ -26,17 +27,17 @@
 	</div>
 	<div id="titleBar"> <!-- START OF TITLE BAR -->
 		<img src="static/img/logicfactorynobg.png" align="center" style="padding-left:2%; background-size: cover; width: 45%; height: 60%">
-		<button class="nav-item" style="width:10%;">Load Exercise</button>
+		<button class="nav-item" onclick="openCheatSheet()" style="width:10%;">Cheat Sheet</button>
 		<button class="nav-item" onclick="saveOutput()" style="width:10%;">Save File</button>
 		<button class="nav-item" type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." style="width:10%;">Load File</button>
 		<input type="file" id="files" name="files[]" multiple style="display:none;"/>
         <output id="list"></output>
 		<div class="nav-item" style="width:18.5%;">
-			<p style="float:left; margin-top: ;">Current Library </p>
+			<p style="float:left;">Current Library </p>
 			<select id='liblist' data-toggle="tooltip" title="Library Selection" style="float: right; width:50% ">
-			{% for library in libraries %}
+			{% for library, name in libraries %}
 				<option {% if loop.first %}selected{% endif %} 
-					value="{{ library }}">{{ library.capitalize() }}</option>
+					value="{{ library }}">{{ name.capitalize() }}</option>
 			{% endfor %}
 			</select> 
 		</div>
@@ -58,7 +59,7 @@
 				<button type="button" class="btn left-mod" data-toggle="tooltip" title="ObjectSmaller" id="sizeDec">Smaller</button>
 			<button type="button" class="btn" data-toggle="tooltip" title="ObjectCopy" id="copyObj">Copy</button>
 			<div class="clear"></div>
-			<div class="left-mod">Name: </div> 
+			<div class="left-mod">NAME: </div> 
 			<div class="left-mod2"><input type="text" id="objNamer" name="objNamer" value="Object Name" onclick="this.value=='Object Name'?this.value='':this.value;"></div>
 			<button type="button" class="btn " data-toggle="tooltip" title="ObjectRemove" id="removeObj">Remove</button>
 		</div>
@@ -70,7 +71,7 @@
 			<form>
 				<input type="text" name="expression" id ="txtExpr" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="txtExpr" data-toggle="tooltip" title="Expression Entry"> 
 			</form>
-			<button onclick="var x = add($('#txtExpr').val()); if (x) button('clear');"  type="button" id="addExpr" class="btn press" data-toggle="tooltip" title="Adds the Current Expression">Add Expression</button>
+			<button onclick="allowInvalid = false;toAdd = [$('#txtExpr').val()];worldstage.sendMessage('getworldforadd');"  type="button" id="addExpr" class="btn press" data-toggle="tooltip" title="Adds the Current Expression">Add Expression</button>
 			<div class="clear"></div>
 			<button type="button" class="btn symbol" onclick="button('not')" data-toggle="tooltip" title="Not. ~ is the keyboard shortcut"><img class="autoResizeImage" src="static/img/notsymbol.png" align="middle"></button>
 			<button type="button" class="btn symbol" onclick="button('and')" data-toggle="tooltip" title="Logical And. ^ and & are keyboard shortcuts"><img class="autoResizeImage" src="static/img/and.png" align="middle"></button>

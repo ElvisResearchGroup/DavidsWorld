@@ -29,12 +29,13 @@ body{
   }
 
 
+
 .nav-item {
   background-color: #FF9F48;
   height: 35px;
   float: right;
   margin-right: 5px;
-  margin-top: 5px;
+  border-style: none;
 }
 
 .nav-item > p {
@@ -63,6 +64,7 @@ select {
 #expression-column {
   float: right;
   width: 50%;
+  height:100%;
 }
 
 .clear {
@@ -221,7 +223,7 @@ img {
 }
 
 .txtExpr{
-  width:96%;
+  width:96.5%;
   padding: 1% 1% 1% 1%;
   margin:0.5%;
   height:96%;
@@ -276,10 +278,11 @@ img {
 
 #outputDiv {
   width: 100%;
-  height: 500px;
+  height: 10px;
   border: 10px;
   background-color: transparent;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .expression {
@@ -292,6 +295,7 @@ img {
   float:left;
   margin-bottom: 5px;
   min-height: 1px;
+  margin-left: 0.51%;
 
 }
 
@@ -301,9 +305,11 @@ img {
   padding-bottom: 8px;
   padding-left: 10px;
   float:left;
-  width:87%;
+  width:65%;
   height:100%;
 }
+
+.expression 
 
 .expression p:hover {
   text-decoration: underline;
@@ -313,7 +319,7 @@ img {
 
 .result {
   height: 50px;
-  width: 60px;
+  width: 10%;
   background: gray;
   color: white;
   float: right;
@@ -321,7 +327,7 @@ img {
 
 .result.pass {
   background: #009933;
-  width: 45px;
+  width: 10%;
   height: 35px;
   padding-top: 15px;
   padding-left: 15px;
@@ -329,7 +335,7 @@ img {
 
 .result.fail {
   background: #FF5C5C;
-  width: 48px;
+  width: 10%;
   height: 35px;
   padding-top: 15px;
   padding-left: 12px;
@@ -339,7 +345,7 @@ img {
   padding-top: 15px;
   padding-left: 10px;
   height: 35px;
-  width: 25px;
+  width: 5%;
   background: #0390B2;
   color: white;
   font-size: large;

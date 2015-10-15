@@ -63,7 +63,7 @@ function buildWorld() {
 
 /**
  * Takes a message from outside process scope and handles it
- * @param {message} message to be handled
+ * @param {message} message - message to be handled
  * 
  */
 function handleMessage(message) {
@@ -94,7 +94,7 @@ function handleMessage(message) {
 
 /**
  * Handles the message to take a given world from a file.
- * @param {data}  The world information to generate from.
+ * @param {JSON} data -  The world information to generate from.
  */
 
 stage.on('message:generateWorld', function(data) {
@@ -103,7 +103,7 @@ stage.on('message:generateWorld', function(data) {
 
 /**
  * Sets the current library
- * @param {data} The library data to change the world to operate off.
+ * @param {Library} data - The library data to change the world to operate off.
  */
 stage.on('message:setlibrary', function(data) {
     setLibrary(data);
@@ -137,7 +137,7 @@ function updateTitles(obj) {
 
 /**
  * Adds a specified object to the world
- * 
+ * @param {message} message - message to be handled
  */
 stage.on('message:addobject', function(data) {
     console.log("DATA MESSAGE", data);
@@ -154,6 +154,7 @@ stage.on('message:addobject', function(data) {
 /**
  * Changes the size of the selected object, if the data is +1, increase in size.
  * Otherwise it decreases in size.
+ * @param {message} message - message to be handled
  */
 stage.on('message:changeSize', function(data) {
     var scale = (data == 1) ? 1.4 : (1 / 1.4);
@@ -164,6 +165,10 @@ stage.on('message:changeSize', function(data) {
     });
 });
 
+/**
+ * Adds name to nameplate of object
+ * @param {message} message - message to be handled
+ */
 stage.on('message:addName', function(data) {
     var index = stage_obj_map.indexOf(selected_object);
     if (index >= 0) {
@@ -219,9 +224,6 @@ function getWorldObject(i) {
     if (!item.size) {
         item.size = Math.max(stage_obj_map[i]._attributes.width, stage_obj_map[i]._attributes.height);
     }
-    /**else if(!item.size){
-        item.size = stage_obj_map[i]._attribute.radius;
-   }*/
     if (stage_obj_map[i]._attributes.radius !== undefined) {
         item.radius = stage_obj_map[i]._attributes.radius;
     }
@@ -248,6 +250,10 @@ function getColours() {
 //World Handling
 //----------------------------------------------------
 
+/**
+* Function which clears the current state of the world in order to add new values to it
+*
+*/
 function clearWorld() {
     stage_obj_map.forEach(function(entry) {
         stage.removeChild(entry);
@@ -318,9 +324,10 @@ function gridToCoord(gridX, gridY) {
 
 
 
-
-//THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
-//gets passed a tree structure from saveload - TODO: Make sure library is loaded before user uploads world - will want to add check from library name of world load to library name on server
+/**
+ *THIS METHOD NEEDS TO BE CALLED ON RECEPTION OF MESSAGE TO WORKER THREAD rather than directly from saveload.js in order to get scope of bonsai
+ *@param {JSON} worldJSON - Gets passed a tree structure from saveload 
+ */
 function generateWorldFromFile(worldJSON) {
 
     clearWorld();
@@ -367,9 +374,7 @@ function generateWorldFromFile(worldJSON) {
         createBonsaiShape(obj);
         createNamePlate(obj, obj);
         ind_list.push(lib_index);
-        //TODO: nullchecking for above vars
-
-
+     
 
     }
 }
@@ -477,6 +482,12 @@ function addObject(obj_type, data) {
     // }
 }
 
+/**
+* Function that creates a nameplate on an object. A name plate can hold the name for the object
+* @param {} data -  
+* @param {} lib_obj - 
+*/
+
 function createNamePlate(data, lib_obj) {
     var txt = new Text(data.name); //data.name);
     //The bonsai object we just created is the last in the list.
@@ -511,7 +522,7 @@ function createNamePlate(data, lib_obj) {
 
 /**
  * Figures out what type of bonsai object the structure will become
- * @param {obj} Object passed from json tree structure - contains an image path for this function to deal with ELSE it is a polygon/other defined shape
+ * @param {Object} obj - Object passed from json tree structure - contains an image path for this function to deal with ELSE it is a polygon/other defined shape
  */
 function createBonsaiShape(obj) {
     var bonsaiObj;
@@ -526,7 +537,7 @@ function createBonsaiShape(obj) {
         y_offset = 0;
     //If it is an image or a square
     //Create an offset.
-    //This is because thier coords are in the top left of the object, and not the centre.
+    //This is because their coords are in the top left of the object, and not the centre.
     if (obj.image_path != undefined || obj.poly == 4) {
 
         x_offset = obj.width / 2;
@@ -634,6 +645,10 @@ function bonsaiPoly(obj) { //What does this method do?
     return myPoly;
 }
 
+/**
+* Snaps an object into a space on the grid
+*
+*/
 function gridSnap(coord, i, obj, diff, attr) {
     if (!library.grid_width || !library.grid_height) {
         return coord + diff;
@@ -659,6 +674,12 @@ function gridSnap(coord, i, obj, diff, attr) {
     }
 }
 
+
+
+/**
+* Updates the position of the nameplate based on where an object is after it has moved.
+*
+*/
 function updateLabelPos(obj) {
 
     var name = stage_obj_nameplate[stage_obj_map.indexOf(obj)];
@@ -689,15 +710,10 @@ function updateLabelPos(obj) {
 
 }
 
-function getValue(obj, key) { //What value is this referring to?
-    var index = obj.field_key.indexOf(key);
-    if (index < 0)
-        return null;
-    return obj.field_vals[index];
-}
-
 /**
  * Draws grid on the screen - this function is called on load if a grid is defined in a library or saved world.
+ * @param {int} x - number of squares to be drawn on the x axis
+ * @param {int} y - number of squares to be drawn on the Y axis
  */
 function drawGrid(y, x) {
     var cell_width = stage.width / x;

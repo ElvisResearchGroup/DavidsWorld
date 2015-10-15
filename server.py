@@ -20,6 +20,10 @@ def index():
 def library(lib, file):
     return  send_from_directory('lib', '{0}/{1}'.format(lib, file))
 
+@app.route('/cheatsheet')
+def cheatsheet():
+    return  send_from_directory('documents', 'LogicFactoryCheatSheet.pdf')
+
 def getName(file):
     path = '{0}{1}/{1}_lib.json'.format(LIB_DIRECTORY, file)
     print path

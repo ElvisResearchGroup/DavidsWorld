@@ -33,9 +33,9 @@
 		<div class="nav-item" style="width:18.5%;">
 			<p style="float:left;">Current Library </p>
 			<select id='liblist' data-toggle="tooltip" title="Library Selection" style="float: right; width:50% ">
-			{% for library in libraries %}
+			{% for library, name in libraries %}
 				<option {% if loop.first %}selected{% endif %} 
-					value="{{ library }}">{{ library.capitalize() }}</option>
+					value="{{ library }}">{{ name.capitalize() }}</option>
 			{% endfor %}
 			</select> 
 		</div>

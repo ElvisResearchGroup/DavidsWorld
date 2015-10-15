@@ -323,9 +323,13 @@ function generateWorldFromFile(worldJSON){
   worldObjects.push(worldJSON.world[i]);//populate each loaded object into buffer - Can be set as the main world buffer at the end of this function to keep concurrent with evaluator
   var obj = worldObjects[i];
   if (library.grid_width && library.grid_height){
-		var newCoord = gridToCoord(obj.x, obj.y);
-		obj.x = newCoord.x;
-		obj.y = newCoord.y;  
+	var newCoord = gridToCoord(obj.x, obj.y);
+	obj.x = newCoord.x;
+	obj.y = newCoord.y;  
+	if (obj.width){
+		obj.x -= obj.width/2;
+		obj.y -= obj.height/2;	
+	}
   }
   var lib_index = null;
   for(var index = 0; index < library.library.length;index++){
@@ -419,8 +423,6 @@ function addObject(obj_type, data){
       data.name = "";
     console.log("DATA TEST:", data);
     var lib_obj = new Object();
-    if(data.size)
-      data.size = data.size/2;
     //Cloning the object from the library.
     console.log("DATA", data);
     for(var i = 0; i < library.library.length; i++){

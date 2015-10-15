@@ -29,12 +29,13 @@ body{
   }
 
 
+
 .nav-item {
   background-color: #FF9F48;
   height: 35px;
   float: right;
   margin-right: 5px;
-  margin-top: 5px;
+  border-style: none;
 }
 
 .nav-item > p {
@@ -63,6 +64,7 @@ select {
 #expression-column {
   float: right;
   width: 50%;
+  height:100%;
 }
 
 .clear {
@@ -221,7 +223,7 @@ img {
 }
 
 .txtExpr{
-  width:96%;
+  width:96.5%;
   padding: 1% 1% 1% 1%;
   margin:0.5%;
   height:96%;
@@ -276,7 +278,7 @@ img {
 
 #outputDiv {
   width: 100%;
-  height: 500px;
+  height: 10px;
   border: 10px;
   background-color: transparent;
   overflow-y: scroll;
@@ -292,6 +294,7 @@ img {
   float:left;
   margin-bottom: 5px;
   min-height: 1px;
+  margin-left: 0.51%;
 
 }
 

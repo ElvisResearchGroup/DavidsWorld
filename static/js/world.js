@@ -442,7 +442,9 @@ function addObject(obj_type, data){
     console.log()
     
     if(lib_obj.poly <= 2 && data.size){
-	lib_obj.radius = data.size;
+      lib_obj.radius = data.size;
+    } else if (lib_obj.size) {
+      lib_obj.radius = lib_obj.size/2;
     }
     if(!lib_obj.x && data.x)
       lib_obj.x = data.x;

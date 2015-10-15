@@ -4,6 +4,7 @@ var count = 0; //used to count expression divs
 var pressedGo = false;
 var expArray = [];
 var toAdd = [];
+var allowInvalid = false;
 
 /**
 * This function deletes an expression when the user clicks the "X" button next to the expression.
@@ -151,7 +152,6 @@ function setupListeners(){
 	 worldstage.on('message:addexpr', function(data){
 	 	world = data;
 	 	toAdd.forEach(function(expr){
-			var expr = $('#txtExpr').val()
 
 			//Create Labels
 			var id =  count++;
@@ -172,7 +172,10 @@ function setupListeners(){
 					}
 				}
 				try { 
-					parseExpr(expr, scope);
+					if (!allowInvalid){
+						parseExpr(expr, scope);
+					}
+
 					exprIdArray.push(id);
 					expArray.push(expr);
 
@@ -445,6 +448,7 @@ function setExpressionList(exprs){
 	count = 0;
 	console.log("EXPRESSIONS", exprs);
 	toAdd = exprs;
+	allowInvalid = true;
 	worldstage.sendMessage("getworldforadd");
 }
 

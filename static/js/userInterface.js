@@ -3,7 +3,7 @@ var exprIdArray = [];//holds ids of expression divs
 var count = 0; //used to count expression divs
 var pressedGo = false;
 var expArray = [];
-
+var toAdd = [];
 
 /**
 * This function deletes an expression when the user clicks the "X" button next to the expression.
@@ -150,44 +150,46 @@ function setupListeners(){
 	 */
 	 worldstage.on('message:addexpr', function(data){
 	 	world = data;
-		var expr = $('#txtExpr').val()
+	 	toAdd.forEach(function(expr){
+			var expr = $('#txtExpr').val()
 
-		//Create Labels
-		var id =  count++;
-		var expressionDiv = $('<div/>', {'id': id, 'class': 'expression'})
-			.append($('<p/>', {'onclick': 'update(' + id + ')'})
-				.text(expr));
-		var resultDiv = $('<div/>', {'class':'result'});
-		var deleteDiv = $('<div/>', {'class':'delexpr', 'onclick': 'deleteExp(' + id + ')'})
-			.text('X');
+			//Create Labels
+			var id =  count++;
+			var expressionDiv = $('<div/>', {'id': id, 'class': 'expression'})
+				.append($('<p/>', {'onclick': 'update(' + id + ')'})
+					.text(expr));
+			var resultDiv = $('<div/>', {'class':'result'});
+			var deleteDiv = $('<div/>', {'class':'delexpr', 'onclick': 'deleteExp(' + id + ')'})
+				.text('X');
 
-		//Append the element in page
-		if(expr !="Input expression" && expr.length > 0){
-			var scope = ["Colour"];
-			for (var w = 0; w < world.length; w++){
-				var obj = world[w];
-				if (obj.name){
-					scope.push(obj.name);
+			//Append the element in page
+			if(expr !="Input expression" && expr.length > 0){
+				var scope = ["Colour"];
+				for (var w = 0; w < world.length; w++){
+					var obj = world[w];
+					if (obj.name){
+						scope.push(obj.name);
+					}
+				}
+				try { 
+					parseExpr(expr, scope);
+					exprIdArray.push(id);
+					expArray.push(expr);
+
+					$('#outputDiv').append(expressionDiv
+						.append(deleteDiv)
+						.append(resultDiv));
+
+					$('#parserError').toggleClass('show', false);
+
+					console.log("testtestsetset");
+
+					button('clear');
+				} catch(error){
+					$('#parserError').toggleClass('show', true).text(error.message);
 				}
 			}
-			try { 
-				parseExpr(expr, scope);
-				exprIdArray.push(id);
-				expArray.push(expr);
-
-				$('#outputDiv').append(expressionDiv
-					.append(deleteDiv)
-					.append(resultDiv));
-
-				$('#parserError').toggleClass('show', false);
-
-				console.log("testtestsetset");
-
-				button('clear');
-			} catch(error){
-				$('#parserError').toggleClass('show', true).text(error.message);
-			}
-		}
+		});
 	});
 
 	
@@ -442,8 +444,6 @@ function setExpressionList(exprs){
 	exprIdArray = [];
 	count = 0;
 	console.log("EXPRESSIONS", exprs);
-	exprs.forEach(function(d){
-		console.log('d', d);
-		add(d);
-	});
+	toAdd = exprs;
+	worldstage.sendMessage("getworldforadd");
 }

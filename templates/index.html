@@ -70,7 +70,7 @@
 			<form>
 				<input type="text" name="expression" id ="txtExpr" value="Input expression" onclick="this.value=='Input expression'?this.value='':this.value;" autocomplete="off" class="txtExpr" data-toggle="tooltip" title="Expression Entry"> 
 			</form>
-			<button onclick="worldstage.sendMessage('getworldforadd');"  type="button" id="addExpr" class="btn press" data-toggle="tooltip" title="Adds the Current Expression">Add Expression</button>
+			<button onclick="toAdd = [$('#txtExpr').val()];worldstage.sendMessage('getworldforadd');"  type="button" id="addExpr" class="btn press" data-toggle="tooltip" title="Adds the Current Expression">Add Expression</button>
 			<div class="clear"></div>
 			<button type="button" class="btn symbol" onclick="button('not')" data-toggle="tooltip" title="Not. ~ is the keyboard shortcut"><img class="autoResizeImage" src="static/img/notsymbol.png" align="middle"></button>
 			<button type="button" class="btn symbol" onclick="button('and')" data-toggle="tooltip" title="Logical And. ^ and & are keyboard shortcuts"><img class="autoResizeImage" src="static/img/and.png" align="middle"></button>

@@ -1,12 +1,13 @@
 var exprIdArray = []; //holds ids of expression divs
 var count = 0; //used to count expression divs
 var pressedGo = false;
-var expArray = [];
-var toAdd = [];
-var allowInvalid = false;
+var expArray = [];//holds list of expressions
+var toAdd = [];//list of expressions to add to the expression list
+var allowInvalid = false;//disables parser checking
 
 /**
  * This function deletes an expression when the user clicks the "X" button next to the expression.
+ @param {string} divId - id of div to delete
  */
 function deleteExp(divId) {
     $('#' + divId).remove();
@@ -17,7 +18,7 @@ function deleteExp(divId) {
     }
     if (index > -1) {
         exprIdArray.splice(index, 1);
-        expArray.splice(index, 1); //Could be the cause of errors
+        expArray.splice(index, 1); 
     }
 }
 
@@ -31,20 +32,19 @@ function go() {
 }
 
 /**
- * 
+ * sets up listeners for the UI
  */
 function setupListeners() {
-    worldstage.on('message:getExpr', function(data) {
-        console.log("getExpr Recieved");
-        worldstage.sendMessage('exprArray', expArray);
-    });
 
+	// adds selected object name to name input
     worldstage.on('message:objectSelected', function(data) {
-        console.log(data);
         $('#objNamer').val(data);
 
     });
 
+    /*
+     * evaluates the expression list against the world
+     */
     worldstage.on('message:evalworld', function(data) {
         world = data;
         var scope = {
@@ -69,7 +69,6 @@ function setupListeners() {
                 parsedTree = parseExpr(expr, Object.keys(scope));
             } catch (error) {
                 errormessage = error.message;
-                console.error(error);
             }
 
             var eval = false;
@@ -78,15 +77,11 @@ function setupListeners() {
                     eval = evaluate(parsedTree, scope);
                 } catch (error) {
                     eval = null;
-                    errormessage = "Evaluation error"
-                    console.error(error);
+                    errormessage = "Evaluation error";
                 }
             } else {
                 eval = null;
             }
-
-            console.log('eval', eval);
-            console.log('world', world);
 
             expressionDiv.find('.result')
                 .toggleClass('fail', !eval)
@@ -97,7 +92,9 @@ function setupListeners() {
 
     });
 
-
+	/*
+	 * formats and saves json data
+	 */
     worldstage.on('message:saveData', function(data) {
         data.expressions = expArray;
         var dataToParse = JSON.stringify(data);
@@ -138,10 +135,6 @@ function setupListeners() {
                 }
             }
         }
-
-
-
-
         saveAsFile(output, "save");
     });
 
@@ -194,8 +187,6 @@ function setupListeners() {
 
                     $('#parserError').toggleClass('show', false);
 
-                    console.log("testtestsetset");
-
                     button('clear');
                 } catch (error) {
                     $('#parserError').toggleClass('show', true).text(error.message);
@@ -204,7 +195,9 @@ function setupListeners() {
         });
     });
 
-
+	/*
+	 * Adds object to the world
+	 */
     $('#addObj').click(function() {
         var temp = {
             type: $('#objList').val(),
@@ -219,15 +212,19 @@ function setupListeners() {
         worldstage.sendMessage('addobject', temp);
     });
 
+    /*
+     * Renames selected object
+     */
     $('#objNamer').keyup(function() {
-        console.log("key pressed");
         var field = $('#objNamer');
         var text = field.val();
 
         worldstage.sendMessage('setSelectedObjectTitle', text);
     });
 
-
+    /*
+     * Replaces shortcut keys in expressions
+     */
     $('#txtExpr').keypress(function() {
         var field = $('#txtExpr');
         var text = field.val();
@@ -259,6 +256,9 @@ function setupListeners() {
         }
     });
 
+	/*
+	 * Reload the object list
+	 */
     $('body').on('change', '#liblist', function() {
         var library_name = $('#liblist').val();
         $.getJSON("lib/" + library_name + "/" + library_name + "_lib.json", function(data) {
@@ -270,15 +270,23 @@ function setupListeners() {
         });
     });
 
+    /*
+     * Increase the size of the selected object
+     */
     $('#sizeInc').click(function() {
-        console.log("test")
         worldstage.sendMessage('changeSize', 1);
     });
 
+    /*
+     * Decrease the size of the selected object
+     */
     $('#sizeDec').click(function() {
         worldstage.sendMessage('changeSize', -1);
     });
 
+    /*
+     * Add expression on enter
+     */
     $('#txtExpr').keydown(function(event) {
         if (event.keyCode == 13) {
             $('#addExpr').click();
@@ -286,31 +294,47 @@ function setupListeners() {
         }
     });
 
+    /*
+     * Click file select
+     */
     $('#fileSelect').click(function(e) {
         $('#files').click();
         e.preventDefault();
     });
 
+    /*
+     * Remove selected objects
+     */
     $('#removeObj').click(function(e) {
         worldstage.sendMessage('removeObj');
-        console.log("removing object");
     });
 
+    /*
+     * Copy selected object 
+     */
     $('#copyObj').click(function(e) {
         worldstage.sendMessage("cloneObj");
-        console.log("copying object");
     });
 
+    /*
+     * Show save dialog
+     */
     $('#performSave').click(function(e) {
         $('#cover').toggle(0);
         $('#saveprompt').toggle(0);
     });
 
+    /*
+     * Close save dialog
+     */
     $('#saveprompt > #close').click(function(e) {
         $('#cover').toggle(0);
         $('#saveprompt').toggle(0);
     });
 
+    /*
+     * Set save location
+     */
     $('#fileName').on('input', function() {
         var a = $('#performSave')[0];
         if ($('#fileName').val()) {
@@ -334,11 +358,12 @@ function replaceString(regex, string, replacement) {
     return changed;
 }
 
+/*
+ * Inserts the operator into the expression box
+ */
 function button(operator) {
     //insert operator into expression box
     var currentExp = document.getElementById('txtExpr').value;
-    console.log(currentExp);
-
     var symbol = getSymbol(operator);
 
     if (currentExp == "Input expression" || symbol == "") {
@@ -412,13 +437,9 @@ function insertAtCaret(element, text) {
     }
 }
 
-
-
-
 /**
- * Adds objects to the world ??? i think
+ * Creates the object type list
  */
-
 function populateObjectSelect(data) {
     //What does this do??
     var list = $('#objList');
@@ -431,6 +452,9 @@ function populateObjectSelect(data) {
     });
 }
 
+/*
+ * Create the list of colours
+ */
 function populateColourSelect() {
     var colours = Colour;
     var elem = $('#colourList');
@@ -454,28 +478,38 @@ function addObjectFromUI() {
     addObject(obj_index, default_x, default_y, width, height);
 }
 
+/*
+ * Bring an expression back into the expression box
+ */
 function update(id) {
     $('#txtExpr').val($('#' + id + ' p').text());
 }
 
+/*
+ * Sets the list of expressions
+ */
 function setExpressionList(exprs) {
     //TODO remove br after it is removed from index.
     $('#outputDiv').empty().append($('<br/>'));
     exprIdArray = [];
     count = 0;
-    console.log("EXPRESSIONS", exprs);
     toAdd = exprs;
     allowInvalid = true;
     worldstage.sendMessage("getworldforadd");
 }
 
+/*
+ * Sets the height of the expression list 
+ */
 function setSize() {
     var height = $('#world').width();
-    console.log("HEIGHT " + height);
     //var right = document.getElementById('expression-column').style.height;
     document.getElementById('outputDiv').style.height = (height - 50) + 'px';
 }
 
+/*
+ * Opens the cheat sheet in another window
+ */
 function openCheatSheet(){
 	window.open('/cheatsheet');
 }

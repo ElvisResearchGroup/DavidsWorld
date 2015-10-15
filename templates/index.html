@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Davids World</title>
+	<title>Logic Factory</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="static/js/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="static/js/buttons.js"></script>
@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="tex/css" href="iespecific.css" />
 	<![endif]-->
 	<link rel="stylesheet" type="text/css" href="static/css/userinterface.css">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body onload = "setSize()">	
 	<div id="cover"></div>
@@ -26,6 +27,7 @@
 	</div>
 	<div id="titleBar"> <!-- START OF TITLE BAR -->
 		<img src="static/img/logicfactorynobg.png" align="center" style="padding-left:2%; background-size: cover; width: 45%; height: 60%">
+		<button class="nav-item" onclick="openCheatSheet()" style="width:10%;">Cheat Sheet</button>
 		<button class="nav-item" onclick="saveOutput()" style="width:10%;">Save File</button>
 		<button class="nav-item" type="button" id="fileSelect" class="btn" data-toggle="tooltip" title="Select a file to load." style="width:10%;">Load File</button>
 		<input type="file" id="files" name="files[]" multiple style="display:none;"/>

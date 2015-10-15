@@ -475,3 +475,7 @@ function setSize() {
     //var right = document.getElementById('expression-column').style.height;
     document.getElementById('outputDiv').style.height = (height - 50) + 'px';
 }
+
+function openCheatSheet(){
+	window.open('/cheatsheet');
+}

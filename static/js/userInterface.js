@@ -494,6 +494,7 @@ function setExpressionList(exprs) {
     exprIdArray = [];
     count = 0;
     toAdd = exprs;
+    expArray = [];//holds
     allowInvalid = true;
     worldstage.sendMessage("getworldforadd");
 }

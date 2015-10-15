@@ -1,5 +1,8 @@
 var debug = false;
 
+/*
+ * Object specifying all expression types
+ */
 var expressionTypes = {
 	AND: 'AND',
 	OR: 'OR',
@@ -20,7 +23,12 @@ var expressionTypes = {
 	XOR: 'XOR'
 } //FUTURE: arthimetric expressions
 
+/*
+ * Evaulates the given expression with existing scope. 
+ * Scope is a map of variables to objects.
+ */
 function evaluate(expr, scope){
+	//Calls the correct
 	if (expr.type === expressionTypes.SOME) { 
 		return evaluateSome(expr, scope);
 	} else if (expr.type === expressionTypes.ALL) {
